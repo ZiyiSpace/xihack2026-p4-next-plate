@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Settings2, Play, Scale, Check, Clock3, Download,  Sparkles, AlertTriangle, Search, ClipboardList,  Loader2, X, Pencil, Radio, MoreHorizontal, Info, Eye, EyeOff } from "lucide-react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Navigation, Topbar, navigation as nav, type View, type WorkspaceMode } from "@/components/workspace/shell";
+import CapturePanel from "@/components/workspace/capture-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -80,6 +81,7 @@ function Overview({data,onKitchen,supplyOnly=false}:{data:Data;onKitchen:()=>voi
  const dishes=data.dishes.filter(d=>(category==="all"||d.category===category)&&d.name.includes(search)).sort((a,b)=>severity[a.status]-severity[b.status]);
  return <>
   <div className="metrics"><Metric label="场上菜品" value={`${data.dishes.filter(d=>d.plates>0).length} 种`} note={`${data.plates.length} 个循环盘`}/><Metric label="待补菜" value={`${data.metrics.pending} 项`} note="含正在制作的任务" alert={data.metrics.pending>0}/>{supplyOnly?<><Metric label="需补充菜品" value={`${data.dishes.filter(d=>d.status==="urgent").length} 种`} note="按余量与准备时间判断" alert={data.dishes.some(d=>d.status==="urgent")}/><Metric label="需复核菜品" value={`${data.metrics.anomaly} 种`} note="读数异常或过期，暂停自动补菜" alert={data.metrics.anomaly>0}/></>:<><Metric label="今日取用" value={kg(data.metrics.takenG)} note="盘中取走的重量"/><Metric label="今日报损" value={kg(data.metrics.wastedG)} note="不再供餐的撤盘余量"/></>}</div>
+  <CapturePanel captures={data.captures}/>
   <section className="panel inventory-panel"><div className="inventory-toolbar"><div className="search-field"><Search size={17}/><Input aria-label="搜索菜品" value={search} onChange={e=>setSearch(e.target.value)} placeholder="搜索菜品"/></div><div className="inventory-actions"><Choice value={category} onChange={setCategory} label="菜品分类" options={[{value:"all",label:"全部分类"},...[...new Set(data.dishes.map(d=>d.category))].map(v=>({value:v,label:v}))]}/><Button variant="outline" onClick={onKitchen}>查看补菜任务</Button></div></div>
    <Table mobileLayout="cards"><TableHeader><TableRow><TableHead>菜品</TableHead><TableHead>场上余量</TableHead><TableHead>待补充</TableHead><TableHead>预计耗尽</TableHead><TableHead>状态</TableHead></TableRow></TableHeader><TableBody>{dishes.map(d=><TableRow key={d.id}><TableCell><b>{d.name}</b><small className="cell-meta">{d.plates} 盘 · {d.category}</small></TableCell><TableCell>{qty(d.stock,d.unit)}{d.unit==="件"&&<small className="cell-meta">{kg(d.weightG)}</small>}</TableCell><TableCell>{d.incoming?qty(d.incoming,d.unit):"—"}</TableCell><TableCell>{d.status==="anomaly"?"待复核":d.minutesLeft===null?"—":`${Math.round(d.minutesLeft)} 分钟`}</TableCell><TableCell><span className={`status ${d.status==="okay"?"okay":d.status==="urgent"?"urgent":"watch"}`}>{statusText[d.status]}</span></TableCell></TableRow>)}</TableBody></Table>
    {!dishes.length&&<Empty title="暂无匹配菜品" description="调整搜索或分类条件。"/>}
@@ -99,6 +101,7 @@ function Kitchen({data,busy,run,setEdit,focused=false}:{data:Data;busy:boolean;r
  const detailDish=detail?data.dishes.find(d=>d.id===detail.dishId):null;
  return <>
   {!focused&&<div className="kitchen-summary" aria-label="补菜任务概况"><div><span>待开始</span><strong>{active.filter(t=>t.status==="pending").length}<small>项任务</small></strong></div><div><span>制作中</span><strong>{active.filter(t=>t.status==="preparing").length}<small>项任务</small></strong></div><div><span>已完成</span><strong>{completed.filter(t=>t.status==="completed").length}<small>项任务</small></strong></div><p><Radio size={16}/>{data.settings.autoEnabled?"自动补菜运行中":"自动补菜已暂停"}<small>根据余量与准备时间生成任务</small></p></div>}
+   <CapturePanel captures={data.captures}/>
   <Tabs value={tab} onValueChange={setTab} className={`kitchen-tabs ${focused?"supply-board":""}`}>
    <div className="section-toolbar"><TabsList variant="line"><TabsTrigger value="active">{focused?"待补菜品":"当前任务"} <span className="tab-count">{active.length}</span></TabsTrigger>{!focused&&<TabsTrigger value="records">记录</TabsTrigger>}</TabsList><span className="automation-label">{data.settings.autoEnabled?"自动补菜已开启":"自动补菜已暂停"}</span></div>
    <TabsContent value="active">
