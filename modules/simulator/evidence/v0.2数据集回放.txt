@@ -1,0 +1,37 @@
+[采集端] 后端 http://127.0.0.1:8000 在线，模式 online_with_model，视觉服务器 ok
+[采集端] 已复位后端业务数据（菜品配置保留）
+[采集端] 20 张图已放进存储 http://127.0.0.1:8000/api/images
+[采集端] 时间轴整体平移到现在（+1:44:22），否则后端会按真实当前时间把每一盘都算成滞留
+[采集端] 共 29 条事件（观测 20 / 操作 9 / 客流 0），站点流窗口 5020s 按 ×60 压到 83.7s，客流曲线同步铺满同一时长
+  +   0.0s  操作 E001 操作 initial_load 盘 P001 绑定 D01 => ok
+  +   0.2s  观测 B001 站点 A 盘 P001 净重 201g 图 B001 => baseline 
+  +   0.5s  操作 E002 操作 initial_load 盘 P002 绑定 D05 => ok
+  +   0.7s  观测 M001 站点 A 盘 P002 净重 300g 图 M001 => baseline 
+  +   1.2s  观测 B002 站点 B 盘 P001 净重 151g 图 B002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +   1.7s  观测 M002 站点 B 盘 P002 净重 212g 图 M002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +   2.2s  观测 B003 站点 C 盘 P001 净重 331g 图 B003 => unexplained_increase 增重无补菜记录：标记未解释突增，要求复测；不更新可信净重
+  +   2.7s  观测 M003 站点 C 盘 P002 净重 209g 图 M003 => no_change 
+  +   3.0s  操作 E003 操作 refill 盘 P002 绑定 D05 => ok
+  +   3.2s  观测 B004 站点 A 盘 P001 净重 149g 图 B004 => anomaly_resolved 读数回落至可信值附近，确认此前为传感器尖峰
+  +   3.7s  观测 M004 站点 A 盘 P002 净重 332g 图 M004 => refill_confirmed 增重与补菜记录匹配
+  +  60.0s  操作 E_P003 操作 initial_load 盘 P003 绑定 D01 => ok
+  +  60.2s  观测 B005 站点 A 盘 P003 净重 26g 图 B005 => baseline 
+  +  60.5s  操作 E_P006 操作 initial_load 盘 P006 绑定 D05 => ok
+  +  60.7s  观测 M005 站点 A 盘 P006 净重 24g 图 M005 => baseline 
+  +  63.2s  观测 B006 站点 A 盘 P003 净重 1g 图 B006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  63.7s  观测 M006 站点 A 盘 P006 净重 1g 图 M006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  70.0s  操作 E_P004 操作 initial_load 盘 P004 绑定 D01 => ok
+  +  70.2s  观测 B007 站点 A 盘 P004 净重 74g 图 B007 => baseline 
+  +  70.5s  操作 E_P007 操作 initial_load 盘 P007 绑定 D05 => ok
+  +  70.7s  观测 M007 站点 A 盘 P007 净重 151g 图 M007 => baseline 
+  +  73.2s  观测 B008 站点 A 盘 P004 净重 2g 图 B008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  73.7s  观测 M008 站点 A 盘 P007 净重 7g 图 M008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  80.0s  操作 E_P005 操作 initial_load 盘 P005 绑定 D01 => ok
+  +  80.2s  观测 B009 站点 A 盘 P005 净重 152g 图 B009 => baseline 
+  +  80.5s  操作 E_P008 操作 initial_load 盘 P008 绑定 D05 => ok
+  +  80.7s  观测 M009 站点 A 盘 P008 净重 298g 图 M009 => baseline 
+  +  83.2s  观测 B010 站点 A 盘 P005 净重 -1g 图 B010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  83.7s  观测 M010 站点 A 盘 P008 净重 5g 图 M010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+[采集端] 完成：上报 {'station': 20, 'operation': 9, 'covers': 0}，失败 0 条，耗时 91.8s，生成补菜任务 7 个
+[采集端] 回读工作台：抓拍 12 张，到店 0 人，取用 848.0g
+[采集端] 报告已写入 D:\develop\xihack-pr\modules\simulator\evidence\capture_report.json

@@ -48,6 +48,10 @@ DATASET_DIR = os.environ.get(
 # ---- 业务规则阈值（对齐 scenario_config.json）----
 # 相邻两次正常读数最多相差 4g 而没有真实变化 => 噪声界
 NOISE_BOUND_G = _f("NOISE_BOUND_G", 4)
+# 「盘上没东西」的净重上限（克）。和 NOISE_BOUND_G 是两个问题：那个界判的是
+# 「两次读数之差算不算变化」，这个判的是「这一盘还算不算有菜」。默认值恰好一样
+# 不代表它们该一起调 —— 秤的分辨率和菜的份量是两件独立的事。
+EMPTY_PLATE_NET_G = _f("EMPTY_PLATE_NET_G", 4)
 # 同盘同站 20 秒内的多次读数视为一次经过（连续视频帧合并为一次有效事件）
 PASS_MERGE_WINDOW_S = _f("PASS_MERGE_WINDOW_S", 20)
 # 余量占比低于该值触发补菜评估
@@ -58,5 +62,24 @@ LOW_DEMAND_VELOCITY = _f("LOW_DEMAND_VELOCITY", 0.5)
 STAGNATION_WARN_MIN = _f("STAGNATION_WARN_MIN", 15)
 # 菜品保鲜窗口（分钟），超时未售罄 => 报废风险；可被菜品目录覆盖
 FRESHNESS_WINDOW_MIN = _f("FRESHNESS_WINDOW_MIN", 30)
+# 上盘更换期限（分钟）：一盘菜从上台算起超过该时长就提醒换下上新批次，
+# 与余量无关 —— 卖得慢的菜可能一直不缺货，但摆在转盘上的时间已经太长。
+# 可被菜品目录的 replace_after_min 覆盖。
+REPLACE_AFTER_MIN = _f("REPLACE_AFTER_MIN", 90)
 # 补菜任务保留时长：已完成任务不再重复触发的静默期（分钟）
 TASK_QUIET_MIN = _f("TASK_QUIET_MIN", 10)
+
+
+# ---- 菜品级覆盖 ----
+# 「菜品目录配了就用菜品目录的，没配就用全局默认」这条规则只在这里实现。
+# 调用方各自写 `dish.get(x) or config.X` 的话，同一个回退语义会有好几份，
+# 改起来必然会漏掉几处。
+
+def freshness_window(dish: dict) -> float:
+    """这一盘用的保鲜窗口（分钟）：菜品级配置优先，没配就用全局默认。"""
+    return float(dish.get("freshness_min") or FRESHNESS_WINDOW_MIN)
+
+
+def replace_after(dish: dict) -> float:
+    """这一盘用的上盘更换期限（分钟）：菜品级配置优先，没配就用全局默认。"""
+    return float(dish.get("replace_after_min") or REPLACE_AFTER_MIN)

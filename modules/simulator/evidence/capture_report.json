@@ -1,54 +1,93 @@
 {
-  "generated_at": "2026-10-03T17:59:01+08:00",
-  "dataset": "dataset_template",
+  "generated_at": "2026-10-03T18:45:44+08:00",
+  "dataset": "D:\\360安全浏览器下载\\hotpot_dataset_v0_2",
   "crowd": null,
-  "speed": 6.0,
+  "speed": 60.0,
   "with_images": true,
   "backend": "http://127.0.0.1:8000",
-  "started_at": "2026-10-03T17:59:01+08:00",
-  "elapsed_s": 17.9,
+  "started_at": "2026-10-03T18:45:44+08:00",
+  "elapsed_s": 91.8,
   "sent": {
-    "station": 4,
-    "operation": 2,
+    "station": 20,
+    "operation": 9,
     "covers": 0
   },
   "failed": [],
   "classifications": {
-    "baseline": 2,
-    "removal": 2
+    "baseline": 8,
+    "removal": 8,
+    "unexplained_increase": 1,
+    "no_change": 1,
+    "anomaly_resolved": 1,
+    "refill_confirmed": 1
   },
-  "refill_tasks_created": 2,
-  "images_in_store": 15,
+  "refill_tasks_created": 7,
+  "images_in_store": 27,
   "readback": {
-    "captures": 4,
+    "captures": 12,
     "guests": 0,
-    "taken_g": 140.0,
+    "taken_g": 848.0,
     "dishes": [
       {
         "id": "D05",
         "name": "腌牛肉",
-        "takeG": 90.0,
-        "weightG": 210.0,
+        "takeG": 548.0,
+        "weightG": 345.0,
         "status": "urgent"
       },
       {
         "id": "D01",
         "name": "小馒头",
-        "takeG": 50.0,
-        "weightG": 150.0,
+        "takeG": 300.0,
+        "weightG": 151.0,
         "status": "urgent"
       }
     ],
     "tasks": [
       {
-        "id": "09ec8bd3c3bb",
+        "id": "316168db76eb",
         "dishId": "D05",
-        "quantity": 90.0,
+        "quantity": 149.0,
         "status": "pending",
-        "reason": "余量70%，速度90.0g/min，预计2.3分钟耗尽"
+        "reason": "余量2%，速度97.67g/min，预计0.1分钟耗尽；在制144g已计入"
       },
       {
-        "id": "0d7a219ad8e4",
+        "id": "3b52438c0b17",
+        "dishId": "D01",
+        "quantity": 3,
+        "status": "pending",
+        "reason": "余量0%，速度51.0g/min，预计-0.0分钟耗尽；在制72g已计入；折合3个"
+      },
+      {
+        "id": "8801fc613850",
+        "dishId": "D05",
+        "quantity": 121.0,
+        "status": "pending",
+        "reason": "余量5%，速度48.0g/min，预计0.1分钟耗尽；在制23g已计入"
+      },
+      {
+        "id": "1736e376f154",
+        "dishId": "D01",
+        "quantity": 1,
+        "status": "pending",
+        "reason": "余量3%，速度24.0g/min，预计0.1分钟耗尽；在制50g已计入；折合1个"
+      },
+      {
+        "id": "b7d969243309",
+        "dishId": "D05",
+        "quantity": 23.0,
+        "status": "pending",
+        "reason": "余量4%，速度7.67g/min，预计0.1分钟耗尽"
+      },
+      {
+        "id": "9bc0f6f33174",
+        "dishId": "D05",
+        "quantity": 88.0,
+        "status": "completed",
+        "reason": "余量71%，速度88.0g/min，预计2.4分钟耗尽"
+      },
+      {
+        "id": "60a414ac89c3",
         "dishId": "D01",
         "quantity": 2,
         "status": "pending",
