@@ -11,10 +11,10 @@ from typing import Optional
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from . import config, db
+from . import adapter, config, db
 from .core import HotpotService
 from .replay import ReplayRunner
 from .schemas import (CoversIn, DishConfigIn, OperationIn, StationEventIn,
@@ -26,13 +26,15 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"],
 
 service = HotpotService()
 replay_runner = ReplayRunner(service)
+adapter.attach(service)
+app.include_router(adapter.router)
 
 _STATIC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
 
 
 @app.get("/")
 def index():
-    return FileResponse(os.path.join(_STATIC, "index.html"))
+    return _proxy_frontend("")
 
 
 @app.get("/api/health")
@@ -194,3 +196,43 @@ def start_replay(mode: str = "offline", reset: bool = True):
 @app.get("/api/replay/status")
 def replay_status():
     return replay_runner.status
+
+
+# ------------------------------------------------ 工作台页面反代
+
+# 工作台 SSR 服务器（modules/frontend 的 npm run dev，端口 5173）。
+# 浏览器只与本服务同源交互：/api/* 命中适配层，其余路径转发页面。
+FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "http://127.0.0.1:5173")
+_frontend_http = None
+
+
+def _proxy_frontend(path: str):
+    global _frontend_http
+    import httpx
+    if _frontend_http is None:
+        _frontend_http = httpx.Client(base_url=FRONTEND_ORIGIN, timeout=30,
+                                      follow_redirects=False)
+    try:
+        r = _frontend_http.get(f"/{path}")
+    except httpx.HTTPError as e:
+        return JSONResponse(status_code=502, content={
+            "error": f"工作台页面服务不可达（{FRONTEND_ORIGIN}）：{e.__class__.__name__}。"
+                     f"启动方式：modules/frontend 下执行 npm run dev"})
+    headers = {"cache-control": r.headers.get("cache-control", "no-store")}
+    if "content-type" in r.headers:
+        headers["content-type"] = r.headers["content-type"]
+    return Response(content=r.content, status_code=r.status_code, headers=headers)
+
+
+@app.get("/hz")
+def hz_dashboard():
+    """后端自带的极简看板（挪到 /hz，首页让给工作台）。"""
+    return FileResponse(os.path.join(_STATIC, "index.html"))
+
+
+@app.api_route("/{path:path}", methods=["GET"],
+               include_in_schema=False)
+def frontend_catch_all(path: str):
+    if path.startswith("api/") or path == "docs" or path == "openapi.json":
+        raise HTTPException(404, f"未知接口 /{path}")
+    return _proxy_frontend(path)

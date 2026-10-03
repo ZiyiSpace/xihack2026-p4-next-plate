@@ -101,6 +101,21 @@ cp .env.example .env        # 填 JEV_API_KEY；留空 = 离线规则模式（�
 | 菜量交叉验证 | `/v1/portion` | 合成模糊图上不可靠（曾答 0/2），**只做旁证不记账** |
 | 精确测余量 | `/v1/measure` | 需固定机位 + 空盘参照，误差 1–2 个百分点；接入实拍后启用 |
 
+## 前端工作台适配层（`app/adapter.py`）
+
+工作台（`modules/frontend`）页面期待的接口方言在本后端上原生实现，**工作台代码零改动**即可跑在验证过的规则引擎上：
+
+| 工作台调用 | 适配实现 |
+|---|---|
+| `GET /api/state?source=` | 组装 Summary 视图（菜品/盘子/任务/台账/时段/指标，数据全部来自规则引擎） |
+| `POST /api/actions` | task（`preparing`↔`making`、`completed`↔`done`、delayMinutes↔延后）/ waste（撤盘进报损台账）/ settings / dish（菜品配置）/ simulate（真实链路无操作） |
+| `POST /api/analysis` | 规则分析（口径对齐工作台 ruleAnalysis；未接 DeepSeek，永远走规则） |
+| `POST /api/ingest` | 观测批量上报（observe/add/remove → 站点事件+操作记录，走完整解释状态机） |
+| `GET /api/export` | CSV 导出（同工作台列） |
+| `GET/POST/DELETE /api/model-config` | 桩：未配置（使页面走规则分析） |
+
+部署：后端同时静态托管工作台构建产物（同源，页面相对路径 `/api/*` 直达适配层）。营收字段保持 null（收银未接入，不冒充模拟值）。
+
 ## 错误响应（给前端的约定）
 
 HTTP 层：`404` 资源不存在（任务 id 等）、`422` 参数非法（负数量、非法状态、时间格式）、`409` 冲突（online 模式未配密钥）、`5xx` 服务端异常。

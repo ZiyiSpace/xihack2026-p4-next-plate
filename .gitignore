@@ -5,3 +5,8 @@
 backend/data/
 modules/backend/data/
 modules/frontend/demo-3d-store/
+node_modules/
+dist/
+.wrangler/
+.next/
+*.log
