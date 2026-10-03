@@ -10,3 +10,5 @@ dist/
 .wrangler/
 .next/
 *.log
+node_modules/
+modules/frontend/node_modules/
