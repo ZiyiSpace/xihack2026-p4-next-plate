@@ -56,6 +56,15 @@ def url_for(name: str) -> str:
     return f"/api/images/{name}"
 
 
+def key_of(ref: str) -> str:
+    """从任意形态的图片引用里取出存储 key。
+
+    采集端存的是 `/api/images/<name>`，历史数据可能是宿主绝对路径或数据集相对路径；
+    读取方一律按文件名回落到存储，不要各自再写一遍这段推导。
+    """
+    return os.path.basename((ref or "").replace("\\", "/"))
+
+
 def store(name: str, data: bytes) -> str:
     """把一张抓拍写入存储，返回其读取 URL。
 

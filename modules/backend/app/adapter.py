@@ -11,8 +11,6 @@ from __future__ import annotations
 
 import csv
 import io
-import json
-import os
 from datetime import datetime
 from typing import Any, Optional
 
@@ -58,13 +56,13 @@ def _image_url(ref: Optional[str]) -> Optional[str]:
     """事件里的图片引用 -> 浏览器可直接取的 URL。
 
     采集端走图片存储时存的已经是 `/api/images/<name>`，原样返回；历史数据可能
-    是宿主绝对路径或数据集相对路径，统一按文件名回落到存储；取不到时由存储返回 404。
+    是宿主绝对路径或数据集相对路径，按存储 key 回落；取不到时由存储返回 404。
     """
     if not ref:
         return None
     if ref.startswith("/api/images/"):
         return ref
-    return images.url_for(os.path.basename(ref.replace("\\", "/")))
+    return images.url_for(images.key_of(ref))
 
 
 def _captures(dishes_cfg: dict, limit: int = 12) -> list[dict]:
@@ -73,12 +71,9 @@ def _captures(dishes_cfg: dict, limit: int = 12) -> list[dict]:
     判读文字与视觉校验直接取自事件的 interpretation，不做二次加工，
     保证卡片和后端记账看到的是同一条证据。
     """
-    rows = db.query(
-        "SELECT * FROM station_events WHERE image_ref IS NOT NULL AND image_ref <> '' "
-        "ORDER BY observed_at DESC LIMIT ?", (limit,))
     out = []
-    for r in rows:
-        interp = json.loads(r["interpretation"]) if r["interpretation"] else {}
+    for r in db.get_recent_captures(limit):
+        interp = r.get("interpretation") or {}
         dish_id = _dish_of_serving(r.get("serving_id"))
         out.append({
             "eventId": r["event_id"], "at": r["observed_at"],
