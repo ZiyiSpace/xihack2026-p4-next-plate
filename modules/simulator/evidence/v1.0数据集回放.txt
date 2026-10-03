@@ -1,0 +1,94 @@
+﻿[采集端] 后端 http://127.0.0.1:8000 在线，模式 online_with_model，视觉服务器 ok
+[采集端] 已复位后端业务数据（菜品配置保留）
+[采集端] 60 张图已放进存储 http://127.0.0.1:8000/api/images
+[采集端] 时间轴整体平移到现在（+2:50:15），否则后端会按真实当前时间把每一盘都算成滞留
+[采集端] 共 86 条事件（观测 60 / 操作 26 / 客流 0），站点流窗口 14170s 按 ×60 压到 236.2s，客流曲线同步铺满同一时长
+  +   0.0s  操作 E001 操作 initial_load 盘 P001 绑定 D01 => ok
+  +   0.2s  观测 B001 站点 A 盘 P001 净重 201g 图 B001 => baseline 
+  +   0.5s  操作 E002 操作 initial_load 盘 P002 绑定 D05 => ok
+  +   0.7s  观测 M001 站点 A 盘 P002 净重 300g 图 M001 => baseline 
+  +   1.2s  观测 B002 站点 B 盘 P001 净重 151g 图 B002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +   1.7s  观测 M002 站点 B 盘 P002 净重 212g 图 M002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +   2.2s  观测 B003 站点 C 盘 P001 净重 331g 图 B003 => unexplained_increase 增重无补菜记录：标记未解释突增，要求复测；不更新可信净重
+  +   2.7s  观测 M003 站点 C 盘 P002 净重 209g 图 M003 => no_change 
+  +   3.0s  操作 E003 操作 refill 盘 P002 绑定 D05 => ok
+  +   3.2s  观测 B004 站点 A 盘 P001 净重 149g 图 B004 => anomaly_resolved 读数回落至可信值附近，确认此前为传感器尖峰
+  +   3.7s  观测 M004 站点 A 盘 P002 净重 332g 图 M004 => refill_confirmed 增重与补菜记录匹配
+  +  60.0s  操作 E_P003 操作 initial_load 盘 P003 绑定 D01 => ok
+  +  60.2s  观测 B005 站点 A 盘 P003 净重 26g 图 B005 => baseline 
+  +  60.5s  操作 E_P006 操作 initial_load 盘 P006 绑定 D05 => ok
+  +  60.7s  观测 M005 站点 A 盘 P006 净重 24g 图 M005 => baseline 
+  +  63.2s  观测 B006 站点 A 盘 P003 净重 1g 图 B006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  63.7s  观测 M006 站点 A 盘 P006 净重 1g 图 M006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  70.0s  操作 E_P004 操作 initial_load 盘 P004 绑定 D01 => ok
+  +  70.2s  观测 B007 站点 A 盘 P004 净重 74g 图 B007 => baseline 
+  +  70.5s  操作 E_P007 操作 initial_load 盘 P007 绑定 D05 => ok
+  +  70.7s  观测 M007 站点 A 盘 P007 净重 151g 图 M007 => baseline 
+  +  73.2s  观测 B008 站点 A 盘 P004 净重 2g 图 B008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  73.7s  观测 M008 站点 A 盘 P007 净重 7g 图 M008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  80.0s  操作 E_P005 操作 initial_load 盘 P005 绑定 D01 => ok
+  +  80.2s  观测 B009 站点 A 盘 P005 净重 152g 图 B009 => baseline 
+  +  80.5s  操作 E_P008 操作 initial_load 盘 P008 绑定 D05 => ok
+  +  80.7s  观测 M009 站点 A 盘 P008 净重 298g 图 M009 => baseline 
+  +  83.2s  观测 B010 站点 A 盘 P005 净重 -1g 图 B010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  +  83.7s  观测 M010 站点 A 盘 P008 净重 5g 图 M010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 120.0s  操作 E_P101 操作 initial_load 盘 P101 绑定 D02 => ok
+  + 120.2s  观测 K001 站点 A 盘 P101 净重 241g 图 K001 => baseline 
+  + 121.2s  观测 K002 站点 B 盘 P101 净重 159g 图 K002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 122.2s  观测 K003 站点 C 盘 P101 净重 312g 图 K003 => unexplained_increase 增重无补菜记录：标记未解释突增，要求复测；不更新可信净重
+  + 123.2s  观测 K004 站点 A 盘 P101 净重 161g 图 K004 => anomaly_resolved 读数回落至可信值附近，确认此前为传感器尖峰
+  + 135.0s  操作 E_P111 操作 initial_load 盘 P111 绑定 D03 => ok
+  + 135.2s  观测 F001 站点 A 盘 P111 净重 199g 图 F001 => baseline 
+  + 136.2s  观测 F002 站点 B 盘 P111 净重 122g 图 F002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 137.2s  观测 F003 站点 C 盘 P111 净重 22g 图 F003 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 138.2s  观测 F004 站点 A 盘 P111 净重 121g 图 F004 => unexplained_increase 增重无补菜记录：标记未解释突增，要求复测；不更新可信净重
+  + 150.0s  操作 E_P121 操作 initial_load 盘 P121 绑定 D04 => ok
+  + 150.2s  观测 T001 站点 A 盘 P121 净重 242g 图 T001 => baseline 
+  + 151.2s  观测 T002 站点 B 盘 P121 净重 149g 图 T002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 152.2s  观测 T003 站点 C 盘 P121 净重 151g 图 T003 => no_change 
+  + 153.2s  观测 T004 站点 A 盘 P121 净重 150g 图 T004 => no_change 
+  + 165.0s  操作 E_P131 操作 initial_load 盘 P131 绑定 D06 => ok
+  + 165.2s  观测 C001 站点 A 盘 P131 净重 301g 图 C001 => baseline 
+  + 166.2s  观测 C002 站点 B 盘 P131 净重 208g 图 C002 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 167.2s  观测 C003 站点 C 盘 P131 净重 30g 图 C003 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 167.7s  操作 E_P131_refill 操作 refill 盘 P131 绑定 D06 => ok
+  + 168.2s  观测 C004 站点 A 盘 P131 净重 332g 图 C004 => refill_confirmed 增重与补菜记录匹配
+  + 180.0s  操作 E_P102 操作 initial_load 盘 P102 绑定 D02 => ok
+  + 180.2s  观测 K005 站点 A 盘 P102 净重 39g 图 K005 => baseline 
+  + 183.2s  观测 K006 站点 A 盘 P102 净重 1g 图 K006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 184.0s  操作 E_P103 操作 initial_load 盘 P103 绑定 D02 => ok
+  + 184.2s  观测 K007 站点 A 盘 P103 净重 121g 图 K007 => baseline 
+  + 187.2s  观测 K008 站点 A 盘 P103 净重 3g 图 K008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 188.0s  操作 E_P104 操作 initial_load 盘 P104 绑定 D02 => ok
+  + 188.2s  观测 K009 站点 A 盘 P104 净重 241g 图 K009 => baseline 
+  + 191.2s  观测 K010 站点 A 盘 P104 净重 -1g 图 K010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 195.0s  操作 E_P112 操作 initial_load 盘 P112 绑定 D03 => ok
+  + 195.2s  观测 F005 站点 A 盘 P112 净重 19g 图 F005 => baseline 
+  + 198.2s  观测 F006 站点 A 盘 P112 净重 1g 图 F006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 199.0s  操作 E_P113 操作 initial_load 盘 P113 绑定 D03 => ok
+  + 199.2s  观测 F007 站点 A 盘 P113 净重 81g 图 F007 => baseline 
+  + 202.2s  观测 F008 站点 A 盘 P113 净重 3g 图 F008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 203.0s  操作 E_P114 操作 initial_load 盘 P114 绑定 D03 => ok
+  + 203.2s  观测 F009 站点 A 盘 P114 净重 161g 图 F009 => baseline 
+  + 206.2s  观测 F010 站点 A 盘 P114 净重 -1g 图 F010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 210.0s  操作 E_P122 操作 initial_load 盘 P122 绑定 D04 => ok
+  + 210.2s  观测 T005 站点 A 盘 P122 净重 29g 图 T005 => baseline 
+  + 213.2s  观测 T006 站点 A 盘 P122 净重 1g 图 T006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 214.0s  操作 E_P123 操作 initial_load 盘 P123 绑定 D04 => ok
+  + 214.2s  观测 T007 站点 A 盘 P123 净重 91g 图 T007 => baseline 
+  + 217.2s  观测 T008 站点 A 盘 P123 净重 4g 图 T008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 218.0s  操作 E_P124 操作 initial_load 盘 P124 绑定 D04 => ok
+  + 218.2s  观测 T009 站点 A 盘 P124 净重 241g 图 T009 => baseline 
+  + 221.2s  观测 T010 站点 A 盘 P124 净重 4g 图 T010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 225.0s  操作 E_P132 操作 initial_load 盘 P132 绑定 D06 => ok
+  + 225.2s  观测 C005 站点 A 盘 P132 净重 24g 图 C005 => baseline 
+  + 228.2s  观测 C006 站点 A 盘 P132 净重 1g 图 C006 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 229.0s  操作 E_P133 操作 initial_load 盘 P133 绑定 D06 => ok
+  + 229.2s  观测 C007 站点 A 盘 P133 净重 151g 图 C007 => baseline 
+  + 232.2s  观测 C008 站点 A 盘 P133 净重 7g 图 C008 => removal 取用（盘内量减少；不推断顾客是否吃完）
+  + 233.0s  操作 E_P134 操作 initial_load 盘 P134 绑定 D06 => ok
+  + 233.2s  观测 C009 站点 A 盘 P134 净重 301g 图 C009 => baseline 
+  + 236.2s  观测 C010 站点 A 盘 P134 净重 7g 图 C010 => removal 取用（盘内量减少；不推断顾客是否吃完）
+[采集端] 完成：上报 {'station': 60, 'operation': 26, 'covers': 0}，失败 0 条，耗时 291.3s，生成补菜任务 17 个
+[采集端] 回读工作台：抓拍 12 张，到店 0 人，取用 2940.0g
+[采集端] 报告已写入 D:\develop\xihack-pr\modules\simulator\evidence\v1.0数据集回放报告.json

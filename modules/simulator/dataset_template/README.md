@@ -14,7 +14,7 @@ python capture.py run --dataset 你的目录 --speed 6
 你的目录/
 ├── observations.jsonl      ← 必填：一条 = 一次「转盘经过观察站」
 ├── images/                 ← 图放这里，observations.jsonl 用相对路径引用
-│   ├── T001.png
+│   ├── TEMPLATE001.png
 │   └── ...
 ├── dish_catalog.json       ← 可选：用了后端不认识的菜品才需要
 └── operation_log.jsonl     ← 可选：员工上盘/补菜记录，不填会自动补上盘记录
@@ -28,7 +28,7 @@ python capture.py run --dataset 你的目录 --speed 6
 JSON Lines —— **一行一个 JSON 对象**，不要逗号，不要外层数组。
 
 ```json
-{"sample_id":"T001","plate_id":"P001","dish_id":"D01","timestamp":"2026-10-03T18:00:00+08:00","station_id":"A","lap_index":1,"image_path":"images/T001.png","tare_g":180,"gross_weight_g":380,"net_weight_g":200}
+{"sample_id":"TEMPLATE001","plate_id":"P001","dish_id":"D01","timestamp":"2026-10-03T18:00:00+08:00","station_id":"A","lap_index":1,"image_path":"images/TEMPLATE001.png","tare_g":180,"gross_weight_g":380,"net_weight_g":200}
 ```
 
 | 字段 | 必填 | 说明 |
@@ -58,8 +58,12 @@ JSON Lines —— **一行一个 JSON 对象**，不要逗号，不要外层数�
 把图原样丢进来就行，文件名和 `image_path` 对上即可。**放多大的图都行**——
 采集端上传的是原始字节，后端按内容判类型（PNG / JPEG / WebP 都认）。
 
-本目录下的 `T00*.png` 是占位图（灰色方块，跟菜没关系）。它们只是为了让模板
+本目录下的 `TEMPLATE00*.png` 是占位图（灰色方块，跟菜没关系）。它们只是为了让模板
 开箱就能跑；**演示前务必换成真实照片**，否则视觉模型认不出东西。
+
+占位图特意用 `TEMPLATE` 前缀，**不要**改回 `T001.png` 这种像真样本的名字：
+存储名就是文件名，而 `T001`–`T010` 已经是 v1.0 数据集里豆腐片（D04）的样本编号。
+名字撞上、内容不同，后端会按设计拒绝覆盖并返回 409，然后整个回放会中断。
 
 ## 判读规则（决定你要造什么样的数据）
 
