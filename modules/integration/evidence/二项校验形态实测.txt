@@ -1,0 +1,1223 @@
+﻿数据集 D:\develop\hotpot_v1_0：60 张样本，菜品 6 道
+服务器 https://u1201184-80c0-dda3c400.westb.seetacloud.com:8443
+
+[confirm 正确绑定]
+  [confirm] 10/60
+  [confirm] 20/60
+  [confirm] 30/60
+  [confirm] 40/60
+  [confirm] 50/60
+  [confirm] 60/60
+[reject 错误绑定]
+  [reject] 10/60
+  [reject] 20/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [reject] 30/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [reject] 40/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [reject] 50/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [reject] 60/60
+[control 两道真菜·无弃权项]
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [control] 10/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [control] 20/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [control] 30/60
+  调用失败：Jev 服务重试耗尽: Server disconnected without sending a response.
+  调用失败：Jev 服务重试耗尽: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)
+  调用失败：Jev 服务重试耗尽: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)
+  调用失败：Jev 服务重试耗尽: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)
+  调用失败：Jev 服务重试耗尽: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)
+  调用失败：Jev 服务重试耗尽: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)
+  调用失败：Jev 服务重试耗尽: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)
+  调用失败：Jev 服务重试耗尽: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [control] 40/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [control] 50/60
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  调用失败：Jev 服务重试耗尽: HTTP 404: <!DOCTYPE html>
+<html>
+<head>
+<title>Not Found</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<
+  [control] 60/60
+
+--- confirm（confirm）---
+  选了「绑定菜」  40/60
+  选了「以上都不是」20/60
+  选了别的        0/60
+  => 敏感度（正确绑定被判为一致）：40/60
+
+--- reject（reject）---
+  选了「绑定菜」  3/60
+  选了「以上都不是」20/60
+  选了别的        37/60
+  => 特异度（错误绑定被拒）：20/60
+  => **假确认**（绑定错了却说一致）：3/60
+
+--- control（control）---
+  选了「绑定菜」  0/60
+  选了「以上都不是」0/60
+  选了别的        60/60
+  => 无弃权项时的正确率：0/60
+
+=== reject 臂里被假确认的样本 ===
+  M001   真值=腌牛肉      绑定=腌鸡肉      模型仍说=腌鸡肉      conf=0.813461
+  B005   真值=小馒头      绑定=南瓜饼      模型仍说=南瓜饼      conf=0.63341
+  B006   真值=小馒头      绑定=南瓜饼      模型仍说=南瓜饼      conf=0.953188
+
+=== 逐菜：敏感度 / 特异度 ===
+  小馒头      确认 7/10   拒绝 8/10   对照 0/10
+  南瓜饼      确认 8/10   拒绝 3/10   对照 0/10
+  鱼丸       确认 7/10   拒绝 0/10   对照 0/10
+  豆腐片      确认 8/10   拒绝 0/10   对照 0/10
+  腌牛肉      确认 3/10   拒绝 9/10   对照 0/10
+  腌鸡肉      确认 7/10   拒绝 0/10   对照 0/10
+
+原始结果已写入 D:\develop\xihack-pr\modules\integration\evidence\二项校验形态实测.json
