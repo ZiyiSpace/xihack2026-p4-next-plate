@@ -177,6 +177,7 @@ def build_view(service: HotpotService, source: str = "live") -> dict:
             "capacity": capacity, "batch": batch, "target": target,
             "leadMinutes": lead, "safetyMinutes": safety,
             "costPerKg": cost_kg, "confirmed": True,
+            "replaceAfterMin": float(cfg.get("replace_after_min") or config.REPLACE_AFTER_MIN),
             "stock": stock, "weightG": dv["remaining_g"], "plates": dv["open_plates"],
             "rate": rate, "minutesLeft": minutes_left, "incoming": incoming,
             "status": status,
@@ -197,6 +198,7 @@ def build_view(service: HotpotService, source: str = "live") -> dict:
         qty = t.get("quantity_count") if cfg.get("countable") else t.get("quantity_g")
         tasks_view.append({
             "id": t["task_id"], "dishId": t["dish_id"], "quantity": qty,
+            "action": t["action"],
             "createdAt": t.get("created_at") or _now_iso(),
             "dueAt": t.get("need_by") or t.get("created_at") or _now_iso(),
             "status": _STATUS_MAP_TO.get(t["status"], "pending"),
@@ -339,6 +341,7 @@ def attach(service: HotpotService) -> None:
                 prep_time_min=body.get("leadMinutes") or cfg.get("prep_time_min") or 3,
                 batch_size=body.get("batch") or cfg.get("batch_size"),
                 freshness_min=cfg.get("freshness_min"),
+                replace_after_min=body.get("replaceAfterMin") or cfg.get("replace_after_min"),
                 cost_per_10g=(cost / 100) if cost else cfg.get("cost_per_10g")))
         else:
             return JSONResponse({"error": f"未知操作 {action}"}, status_code=400)

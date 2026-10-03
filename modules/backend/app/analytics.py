@@ -69,10 +69,14 @@ def serving_metrics(state: ServingState, now: Optional[datetime] = None):
     # 报废风险：余量高 + 长时间无取用 / 超保鲜窗口
     dish = db.get_dish(state.dish_id) or {}
     freshness = dish.get("freshness_min") or config.FRESHNESS_WINDOW_MIN
-    opened = _parse(db.query_one(
-        "SELECT opened_at FROM servings WHERE serving_id=?", (state.serving_id,))["opened_at"]) \
-        if db.query_one("SELECT opened_at FROM servings WHERE serving_id=?", (state.serving_id,)) else None
+    serving = db.query_one("SELECT opened_at FROM servings WHERE serving_id=?",
+                           (state.serving_id,))
+    opened = _parse(serving["opened_at"]) if serving else None
     age_min = round((now - opened).total_seconds() / 60, 1) if opened else None
+
+    # 上盘更换期限：看这一盘上转盘多久了，与余量无关
+    replace_after = dish.get("replace_after_min") or config.REPLACE_AFTER_MIN
+    replace_overdue = round(age_min - replace_after, 1) if age_min is not None else None
 
     risk = "none"
     if remaining_ratio is not None and stagnation is not None:
@@ -87,6 +91,8 @@ def serving_metrics(state: ServingState, now: Optional[datetime] = None):
         "stagnation_min": stagnation,
         "remaining_ratio": remaining_ratio,
         "age_min": age_min,
+        "replace_after_min": replace_after,
+        "replace_overdue_min": replace_overdue,
         "waste_risk": risk,
     }
 

@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS dishes (
     countable INTEGER DEFAULT 0, unit_name TEXT, unit_mass_g REAL,
     std_portion_g REAL, prep_time_min REAL DEFAULT 3, batch_size REAL,
     freshness_min REAL, cost_per_10g REAL, note TEXT,
-    dispatch_suspended INTEGER DEFAULT 0
+    dispatch_suspended INTEGER DEFAULT 0, replace_after_min REAL
 );
 CREATE TABLE IF NOT EXISTS servings (
     serving_id TEXT PRIMARY KEY, plate_id TEXT NOT NULL, dish_id TEXT NOT NULL,
@@ -72,9 +72,23 @@ def init() -> None:
         conn = _connect()
         try:
             conn.executescript(_SCHEMA)
+            _migrate(conn)
             conn.commit()
         finally:
             conn.close()
+
+
+# 建表语句只在库还不存在时生效；已经跑过的库要靠这里补列。
+_ADDED_COLUMNS = {"dishes": {"replace_after_min": "REAL"}}
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    """给既有库补上后加的列（`CREATE TABLE IF NOT EXISTS` 不会给老表加列）。"""
+    for table, columns in _ADDED_COLUMNS.items():
+        present = {row["name"] for row in conn.execute(f"PRAGMA table_info({table})")}
+        for name, kind in columns.items():
+            if name not in present:
+                conn.execute(f"ALTER TABLE {table} ADD COLUMN {name} {kind}")
 
 
 def now_iso() -> str:
@@ -111,14 +125,14 @@ def query_one(sql: str, params: tuple = ()) -> Optional[dict]:
 def upsert_dish(d: dict) -> None:
     execute(
         """INSERT INTO dishes (dish_id,name,countable,unit_name,unit_mass_g,std_portion_g,
-               prep_time_min,batch_size,freshness_min,cost_per_10g,note)
+               prep_time_min,batch_size,freshness_min,cost_per_10g,note,replace_after_min)
            VALUES (:dish_id,:name,:countable,:unit_name,:unit_mass_g,:std_portion_g,
-                   :prep_time_min,:batch_size,:freshness_min,:cost_per_10g,:note)
+                   :prep_time_min,:batch_size,:freshness_min,:cost_per_10g,:note,:replace_after_min)
            ON CONFLICT(dish_id) DO UPDATE SET name=:name,countable=:countable,
                unit_name=:unit_name,unit_mass_g=:unit_mass_g,std_portion_g=:std_portion_g,
                prep_time_min=:prep_time_min,batch_size=:batch_size,freshness_min=:freshness_min,
-               cost_per_10g=:cost_per_10g,note=:note""",
-        d,
+               cost_per_10g=:cost_per_10g,note=:note,replace_after_min=:replace_after_min""",
+        {**d, "replace_after_min": d.get("replace_after_min")},
     )
 
 

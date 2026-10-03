@@ -87,10 +87,25 @@ def evaluate_serving(state: ServingState, now: Optional[datetime] = None) -> lis
             now, 0))
 
     # ---- 撤盘：滞留超保鲜窗口且余量仍高 ----
-    if m["waste_risk"] == "high" and ratio is not None and ratio >= 0.5:
+    # 已经到更换期限的盘子不再补一条撤盘建议：换下上新本身就是处置方式，
+    # 两条任务说的是同一盘菜，只留可执行的那条。
+    replace_overdue = m.get("replace_overdue_min")
+    age = m.get("age_min")
+    if m["waste_risk"] == "high" and ratio is not None and ratio >= 0.5 \
+            and not (replace_overdue is not None and replace_overdue >= 0):
         tasks.append(_task(
             "pull", state, dish, None, False, None, "medium",
             f"滞留{stagnation:.0f}分钟且余量{ratio:.0%}：报废风险，建议撤盘或换位置促销",
+            now, 0))
+
+    # ---- 更换：这盘菜上转盘太久了，与余量多少无关 ----
+    # 卖得慢的菜可能一直不缺货，但摆久了卖相和口感都会掉，要换下上新批次。
+    if replace_overdue is not None and replace_overdue >= 0 and age is not None:
+        tasks.append(_task(
+            "replace", state, dish, None, False, None,
+            "high" if replace_overdue >= config.REPLACE_AFTER_MIN / 2 else "medium",
+            f"这盘已上转盘{age:.0f}分钟，超过更换期限"
+            f"{m['replace_after_min']:.0f}分钟，余量{ratio:.0%}：建议换下并上新批次",
             now, 0))
 
     return tasks

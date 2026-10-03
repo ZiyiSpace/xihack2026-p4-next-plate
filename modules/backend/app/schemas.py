@@ -74,6 +74,9 @@ class DishConfigIn(BaseModel):
     prep_time_min: float = Field(3.0, description="后厨准备时间（分钟），补菜提前量")
     batch_size: Optional[float] = Field(None, description="制作批量（件数或克数）")
     freshness_min: Optional[float] = Field(None, description="保鲜窗口分钟；空则用全局默认")
+    replace_after_min: Optional[float] = Field(
+        None, ge=1, description="上盘更换期限（分钟）：这一盘从上台算起超过该时长就提醒"
+                                "换下上新批次，与余量无关；空则用全局默认")
     cost_per_10g: Optional[float] = Field(None, description="模拟成本：每 10 克食材成本（元）")
     note: Optional[str] = None
 
@@ -110,7 +113,7 @@ class ServingSnapshot(BaseModel):
 
 class TaskOut(BaseModel):
     task_id: str
-    action: str = Field(..., description="refill|check|pull")
+    action: str = Field(..., description="refill|check|pull|replace")
     dish_id: str
     dish_name: Optional[str] = None
     serving_id: Optional[str] = None

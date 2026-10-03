@@ -58,5 +58,9 @@ LOW_DEMAND_VELOCITY = _f("LOW_DEMAND_VELOCITY", 0.5)
 STAGNATION_WARN_MIN = _f("STAGNATION_WARN_MIN", 15)
 # 菜品保鲜窗口（分钟），超时未售罄 => 报废风险；可被菜品目录覆盖
 FRESHNESS_WINDOW_MIN = _f("FRESHNESS_WINDOW_MIN", 30)
+# 上盘更换期限（分钟）：一盘菜从上台算起超过该时长就提醒换下上新批次，
+# 与余量无关 —— 卖得慢的菜可能一直不缺货，但摆在转盘上的时间已经太长。
+# 可被菜品目录的 replace_after_min 覆盖。
+REPLACE_AFTER_MIN = _f("REPLACE_AFTER_MIN", 90)
 # 补菜任务保留时长：已完成任务不再重复触发的静默期（分钟）
 TASK_QUIET_MIN = _f("TASK_QUIET_MIN", 10)
