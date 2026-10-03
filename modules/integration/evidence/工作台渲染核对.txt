@@ -12,7 +12,7 @@
   "shot": {
     "present": true,
     "src": "/api/images/B002.png",
-    "complete": false,
+    "complete": true,
     "naturalWidth": 1536,
     "naturalHeight": 1024
   },
