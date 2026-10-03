@@ -1,0 +1,21 @@
+{
+  "url": "http://127.0.0.1:8000/admin",
+  "browser": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  "hasCard": true,
+  "heading": "采集抓拍",
+  "dish": "腌牛肉",
+  "verdict": "补菜已确认\n332 克\n模拟数据",
+  "binding": "模型识别 腌牛肉（置信 0.96）· 与绑定一致",
+  "note": "增重与补菜记录匹配",
+  "shot": {
+    "present": true,
+    "src": "/api/images/M004.png",
+    "complete": false,
+    "naturalWidth": 1536,
+    "naturalHeight": 1024
+  },
+  "strip": 8,
+  "loading": false
+}
+
+核对通过：卡片渲染出来了，图片 1536×1024 真的解码成功

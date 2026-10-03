@@ -1,0 +1,18 @@
+{
+  "url": "http://127.0.0.1:8000/",
+  "browser": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  "hasCard": false,
+  "heading": null,
+  "dish": null,
+  "verdict": null,
+  "binding": null,
+  "note": null,
+  "shot": {
+    "present": false
+  },
+  "strip": 0,
+  "loading": false
+}
+
+核对不通过（工作台 http://127.0.0.1:8000/）：
+  - 卡片 .capture-panel 没渲染出来
