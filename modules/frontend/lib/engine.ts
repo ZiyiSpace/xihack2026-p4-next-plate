@@ -5,7 +5,7 @@ export const shanghaiDate=(s:string)=>new Date(new Date(s).getTime()+8*3600000).
 export const shanghaiTime=(s:string)=>new Date(new Date(s).getTime()+8*3600000).toISOString().slice(11,16);
 const time=(s:string)=>new Date(s).getTime();
 export const uid=()=>crypto.randomUUID();
-const baseDishes:Omit<Dish,"confirmed">[]=[
+const baseDishes:Omit<Dish,"confirmed"|"replaceAfterMin">[]=[
  {id:"beef",name:"精选肥牛",category:"荤菜",unit:"g",capacity:400,batch:600,target:1800,leadMinutes:5,safetyMinutes:3,costPerKg:48},
  {id:"shrimp",name:"鲜虾",category:"荤菜",unit:"件",capacity:20,batch:20,target:60,leadMinutes:6,safetyMinutes:3,costPerKg:42},
  {id:"potato",name:"土豆片",category:"蔬菜",unit:"g",capacity:400,batch:400,target:1600,leadMinutes:3,safetyMinutes:3,costPerKg:4},
@@ -22,7 +22,7 @@ const baseDishes:Omit<Dish,"confirmed">[]=[
 function record(s:State,l:Omit<Ledger,"id"|"costPerKg">){s.ledger.push({...l,id:uid(),costPerKg:effectiveCost(s,s.dishes.find(d=>d.id===l.dishId)!)});}
 export function createState(source:Source):State {
  const clock=source==="demo"?"2026-10-03T18:42:00+08:00":new Date().toISOString();
- const s:State={source,clock,dishes:baseDishes.map(d=>({...d,confirmed:source==="demo"})),plates:{},ledger:[],tasks:[],orders:[],seenEventIds:[],actionIds:[],settings:{autoEnabled:source==="demo",closeTime:"22:00",staleMinutes:5},revision:0,imports:emptyImports()};
+ const s:State={source,clock,dishes:baseDishes.map(d=>({...d,confirmed:source==="demo",replaceAfterMin:90})),plates:{},ledger:[],tasks:[],orders:[],seenEventIds:[],actionIds:[],settings:{autoEnabled:source==="demo",closeTime:"22:00",staleMinutes:5},revision:0,imports:emptyImports()};
  if(source!=="demo")return s;
  // Synthetic history is a reproducible demo scenario, not inferred store evidence.
  for(let h=11;h<=18;h++) {

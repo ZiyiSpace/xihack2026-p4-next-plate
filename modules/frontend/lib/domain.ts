@@ -1,9 +1,11 @@
 export type Source = "demo" | "live" | "test";
 export type Unit = "g" | "件";
-export interface Dish { id:string; name:string; category:string; unit:Unit; capacity:number; batch:number; target:number; leadMinutes:number; safetyMinutes:number; costPerKg:number; confirmed:boolean; costSource?:"manual"|"recipe"; }
+export interface Dish { id:string; name:string; category:string; unit:Unit; capacity:number; batch:number; target:number; leadMinutes:number; safetyMinutes:number; costPerKg:number; confirmed:boolean; replaceAfterMin:number; costSource?:"manual"|"recipe"; }
 export interface Plate { id:string; dishId:string; quantity:number; weightG:number; seenAt:string; quality:number; issue?:string; refillArrivalAt?:string; removed:boolean; }
 export interface Ledger { id:string; at:string; dishId:string; plateId:string; kind:"opening"|"take"|"refill"|"waste"|"withdraw"; quantity:number; weightG:number; reason?:string; costPerKg:number|null; }
-export interface Task { id:string; dishId:string; quantity:number; createdAt:string; dueAt:string; status:"pending"|"preparing"|"completed"|"cancelled"; reason:string; actual:number; refillBaseline:number; availableAt?:string; note?:string; updatedAt:string; }
+export interface Task { id:string; dishId:string; quantity:number; action?:TaskAction; createdAt:string; dueAt:string; status:"pending"|"preparing"|"completed"|"cancelled"; reason:string; actual:number; refillBaseline:number; availableAt?:string; note?:string; updatedAt:string; }
+/** 后端派单动作：补菜 / 巡检 / 撤盘 / 换下上新。工作台的措辞与按钮按它区分。 */
+export type TaskAction = "refill"|"check"|"pull"|"replace";
 export interface Order { id:string; at:string; guests:number; revenue:number; groupSize:number; }
 export interface Settings { autoEnabled:boolean; closeTime:string; staleMinutes:number; }
 export interface State { source:Source; clock:string; dishes:Dish[]; plates:Record<string,Plate>; ledger:Ledger[]; tasks:Task[]; orders:Order[]; seenEventIds:string[]; actionIds:string[]; settings:Settings; revision:number; imports:ImportData; }
