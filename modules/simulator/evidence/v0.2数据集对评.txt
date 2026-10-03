@@ -1,0 +1,35 @@
+数据集 v0.2 对评（answer_key 只用于打分，不作为输入）
+
+B001  设定  200g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+B002  设定  150g  期望 removal              传感器 normal             判读 removal              取用    50.0g  ✓
+B003  设定  150g  期望 no_change            传感器 positive_spike     判读 unexplained_increase 取用    Noneg  ✓
+B004  设定  150g  期望 no_change            传感器 normal             判读 anomaly_resolved     取用    Noneg  ✓
+B005  设定   25g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+B006  设定    0g  期望 food_removed         传感器 normal             判读 removal              取用    25.0g  ✓
+B007  设定   75g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+B008  设定    1g  期望 food_removed         传感器 normal             判读 removal              取用    72.0g  ✓
+B009  设定  150g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+B010  设定    0g  期望 food_removed         传感器 normal_zero_noise  判读 removal              取用   153.0g  ✓
+M001  设定  300g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+M002  设定  210g  期望 removal_and_spread   传感器 normal             判读 removal              取用    88.0g  ✓
+M003  设定  210g  期望 no_change            传感器 normal             判读 no_change            取用    Noneg  ✓
+M004  设定  330g  期望 refill               传感器 normal             判读 refill_confirmed     取用    Noneg  ✓
+M005  设定   25g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+M006  设定    0g  期望 cleared_and_wiped    传感器 normal             判读 removal              取用    23.0g  ✓
+M007  设定  150g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+M008  设定    6g  期望 food_removed         传感器 normal             判读 removal              取用   144.0g  ✓
+M009  设定  300g  期望 initial_load         传感器 normal             判读 baseline             取用    Noneg  ✓
+M010  设定    6g  期望 food_removed         传感器 normal             判读 removal              取用   293.0g  ✓
+
+判读对评：20/20
+
+认菜（视觉只做旁证，不参与记账——菜品由 plate_id/serving_id 外部绑定决定）：
+  B006  净重   1.0g  绑定 D01  模型说 南瓜饼 (0.855)  高置信误判
+  B008  净重   2.0g  绑定 D01  模型说 腌牛肉 (0.215)  低于置信下限，拒绝判定
+  B010  净重  -1.0g  绑定 D01  模型说 小馒头 (0.407)  低于置信下限，拒绝判定
+  M005  净重  24.0g  绑定 D05  模型说 豆腐片 (0.945)  高置信误判
+  M006  净重   1.0g  绑定 D05  模型说 豆腐片 (0.99)  高置信误判
+  M008  净重   7.0g  绑定 D05  模型说 鱼丸 (0.629)  高置信误判
+  M010  净重   5.0g  绑定 D05  模型说 小馒头 (0.265)  低于置信下限，拒绝判定
+
+  —— 7 条失败全部是净重 ≤ 24g 的接近空盘/空盘
