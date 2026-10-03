@@ -170,7 +170,9 @@ class InterpretationResult(BaseModel):
     classification: str = Field(
         ...,
         description="baseline|no_change|removal|refill_confirmed|unexplained_increase|"
-        "anomaly_resolved|late_refill|merged_pass|mismatch",
+        "anomaly_resolved|late_refill|merged_pass|out_of_order|no_weight"
+        "（前七个由 interpreter 产出，merged_pass/out_of_order/no_weight 由 core 的"
+        "合帧、乱序隔离、无称重分支产出）",
     )
     delta_g: Optional[float] = None
     detail: Optional[str] = None

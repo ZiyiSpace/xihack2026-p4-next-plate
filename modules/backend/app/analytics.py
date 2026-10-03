@@ -141,10 +141,6 @@ def dish_summaries(states: list[ServingState], now: Optional[datetime] = None) -
             agg["stagnated_plates"] += 1
 
     tasks = db.get_tasks()
-    for t in tasks:
-        if t["status"] in ("pending", "making") and t["action"] == "refill":
-            if t["dish_id"] in out:
-                out[t["dish_id"]]["pending_refill_g"] += t.get("quantity_g") or 0.0
 
     # 已关闭批次的历史取用并入（含无 open serving 的菜品）
     for dish_id in set(closed_consumed):
@@ -160,6 +156,9 @@ def dish_summaries(states: list[ServingState], now: Optional[datetime] = None) -
             }
         out[dish_id]["consumed_g"] += closed_consumed.get(dish_id, 0.0)
 
+    # 在途量只能累加一次，且必须在上面补全菜品之后：
+    # 放在前面会让在售菜品被加两遍（待补充数量翻倍），挪到最后则同时覆盖
+    # 「已撤盘但仍有未完成补菜任务」的菜品。
     for t in tasks:
         if t["status"] in ("pending", "making") and t["action"] == "refill":
             if t["dish_id"] in out:
