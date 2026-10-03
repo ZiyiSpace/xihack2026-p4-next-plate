@@ -20,6 +20,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Bar, Line, ComposedChart, Legend } from "recharts";
 import { nextArrival, arrivalText } from "@/lib/supply";
+import { clock as time } from "@/lib/reading";
 import type { Source, Summary, Plate, Task, Dish } from "@/lib/domain";
 
 type Data = Summary & {plates:Plate[]};
@@ -28,7 +29,6 @@ type Edit = {kind:"dish";item:Dish}|{kind:"task";item:Task;mode:"edit"|"delay"|"
 const number=(n:number,dp=0)=>n.toLocaleString("zh-CN",{maximumFractionDigits:dp});
 const kg=(n:number)=>`${(n/1000).toFixed(2)} 千克`;
 const money=(n:number|null)=>n===null?"—":`¥${n.toFixed(2)}`;
-const time=(s:string)=>new Date(s).toLocaleTimeString("zh-CN",{timeZone:"Asia/Shanghai",hour:"2-digit",minute:"2-digit",hour12:false});
 const date=(s:string)=>new Date(s).toLocaleDateString("zh-CN",{timeZone:"Asia/Shanghai",year:"numeric",month:"2-digit",day:"2-digit"});
 const qty=(n:number,u:string)=>u==="g"?(n>=1000?`${(n/1000).toFixed(2)} 千克`:`${number(n)} 克`):`${number(n)} 件`;
 const statusText={urgent:"需补充",watch:"留意余量",okay:"充足",anomaly:"需复核"};

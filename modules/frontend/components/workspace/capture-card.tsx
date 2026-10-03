@@ -1,43 +1,17 @@
 "use client";
 import { Camera, ScanEye } from "lucide-react";
+import { classificationLabel, classificationTone, clock, confidence, grams } from "@/lib/reading";
 import type { Capture } from "@/lib/domain";
-
-/** 判读结果的中文说法；未列出的分类原样显示，不会静默丢弃。 */
-const classificationText:Record<string,string>={
- baseline:"首次上盘基准",
- no_change:"无明显变化",
- removal:"取用",
- refill_confirmed:"补菜已确认",
- late_refill:"补菜（记录迟到）",
- unexplained_increase:"未解释突增",
- anomaly_resolved:"异常已恢复",
- merged_pass:"同一次经过",
- out_of_order:"迟到旧事件",
- no_weight:"仅记录，无称重",
-};
-
-/** 判读结果对应的状态样式；异常要显眼，其余保持中性。 */
-const classificationTone:Record<string,string>={
- removal:"watch",
- refill_confirmed:"okay",
- late_refill:"okay",
- anomaly_resolved:"okay",
- unexplained_increase:"urgent",
-};
-
-const clock=(s:string)=>new Date(s).toLocaleTimeString("zh-CN",{timeZone:"Asia/Shanghai",hour:"2-digit",minute:"2-digit",hour12:false});
-const grams=(n:number)=>`${n.toLocaleString("zh-CN",{maximumFractionDigits:1})} 克`;
 
 function Binding({capture}:{capture:Capture}){
  const check=capture.bindingCheck;
  if(!check)return <p className="capture-binding muted">本次未做视觉校验（未上传图片或菜品未绑定）。</p>;
  if(check.skipped)return <p className="capture-binding muted">视觉服务器未参与：{check.note||"离线规则模式"}</p>;
- const confidence=typeof check.confidence==="number"?check.confidence.toFixed(2):"—";
  const tone=check.ok?"is-okay":check.below_floor?"is-watch":"is-urgent";
  const verdict=check.ok?"与绑定一致":check.below_floor?"低于置信下限，不作判定":"与绑定不一致";
  return <p className={`capture-binding ${tone}`}>
   <ScanEye size={16}/>
-  <span>模型识别 <b>{check.recognized||"未识别"}</b>（置信 {confidence}）· {verdict}</span>
+  <span>模型识别 <b>{check.recognized||"未识别"}</b>（置信 {confidence(check.confidence)}）· {verdict}</span>
   {!check.ok&&check.expected&&<small>盘上绑定的是 {check.expected}</small>}
  </p>;
 }
@@ -70,7 +44,7 @@ export default function CapturePanel({captures}:{captures?:Capture[]}){
      <div className="capture-read">
       <h3>{latest.dishName??latest.dishId??"未绑定菜品"}</h3>
       <p className="capture-verdict">
-       <span className={`status ${classificationTone[latest.classification??""]||"watch"}`}>{classificationText[latest.classification??""]||latest.classification||"未判读"}</span>
+       <span className={`status ${classificationTone(latest.classification)}`}>{classificationLabel(latest.classification)}</span>
        {latest.netWeightG!==null&&<span className="capture-weight">{grams(latest.netWeightG)}</span>}
        {latest.simulated&&<span className="capture-simulated">模拟数据</span>}
       </p>

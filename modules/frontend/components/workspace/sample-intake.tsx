@@ -1,40 +1,30 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
-import { AlertTriangle, Check, Images, Loader2, Play, Trash2, Upload } from "lucide-react";
+import { AlertTriangle, Check, Images, Loader2, Play, RefreshCw, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import type { CaptureBindingCheck, DishSummary, SampleList, SampleRow } from "@/lib/domain";
-
-/** 后端判读分类的中文说法；未列出的原样显示，不静默丢掉。 */
-const classificationText:Record<string,string>={
- baseline:"首次上盘基准", no_change:"无明显变化", removal:"取用",
- refill_confirmed:"补菜已确认", late_refill:"补菜（记录迟到）",
- unexplained_increase:"未解释突增", anomaly_resolved:"异常已恢复",
- merged_pass:"同一次经过", out_of_order:"迟到旧事件", no_weight:"仅记录，无称重",
-};
+import { classificationLabel, clock, confidence, grams } from "@/lib/reading";
+import type { CaptureBindingCheck, DishSummary, SampleIngestResult, SampleList, SampleRow } from "@/lib/domain";
 
 const AUTO = "__auto__";
-const grams=(n:number|null|undefined)=>n===null||n===undefined?"—":`${n.toLocaleString("zh-CN",{maximumFractionDigits:1})} 克`;
-const clock=(s:string)=>new Date(s).toLocaleTimeString("zh-CN",{timeZone:"Asia/Shanghai",hour:"2-digit",minute:"2-digit",hour12:false});
 
 /** 识别结果怎么说给用户听。识别不可信时明确说不判定，不糊弄过去。 */
 function recognizedText(check:CaptureBindingCheck|null){
  if(!check)return null;
  if(check.skipped)return {tone:"",text:`未识别：${check.note||"视觉服务器未参与"}`};
  if(!check.recognized)return {tone:"",text:"模型没有给出菜品"};
- const conf=typeof check.confidence==="number"?check.confidence.toFixed(2):"—";
- if(check.below_floor)return {tone:"is-watch",text:`识别为 ${check.recognized}（${conf}）· 置信不足，不判定`};
- return {tone:"is-okay",text:`识别为 ${check.recognized}（${conf}）`};
+ if(check.below_floor)return {tone:"is-watch",text:`识别为 ${check.recognized}（${confidence(check.confidence)}）· 置信不足，不判定`};
+ return {tone:"is-okay",text:`识别为 ${check.recognized}（${confidence(check.confidence)}）`};
 }
 
 function Result({row}:{row:SampleRow}){
  const r=row.result;
  if(!r)return null;
  if(r.error)return <span className="sample-state is-error"><AlertTriangle size={14}/>{r.error}</span>;
- const parts=[classificationText[r.classification||""]||r.classification||"已记录"];
+ const parts=[classificationLabel(r.classification)];
  if(r.taken_g)parts.push(`取用 ${grams(r.taken_g)}`);
  if(r.new_tasks?.length)parts.push("已生成补菜任务");
  return <span className="sample-state is-done"><Check size={14}/>{parts.join(" · ")}</span>;
@@ -56,9 +46,9 @@ export default function SampleIntake({dishes,list,onChanged}:{
  const fileInput=useRef<HTMLInputElement>(null);
  const dishName=useCallback((id:string)=>dishes.find(d=>d.id===id)?.name||id,[dishes]);
 
- const send=useCallback(async(path:string,init?:RequestInit)=>{
+ const send=useCallback(async<T,>(path:string,init?:RequestInit)=>{
   const response=await fetch(path,init);
-  const result=await response.json() as SampleList & {error?:string};
+  const result=await response.json() as T & {error?:string};
   if(!response.ok)throw new Error(result.error||`请求失败（${response.status}）`);
   return result;
  },[]);
@@ -71,7 +61,7 @@ export default function SampleIntake({dishes,list,onChanged}:{
    for(const f of Array.from(files))form.append("files",f);
    // 重量留到列表里逐行填，上传时只登记图片
    form.append("items",JSON.stringify(Array.from(files).map(()=>({}))));
-   const result=await send("/api/samples",{method:"POST",body:form});
+   const result=await send<SampleList>("/api/samples",{method:"POST",body:form});
    toast.success(`已加入 ${result.samples.length} 条样例，填好净重后点运行`);
    onChanged();
   }catch(e){setError(e instanceof Error?e.message:"上传失败");}
@@ -79,39 +69,58 @@ export default function SampleIntake({dishes,list,onChanged}:{
  },[send,onChanged]);
 
  const patch=useCallback(async(id:string,body:Record<string,unknown>)=>{
-  try{await send(`/api/samples/${id}`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});onChanged();}
+  try{await send<SampleList>(`/api/samples/${id}`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});onChanged();}
   catch(e){setError(e instanceof Error?e.message:"保存失败");}
  },[send,onChanged]);
 
  const remove=useCallback(async(id:string)=>{
-  try{await send(`/api/samples/${id}`,{method:"DELETE"});onChanged();}
+  try{await send<SampleList>(`/api/samples/${id}`,{method:"DELETE"});onChanged();}
   catch(e){setError(e instanceof Error?e.message:"删除失败");}
  },[send,onChanged]);
 
  const clearAll=useCallback(async()=>{
-  try{await send("/api/samples",{method:"DELETE"});toast.success("样例已清空");onChanged();}
+  try{await send<SampleList>("/api/samples",{method:"DELETE"});toast.success("样例已清空");onChanged();}
   catch(e){setError(e instanceof Error?e.message:"清空失败");}
  },[send,onChanged]);
+
+ /** 识别 + 入账，两步；由运行和复位重跑共用。 */
+ const play=useCallback(async()=>{
+  // 第一步：还没指定菜品的逐条送进视觉接口识别，这样进度看得见、失败也只影响一条
+  const pending=list?.samples.filter(s=>!s.dish_id&&s.status!=="identified")??[];
+  for(let i=0;i<pending.length;i++){
+   setPhase(`识别中 ${i+1}/${pending.length}`);
+   await send<SampleList>(`/api/samples/${pending[i].sample_id}/identify`,{method:"POST"});
+  }
+  // 第二步：一次性入账。后端按菜品自动分盘，同一道菜的多张图共用一个循环盘
+  setPhase("入账中…");
+  return await send<SampleIngestResult>("/api/samples/ingest",{method:"POST"});
+ },[list,send]);
+
+ const finish=useCallback((result:SampleIngestResult)=>{
+  if(result.failed?.length)toast.error(`${result.failed.length} 条入账失败，请看列表里的原因`);
+  else if(result.blocked?.length)toast.warning(`${result.ingested} 条已入账，${result.blocked.length} 条因识别不可信被挡下——请手动指定菜品后重试`);
+  else if(result.ingested)toast.success(`${result.ingested} 条已入账，数据已进入工作台分析口径`);
+  else toast.warning("没有可入账的样例，请先填净重或指定菜品");
+ },[]);
 
  const run=useCallback(async()=>{
   if(!list?.samples.length)return;
   setBusy(true);setError("");
-  try{
-   // 第一步：还没指定菜品的逐条送进视觉接口识别，这样进度看得见、失败也只影响一条
-   const pending=list.samples.filter(s=>!s.dish_id&&s.status!=="identified");
-   for(let i=0;i<pending.length;i++){
-    setPhase(`识别中 ${i+1}/${pending.length}`);
-    await send(`/api/samples/${pending[i].sample_id}/identify`,{method:"POST"});
-   }
-   // 第二步：一次性入账。后端按菜品自动分盘，同一道菜的多张图共用一个循环盘
-   setPhase("入账中…");
-   const result=await send("/api/samples/ingest",{method:"POST"}) as unknown as {ingested:number;blocked:{reason:string}[]};
-   if(result.blocked?.length)toast.warning(`${result.ingested} 条已入账，${result.blocked.length} 条因识别不可信被挡下——请手动指定菜品后重试`);
-   else if(result.ingested)toast.success(`${result.ingested} 条已入账，数据已进入工作台分析口径`);
-   else toast.warning("没有可入账的样例，请先填净重或指定菜品");
-  }catch(e){setError(e instanceof Error?e.message:"运行失败");}
+  try{finish(await play());}
+  catch(e){setError(e instanceof Error?e.message:"运行失败");}
   finally{setBusy(false);setPhase("");onChanged();}
- },[list,send,onChanged]);
+ },[list,play,finish,onChanged]);
+
+ /** 复位业务数据后重跑：改过净重再点运行时，事件会因编号幂等被忽略，只有清干净才能按新数据重算。 */
+ const rerun=useCallback(async()=>{
+  if(!list?.samples.length)return;
+  setBusy(true);setError("");setPhase("复位中…");
+  try{
+   await send<{reset:boolean}>("/api/maintenance/reset",{method:"POST"});
+   finish(await play());
+  }catch(e){setError(e instanceof Error?e.message:"复位重跑失败");}
+  finally{setBusy(false);setPhase("");onChanged();}
+ },[list,send,play,finish,onChanged]);
 
  const samples=list?.samples??[];
  const counts=list?.counts;
@@ -130,6 +139,9 @@ export default function SampleIntake({dishes,list,onChanged}:{
    </label>
    <Button disabled={busy||!samples.length} onClick={()=>void run()}>
     {busy?<Loader2 className="animate-spin" size={16}/>:<Play size={16}/>}{phase||"运行"}
+   </Button>
+   <Button variant="outline" disabled={busy||!samples.length} onClick={()=>void rerun()} title="清空业务数据后按当前输入重算（样例本身保留）">
+    {busy?<Loader2 className="animate-spin" size={16}/>:<RefreshCw size={16}/>}复位并重跑
    </Button>
    <Button variant="ghost" disabled={busy||!samples.length} onClick={()=>void clearAll()}><Trash2 size={16}/>清空</Button>
    <span className="sample-hint">

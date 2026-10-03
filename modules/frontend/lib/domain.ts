@@ -18,6 +18,10 @@ export type SampleStatus = "pending"|"identified"|"need_dish"|"done"|"failed";
 export interface SampleResult { error?:string|null; classification?:string|null; note?:string|null; taken_g?:number|null; delta_g?:number|null; binding_check?:CaptureBindingCheck|null; trusted_net_g?:number|null; new_tasks?:string[]; }
 export interface SampleRow { sample_id:string; image_name:string; image_ref:string; bytes:number; plate_id:string; station_id:string; net_weight_g:number|null; dish_id:string|null; observed_at:string; status:SampleStatus; recognized:CaptureBindingCheck|null; result:SampleResult|null; created_at:string; }
 export interface SampleList { samples:SampleRow[]; counts:{total:number;pending:number;done:number;no_weight:number}; }
+/** 入账返回的每条结果，字段与 `SampleResult` 相同，外加它属于哪条样例、哪个盘。 */
+export interface SampleIngestOutcome extends SampleResult { sample_id:string; image_name:string; plate_id:string; dish_id:string|null; net_weight_g:number|null; }
+export interface SampleSkip { sample_id:string; image_name:string; reason:string; }
+export interface SampleIngestResult extends SampleList { ingested:number; plates:string[]; blocked:SampleSkip[]; failed:SampleSkip[]; results:SampleIngestOutcome[]; }
 
 export type ImportKind = "suppliers"|"ingredients"|"purchases"|"recipes"|"orders"|"observations";
 export interface Supplier { id:string; name:string; contact?:string; }
