@@ -173,9 +173,10 @@ class InterpretationResult(BaseModel):
     classification: str = Field(
         ...,
         description="baseline|no_change|removal|refill_confirmed|unexplained_increase|"
-        "anomaly_resolved|late_refill|merged_pass|out_of_order|no_weight"
-        "（前七个由 interpreter 产出，merged_pass/out_of_order/no_weight 由 core 的"
-        "合帧、乱序隔离、无称重分支产出）",
+        "unexplained_decrease|anomaly_resolved|late_refill|merged_pass|out_of_order|no_weight"
+        "（前八个由 interpreter 产出：`unexplained_decrease` 是「这一帧的变化量不足采信，"
+        "先挂起等复测」，与 `unexplained_increase` 对称；merged_pass/out_of_order/no_weight "
+        "由 core 的合帧、乱序隔离、无称重分支产出）",
     )
     delta_g: Optional[float] = None
     detail: Optional[str] = None

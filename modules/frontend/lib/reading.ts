@@ -14,6 +14,7 @@ export const CLASSIFICATION_TEXT:Record<string,string>={
  refill_confirmed:"补菜已确认",
  late_refill:"补菜（记录迟到）",
  unexplained_increase:"未解释突增",
+ unexplained_decrease:"读数存疑待复测",
  anomaly_resolved:"异常已恢复",
  merged_pass:"同一次经过",
  out_of_order:"迟到旧事件",
@@ -32,6 +33,7 @@ export const CLASSIFICATION_TONE:Record<string,string>={
  late_refill:"okay",
  anomaly_resolved:"okay",
  unexplained_increase:"urgent",
+ unexplained_decrease:"urgent",
 };
 
 export const classificationLabel=(code?:string|null):string=>

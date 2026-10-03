@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 from typing import Any, Optional
 
 from . import analytics, config, db, images, refill, vision
-from .interpreter import ServingState, interpret, same_pass
+from .interpreter import ServingState, interpret, same_pass, worth_visual_check
 from .jev import JevClient
 from .schemas import (CoversIn, DishConfigIn, OperationIn, StationEventIn,
                       TaskUpdateIn)
@@ -214,9 +214,23 @@ class HotpotService:
         if image_bytes is not None and not image_ref:
             image_ref = images.store(f"{event_id}.png", image_bytes)
 
-        classification, detail = (interpret(st, net, ts, ev.station_id, refill_ops, event_id)
+        # 视觉交叉验证：秤说快空了、画面里却还有一盘 => 这一帧的变化量不足采信。
+        # 画质那条（采集端报告遮挡）由解释器自己推导，这里只补视觉这一路。
+        # 视觉调用慢，所以只在快空且明显下降时才问（interpreter.worth_visual_check）。
+        unreliable = ""
+        cross_check = None
+        if image_bytes is not None and net is not None and worth_visual_check(st, net):
+            cross_check = vision.check_remaining(base64.b64encode(image_bytes).decode())
+            if cross_check and cross_check.get("disagrees"):
+                unreliable = (f"视觉交叉验证与称重矛盾（画面「{cross_check['verdict']}」"
+                              f"置信度 {cross_check['confidence']}）")
+
+        classification, detail = (interpret(st, net, ts, ev.station_id, refill_ops, event_id,
+                                            quality=ev.quality, unreliable_gain=unreliable)
                                   if net is not None else ("no_weight", {"note": "本次无称重，仅记录"}))
         interpretation = {"classification": classification, **detail}
+        if cross_check:
+            interpretation["cross_check"] = cross_check
         if binding_check is not None:
             interpretation["binding_check"] = binding_check
 

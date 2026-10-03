@@ -1,32 +1,31 @@
-answer_key 字段: ['event_since_previous_observation', 'expected_behavior', 'food_state', 'label_basis', 'physical_event_detail', 'pixel_count_verified', 'sample_id', 'scenario_food_mass_g', 'scenario_item_count', 'scenario_net_delta_g', 'scenario_net_weight_g', 'scenario_residue_g', 'sensor_condition', 'visual_condition', 'visual_empty_judgment']
+﻿可比对 60 / 60 条（其余样本 id 不在库里）
 
-可比对 60 / 60 条（其余不在库里的样本 id）
-
-=== 按期望事件 ===
-  initial_load   24/24
-  removal        22/22
-  no_change      8/10
-  refill         2/2
+=== 按期望事件（标签等价）===
+  initial_load       24/24
+  no_change          10/10
+  refill             2/2
+  removal            22/22
+  removal_and_spread 0/2
 
 === 按称重条件 ===
-  negative_spike     0/2
+  negative_spike     2/2
   normal             51/53
   normal_zero_noise  3/3
   positive_spike     2/2
 
 === 按食物状态 ===
-  clean_empty    9/9
-  near_empty     6/6
-  nonempty       32/36
-  residue_only   9/9
+  clean_empty        9/9
+  near_empty         6/6
+  nonempty           34/36
+  residue_only       9/9
 
 === 判读分布（我们） ===
-  {'baseline': 24, 'removal': 26, 'unexplained_increase': 3, 'no_change': 3, 'anomaly_resolved': 2, 'refill_confirmed': 2}
+  {'baseline': 24, 'removal': 24, 'unexplained_increase': 2, 'no_change': 3, 'anomaly_resolved': 3, 'refill_confirmed': 1, 'unexplained_decrease': 2, 'late_refill': 1}
 === 判读分布（数据集期望） ===
   {'initial_load': 24, 'removal': 22, 'removal_and_spread': 2, 'no_change': 10, 'refill': 2}
 
-=== 不一致 4 条 ===
-  M002   期望=removal_and_spread 得到=removal                称重=normal             食物=nonempty     净重=212.0
-  F003   期望=no_change    得到=removal                称重=negative_spike     食物=nonempty     净重=22.0
-  C002   期望=removal_and_spread 得到=removal                称重=normal             食物=nonempty     净重=208.0
-  C003   期望=no_change    得到=removal                称重=negative_spike     食物=nonempty     净重=30.0
+=== 标签不一致 2 条 ===
+  M002   期望=removal_and_spread   得到=removal                称重=normal             食物=nonempty     净重=212.0
+  C002   期望=removal_and_spread   得到=removal                称重=normal             食物=nonempty     净重=208.0
+
+结论：记账级 0 条不一致（标签等价 58/60）。

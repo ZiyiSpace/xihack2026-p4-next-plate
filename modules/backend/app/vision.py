@@ -17,6 +17,12 @@ from .jev import JevClient, JevUnavailable
 # 服务方 /v1/identify 在 include_none=True 时追加的选项文本（对齐《使用说明》）
 ABSTAIN_OPTION = "以上都不是"
 
+# 交叉验证问句与档位。档位要平行（都由「还剩多少」这一档决定），
+# 「看不清」必须留着：没有它，模型只能在「有菜/没菜」里硬选一个。
+REMAINING_QUESTION = "这是一张餐厅转盘上菜盘的照片。只看照片，这个盘子上的食物大概还剩多少？"
+REMAINING_OPTIONS = ["盘上还有不少菜", "只剩一点", "基本空了", "看不清"]
+REMAINING_STATE = "侧拍的转盘菜盘照片，画面里可能有手、夹子或相邻的盘子。"
+
 
 def _client() -> JevClient:
     return _SHARED[0]
@@ -137,6 +143,32 @@ def measure_reduction(empty_b64: str, before_b64: str, after_b64: str) -> Option
         "reduced_ratio": r.get("reduced_ratio"),
         "source": "measure",
         "note": "背景差分，误差约1-2个百分点；残渣会高估剩余",
+    }
+
+
+def check_remaining(image_b64: str) -> Optional[dict]:
+    """视觉交叉验证：画面里这盘还剩多少？离线/失败返回 None（调用方按原规则记账）。
+
+    只用来发现「秤说快空了、画面里却还有一盘」这种自相矛盾 —— 手/夹子挡在盘上时
+    称重会掉读，而那一跳在重量序列上和真实取用长得一模一样，脱离画面分不出来。
+    v1.0 数据集里 F003/C003 就是这种样本：秤读到 22/30 克，画面里还是满满一盘。
+    """
+    try:
+        r = _client().ask(REMAINING_QUESTION, REMAINING_OPTIONS, image_b64=image_b64,
+                          state=REMAINING_STATE)
+    except JevUnavailable as e:
+        return {"skipped": True, "note": str(e)[:120]}
+    if not r:
+        return {"skipped": True}
+    verdict = r.get("prediction")
+    conf = float(r.get("confidence") or 0)
+    return {
+        "verdict": verdict,
+        "confidence": round(conf, 3),
+        # 只认「还有不少菜」这一档：其余档位（只剩一点/基本空了/看不清）都不推翻称重，
+        # 「看不清」更不该被当成「秤错了」的证据。
+        "disagrees": verdict == REMAINING_OPTIONS[0] and conf >= config.CROSSCHECK_CONFIDENCE_FLOOR,
+        "source": "model",
     }
 
 

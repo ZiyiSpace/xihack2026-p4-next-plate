@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-03T19:54:57+08:00",
+  "generated_at": "2026-10-03T20:16:55+08:00",
   "dataset": "D:\\develop\\hotpot_v1_0",
   "crowd": null,
   "speed": 60.0,
   "with_images": true,
   "backend": "http://127.0.0.1:8000",
-  "started_at": "2026-10-03T19:54:57+08:00",
-  "elapsed_s": 291.3,
+  "started_at": "2026-10-03T20:16:55+08:00",
+  "elapsed_s": 471.2,
   "sent": {
     "station": 60,
     "operation": 26,
@@ -15,23 +15,25 @@
   "failed": [],
   "classifications": {
     "baseline": 24,
-    "removal": 26,
-    "unexplained_increase": 3,
+    "removal": 24,
+    "unexplained_increase": 2,
     "no_change": 3,
-    "anomaly_resolved": 2,
-    "refill_confirmed": 2
+    "anomaly_resolved": 3,
+    "refill_confirmed": 1,
+    "unexplained_decrease": 2,
+    "late_refill": 1
   },
-  "refill_tasks_created": 17,
+  "refill_tasks_created": 18,
   "images_in_store": 63,
   "readback": {
     "captures": 12,
     "guests": 0,
-    "taken_g": 2940.0,
+    "taken_g": 2662.0,
     "dishes": [
       {
         "id": "D06",
         "name": "腌鸡肉",
-        "takeG": 732.0,
+        "takeG": 554.0,
         "weightG": 347.0,
         "status": "urgent"
       },
@@ -59,9 +61,9 @@
       {
         "id": "D03",
         "name": "鱼丸",
-        "takeG": 435.0,
-        "weightG": 25.0,
-        "status": "anomaly"
+        "takeG": 335.0,
+        "weightG": 124.0,
+        "status": "urgent"
       },
       {
         "id": "D01",
@@ -73,119 +75,126 @@
     ],
     "tasks": [
       {
-        "id": "e85c0593d638",
+        "id": "cfda81ac76df",
         "dishId": "D06",
         "quantity": 150.0,
         "status": "pending",
         "reason": "余量2%，速度98.0g/min，预计0.1分钟耗尽；在制144g已计入"
       },
       {
-        "id": "798267bcc1ad",
+        "id": "ca6eeee5b371",
         "dishId": "D06",
         "quantity": 121.0,
         "status": "pending",
         "reason": "余量5%，速度48.0g/min，预计0.1分钟耗尽；在制23g已计入"
       },
       {
-        "id": "8887502e85a5",
+        "id": "a6685a0eb39e",
         "dishId": "D06",
         "quantity": 23.0,
         "status": "pending",
         "reason": "余量4%，速度7.67g/min，预计0.1分钟耗尽"
       },
       {
-        "id": "3232c084d316",
+        "id": "e43bb65d9df8",
         "dishId": "D04",
         "quantity": 144.0,
         "status": "pending",
         "reason": "余量2%，速度79.0g/min，预计0.1分钟耗尽；在制93g已计入"
       },
       {
-        "id": "c43f72ceb46e",
+        "id": "ead0e24e9d9e",
+        "dishId": "D03",
+        "quantity": 84.0,
+        "status": "pending",
+        "reason": "余量0%，速度54.0g/min，预计-0.0分钟耗尽；在制78g已计入"
+      },
+      {
+        "id": "8f58302edc77",
         "dishId": "D02",
         "quantity": 124.0,
         "status": "pending",
         "reason": "余量0%，速度80.67g/min，预计-0.0分钟耗尽；在制118g已计入"
       },
       {
-        "id": "a074b0e52921",
+        "id": "794df4853259",
         "dishId": "D02",
         "quantity": 36.0,
         "status": "pending",
         "reason": "余量2%，速度39.33g/min，预计0.1分钟耗尽；在制82g已计入"
       },
       {
-        "id": "deaf2dc1009e",
+        "id": "28ad4efd87b9",
         "dishId": "D06",
-        "quantity": 178.0,
+        "quantity": 93.0,
         "status": "completed",
-        "reason": "余量10%，速度135.5g/min，预计0.2分钟耗尽；在制93g已计入"
+        "reason": "余量69%，速度93.0g/min，预计2.2分钟耗尽"
       },
       {
-        "id": "03459dae98db",
+        "id": "a6deeb89460d",
         "dishId": "D04",
         "quantity": 93.0,
         "status": "pending",
         "reason": "余量62%，速度93.0g/min，预计1.6分钟耗尽"
       },
       {
-        "id": "a6cd879ee36e",
+        "id": "68922225b3f0",
         "dishId": "D03",
-        "quantity": 100.0,
+        "quantity": 78.0,
         "status": "pending",
-        "reason": "余量11%，速度88.5g/min，预计0.2分钟耗尽；在制77g已计入"
+        "reason": "余量61%，速度25.67g/min，预计4.7分钟耗尽"
       },
       {
-        "id": "72f7b01a9b74",
+        "id": "3eece9b65aa7",
         "dishId": "D02",
         "quantity": 82.0,
         "status": "pending",
         "reason": "余量66%，速度82.0g/min，预计1.9分钟耗尽"
       },
       {
-        "id": "7d2d4dbc21e9",
+        "id": "4475a3ff59c4",
         "dishId": "D05",
-        "quantity": 107.7,
+        "quantity": 215.3,
         "status": "pending",
-        "reason": "余量2%，速度97.67g/min，预计0.1分钟耗尽；在制78g已计入；闭店前小批量规则"
+        "reason": "余量2%，速度97.67g/min，预计0.1分钟耗尽；在制78g已计入"
       },
       {
-        "id": "87e625ccb730",
+        "id": "bfbf50d09eb4",
         "dishId": "D01",
-        "quantity": 2,
+        "quantity": 4,
         "status": "pending",
-        "reason": "余量0%，速度51.0g/min，预计-0.0分钟耗尽；在制61g已计入；折合4个；闭店前小批量规则"
+        "reason": "余量0%，速度51.0g/min，预计-0.0分钟耗尽；在制61g已计入；折合4个"
       },
       {
-        "id": "28831e88d0ad",
+        "id": "5419c59a3298",
         "dishId": "D05",
         "quantity": 66.2,
         "status": "pending",
         "reason": "余量5%，速度48.0g/min，预计0.1分钟耗尽；在制12g已计入；闭店前小批量规则"
       },
       {
-        "id": "fd578fb69fa2",
+        "id": "42f2038ed440",
         "dishId": "D01",
         "quantity": 0,
         "status": "pending",
         "reason": "余量3%，速度24.0g/min，预计0.1分钟耗尽；在制50g已计入；折合1个；闭店前小批量规则"
       },
       {
-        "id": "a8914e9d209f",
+        "id": "07f4bfe57736",
         "dishId": "D05",
         "quantity": 11.5,
         "status": "pending",
         "reason": "余量4%，速度7.67g/min，预计0.1分钟耗尽；闭店前小批量规则"
       },
       {
-        "id": "35f1f842e2aa",
+        "id": "403c6a62718c",
         "dishId": "D05",
         "quantity": 88.0,
         "status": "completed",
         "reason": "余量71%，速度88.0g/min，预计2.4分钟耗尽"
       },
       {
-        "id": "ef434f7403b3",
+        "id": "a6a2504288d0",
         "dishId": "D01",
         "quantity": 2,
         "status": "pending",

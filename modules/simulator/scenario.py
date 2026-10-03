@@ -98,7 +98,10 @@ def load_station_stream(dataset_dir: str) -> Stream:
                 "gross_weight_g": rec.get("gross_weight_g"),
                 "tare_g": rec.get("tare_g"),
                 "dish_id": rec.get("dish_id"),
-                "quality": "normal",
+                # 采集端对帧画质的判断（normal|blur|occluded|low_res）。数据集可以在
+                # observations.jsonl 里用 frame_quality 声明；没声明就按 normal 上报 ——
+                # 真实部署里这一项要由采集端自己从像素算（模糊/遮挡检测），不是抄标注。
+                "quality": rec.get("frame_quality") or "normal",
                 "source": "capture",
                 "simulated": True,
             },
