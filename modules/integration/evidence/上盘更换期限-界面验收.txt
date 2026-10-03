@@ -1,0 +1,162 @@
+[
+  {
+    "check": "数据来源下拉（各尺寸）",
+    "seen": [
+      {
+        "size": "1440x900",
+        "open": true,
+        "scrollButtons": [],
+        "viewport": {
+          "clientH": 96,
+          "scrollH": 96,
+          "scrollTop": 0
+        },
+        "contentOverflow": 0,
+        "wrapperHeight": "",
+        "itemCount": 2,
+        "itemsVisible": true
+      },
+      {
+        "size": "1280x800",
+        "open": true,
+        "scrollButtons": [],
+        "viewport": {
+          "clientH": 96,
+          "scrollH": 96,
+          "scrollTop": 0
+        },
+        "contentOverflow": 0,
+        "wrapperHeight": "",
+        "itemCount": 2,
+        "itemsVisible": true
+      },
+      {
+        "size": "1920x1080",
+        "open": true,
+        "scrollButtons": [],
+        "viewport": {
+          "clientH": 96,
+          "scrollH": 96,
+          "scrollTop": 0
+        },
+        "contentOverflow": 0,
+        "wrapperHeight": "",
+        "itemCount": 2,
+        "itemsVisible": true
+      },
+      {
+        "size": "1366x768",
+        "open": true,
+        "scrollButtons": [],
+        "viewport": {
+          "clientH": 96,
+          "scrollH": 96,
+          "scrollTop": 0
+        },
+        "contentOverflow": 0,
+        "wrapperHeight": "",
+        "itemCount": 2,
+        "itemsVisible": true
+      },
+      {
+        "size": "1100x700",
+        "open": true,
+        "scrollButtons": [],
+        "viewport": {
+          "clientH": 96,
+          "scrollH": 96,
+          "scrollTop": 0
+        },
+        "contentOverflow": 0,
+        "wrapperHeight": "",
+        "itemCount": 2,
+        "itemsVisible": true
+      }
+    ],
+    "screenshot": "D:\\develop\\xihack-pr\\modules\\integration\\evidence\\验收-数据来源下拉.png"
+  },
+  {
+    "check": "菜品规则",
+    "seen": {
+      "open": true,
+      "heads": [
+        "菜品",
+        "制作批量",
+        "目标余量",
+        "准备时间",
+        "上盘更换期限",
+        "成本 / 千克",
+        "规则状态",
+        "操作"
+      ],
+      "replaceColumn": 4,
+      "replaceCells": [
+        "90 分钟",
+        "90 分钟"
+      ],
+      "rowCount": 2
+    },
+    "screenshot": "D:\\develop\\xihack-pr\\modules\\integration\\evidence\\验收-菜品规则更换期限.png"
+  },
+  {
+    "check": "后厨补菜",
+    "seen": {
+      "open": true,
+      "rowCount": 7,
+      "cards": [
+        {
+          "dish": "腌牛肉",
+          "badge": "更换菜品",
+          "state": "待处理",
+          "quantity": "整盘换新该任务不涉及分量",
+          "button": "开始更换"
+        },
+        {
+          "dish": "腌牛肉",
+          "badge": null,
+          "state": "待处理",
+          "quantity": "23克该菜品补充总量",
+          "button": "开始制作"
+        },
+        {
+          "dish": "腌牛肉",
+          "badge": null,
+          "state": "待处理",
+          "quantity": "121克该菜品补充总量",
+          "button": "开始制作"
+        },
+        {
+          "dish": "腌牛肉",
+          "badge": null,
+          "state": "待处理",
+          "quantity": "149克该菜品补充总量",
+          "button": "开始制作"
+        },
+        {
+          "dish": "小馒头",
+          "badge": null,
+          "state": "待处理",
+          "quantity": "2件该菜品补充总量",
+          "button": "开始制作"
+        },
+        {
+          "dish": "小馒头",
+          "badge": null,
+          "state": "待处理",
+          "quantity": "1件该菜品补充总量",
+          "button": "开始制作"
+        },
+        {
+          "dish": "小馒头",
+          "badge": null,
+          "state": "待处理",
+          "quantity": "3件该菜品补充总量",
+          "button": "开始制作"
+        }
+      ]
+    },
+    "screenshot": "D:\\develop\\xihack-pr\\modules\\integration\\evidence\\验收-后厨换菜单.png"
+  }
+]
+
+验收通过：下拉无滚动条、菜品规则有更换期限、后厨有换菜单（D:\develop\xihack-pr\modules\integration\evidence）

@@ -1,0 +1,73 @@
+=== 有菜图上答错的 ===
+  [full ] M005 beef_left_food   真值=腌牛肉  答=豆腐片    conf=0.944989 margin=0.920293 abstained=False 首选=豆腐片
+  [none ] M002 beef_low         真值=腌牛肉  答=拒答     conf=0.61868 margin=0.441425 abstained=True 首选=以上都不是
+  [none ] M003 beef_occlusion   真值=腌牛肉  答=拒答     conf=0.862368 margin=0.795869 abstained=True 首选=以上都不是
+  [none ] M005 beef_left_food   真值=腌牛肉  答=豆腐片    conf=0.94266 margin=0.90938 abstained=False 首选=豆腐片
+  [none ] M007 beef_right_food  真值=腌牛肉  答=拒答     conf=0.445117 margin=0.103834 abstained=True 首选=以上都不是
+
+=== 有菜图的置信度区间 ===
+  short n=14 min=0.823 max=1.000 <0.6 的=0
+  full  n=14 min=0.778 max=0.996 <0.6 的=0
+  none  n=14 min=0.445 max=0.993 <0.6 的=1
+
+=== 全部明细 ===
+  short B001 有菜 bun_base           真值=小馒头  答=小馒头    conf=0.999312 ok=True
+  short B002 有菜 bun_blur           真值=小馒头  答=小馒头    conf=0.999583 ok=True
+  short B003 有菜 bun_six            真值=小馒头  答=小馒头    conf=0.99903 ok=True
+  short B004 有菜 bun_recovery       真值=小馒头  答=小馒头    conf=0.998475 ok=True
+  short M001 有菜 beef_base          真值=腌牛肉  答=腌牛肉    conf=0.997488 ok=True
+  short M002 有菜 beef_low           真值=腌牛肉  答=腌牛肉    conf=0.876634 ok=True
+  short M003 有菜 beef_occlusion     真值=腌牛肉  答=腌牛肉    conf=0.90599 ok=True
+  short M004 有菜 beef_refill        真值=腌牛肉  答=腌牛肉    conf=0.99539 ok=True
+  short B005 有菜 bun_left_food      真值=小馒头  答=小馒头    conf=0.999131 ok=True
+  short B006 空盘 bun_left_empty     真值=小馒头  答=小馒头    conf=0.991684 ok=False
+  short B007 有菜 bun_right_food     真值=小馒头  答=小馒头    conf=0.99903 ok=True
+  short B008 空盘 bun_right_empty    真值=小馒头  答=小馒头    conf=0.710226 ok=False
+  short B009 有菜 bun_rim_food       真值=小馒头  答=小馒头    conf=0.999556 ok=True
+  short B010 空盘 bun_rim_empty      真值=小馒头  答=小馒头    conf=0.842863 ok=False
+  short M005 有菜 beef_left_food     真值=腌牛肉  答=腌牛肉    conf=0.838151 ok=True
+  short M006 空盘 beef_left_empty    真值=腌牛肉  答=小馒头    conf=0.762601 ok=False
+  short M007 有菜 beef_right_food    真值=腌牛肉  答=腌牛肉    conf=0.823328 ok=True
+  short M008 空盘 beef_right_empty   真值=腌牛肉  答=小馒头    conf=0.731826 ok=False
+  short M009 有菜 beef_rim_food      真值=腌牛肉  答=腌牛肉    conf=0.996876 ok=True
+  short M010 空盘 beef_rim_empty     真值=腌牛肉  答=拒答     conf=0.559771 ok=True
+  full  B001 有菜 bun_base           真值=小馒头  答=小馒头    conf=0.988996 ok=True
+  full  B002 有菜 bun_blur           真值=小馒头  答=小馒头    conf=0.988863 ok=True
+  full  B003 有菜 bun_six            真值=小馒头  答=小馒头    conf=0.98713 ok=True
+  full  B004 有菜 bun_recovery       真值=小馒头  答=小馒头    conf=0.987818 ok=True
+  full  M001 有菜 beef_base          真值=腌牛肉  答=腌牛肉    conf=0.954897 ok=True
+  full  M002 有菜 beef_low           真值=腌牛肉  答=腌牛肉    conf=0.828346 ok=True
+  full  M003 有菜 beef_occlusion     真值=腌牛肉  答=腌牛肉    conf=0.916865 ok=True
+  full  M004 有菜 beef_refill        真值=腌牛肉  答=腌牛肉    conf=0.955998 ok=True
+  full  B005 有菜 bun_left_food      真值=小馒头  答=小馒头    conf=0.981017 ok=True
+  full  B006 空盘 bun_left_empty     真值=小馒头  答=南瓜饼    conf=0.854536 ok=False
+  full  B007 有菜 bun_right_food     真值=小馒头  答=小馒头    conf=0.989991 ok=True
+  full  B008 空盘 bun_right_empty    真值=小馒头  答=拒答     conf=0.215456 ok=True
+  full  B009 有菜 bun_rim_food       真值=小馒头  答=小馒头    conf=0.99581 ok=True
+  full  B010 空盘 bun_rim_empty      真值=小馒头  答=拒答     conf=0.407195 ok=True
+  full  M005 有菜 beef_left_food     真值=腌牛肉  答=豆腐片    conf=0.944989 ok=False
+  full  M006 空盘 beef_left_empty    真值=腌牛肉  答=豆腐片    conf=0.990352 ok=False
+  full  M007 有菜 beef_right_food    真值=腌牛肉  答=腌牛肉    conf=0.778477 ok=True
+  full  M008 空盘 beef_right_empty   真值=腌牛肉  答=鱼丸     conf=0.628971 ok=False
+  full  M009 有菜 beef_rim_food      真值=腌牛肉  答=腌牛肉    conf=0.96592 ok=True
+  full  M010 空盘 beef_rim_empty     真值=腌牛肉  答=拒答     conf=0.264914 ok=True
+  none  B001 有菜 bun_base           真值=小馒头  答=小馒头    conf=0.984044 ok=True
+  none  B002 有菜 bun_blur           真值=小馒头  答=小馒头    conf=0.983801 ok=True
+  none  B003 有菜 bun_six            真值=小馒头  答=小馒头    conf=0.981629 ok=True
+  none  B004 有菜 bun_recovery       真值=小馒头  答=小馒头    conf=0.978801 ok=True
+  none  M001 有菜 beef_base          真值=腌牛肉  答=腌牛肉    conf=0.974202 ok=True
+  none  M002 有菜 beef_low           真值=腌牛肉  答=拒答     conf=0.61868 ok=False
+  none  M003 有菜 beef_occlusion     真值=腌牛肉  答=拒答     conf=0.862368 ok=False
+  none  M004 有菜 beef_refill        真值=腌牛肉  答=腌牛肉    conf=0.94416 ok=True
+  none  B005 有菜 bun_left_food      真值=小馒头  答=小馒头    conf=0.975079 ok=True
+  none  B006 空盘 bun_left_empty     真值=小馒头  答=拒答     conf=0.573372 ok=True
+  none  B007 有菜 bun_right_food     真值=小馒头  答=小馒头    conf=0.975782 ok=True
+  none  B008 空盘 bun_right_empty    真值=小馒头  答=拒答     conf=0.921339 ok=True
+  none  B009 有菜 bun_rim_food       真值=小馒头  答=小馒头    conf=0.99316 ok=True
+  none  B010 空盘 bun_rim_empty      真值=小馒头  答=拒答     conf=0.710734 ok=True
+  none  M005 有菜 beef_left_food     真值=腌牛肉  答=豆腐片    conf=0.94266 ok=False
+  none  M006 空盘 beef_left_empty    真值=腌牛肉  答=豆腐片    conf=0.987847 ok=False
+  none  M007 有菜 beef_right_food    真值=腌牛肉  答=拒答     conf=0.445117 ok=False
+  none  M008 空盘 beef_right_empty   真值=腌牛肉  答=拒答     conf=0.311019 ok=True
+  none  M009 有菜 beef_rim_food      真值=腌牛肉  答=腌牛肉    conf=0.97521 ok=True
+  none  M010 空盘 beef_rim_empty     真值=腌牛肉  答=拒答     conf=0.766088 ok=True

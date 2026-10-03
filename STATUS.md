@@ -10,7 +10,7 @@
 | （示例行，用完删）某某 | modules/dataset | 做了 XX 菜品的 AI 生成图片与质量标注 X 张 | 半成品 | evidence/某某/… | 10-03 |
 
 | liiiyiiixiii（群昵称待确认） | modules/frontend；docs；evidence/liiiyiiixiii | 厨房/管理工作台：余量、补菜到口倒计时、任务操作、报损、经营分析、模型配置，独立原型含 API 与 D1 | 原型可运行；团队后端待联调 | evidence/liiiyiiixiii/验证记录.md（25/25、类型检查、构建通过）；界面截图 | 2026-10-03 |
-| chujieHong | modules/model；modules/integration；modules/simulator | Jev-Omni 视觉服务器部署与接口封装：菜品识别接口（8 道清单 8/8、40 道 75%）、HTTP 封装、网页版、线上契约快照；后端↔服务器可复跑联调脚本（认菜 8/8、回放对评 8/8）；**虚拟采集端**（无硬件时扮演相机与称重网关：图片进存储、事件走真实 HTTP，129 条 0 失败、视觉校验 8/8） | 可运行；已与 backend 联调通过 | modules/integration/验证记录.md；modules/simulator/验证记录.md；modules/integration/evidence/工作台渲染核对.txt；modules/integration/evidence/样例数据接入-界面验收.txt；modules/model/openapi.json | 2026-10-03 |
+| chujieHong | modules/model；modules/integration；modules/simulator | Jev-Omni 视觉服务器部署与接口封装：菜品识别接口（8 道清单 8/8、40 道 75%）、HTTP 封装、网页版、线上契约快照；后端↔服务器可复跑联调脚本（认菜 8/8、回放对评 8/8）；**虚拟采集端**（无硬件时扮演相机与称重网关：图片进存储、事件走真实 HTTP，129 条 0 失败、视觉校验 8/8）；**认菜候选清单规模实测**（2/6/6+「以上都不是」三档，有菜图 14/14、13/14、10/14，空盘 1/6、3/6、5/6）；**上盘更换期限**（不缺货但放久了派 `replace` 换菜单） | 可运行；已与 backend 联调通过 | modules/integration/验证记录.md；modules/simulator/验证记录.md；modules/integration/evidence/工作台渲染核对.txt；modules/integration/evidence/样例数据接入-界面验收.txt；modules/model/openapi.json | 2026-10-03 |
 
 ## 问题与待办
 
@@ -33,3 +33,7 @@
 - [ ] **review 里标注「未修、需拍板」的 11 项** —— 最重要的是 `adapter.build_view`（167 行 / 43 分支 / 8 件事）、`core.ingest_station_event`（111 行 / 6 件事）、`vision._SHARED` 全局单例；另有 `images.py` 存储与路由同文件、两个 CDP 脚本约 60 行重复、判读分类取值仍有 7 处事实来源。都在冻结后做
 - [ ] **人流分析的「离店 / 翻台」没有接口落点** —— `POST /api/analytics/covers` 只收「到店人数」，工作台也只有到店人数与每百客口径。客流画像里的就餐时长目前只是场景说明，没有变成任何调用。要做翻台率需要后端新增入座/离店事件，并在工作台给它一个位置
 - [x] **工作台页面经反代后「有 HTML 无样式」（已修，动了 `modules/backend/app/main.py`）** —— 根因：`_proxy_frontend` 用 httpx 默认的 `Accept: */*` 去请求 Vite，Vite 便把 `.css` 当成 JS 模块返回 `text/javascript`，浏览器 MIME 检查拒绝套用样式；同时**查询串被丢掉**，Vite 的 `?v=<hash>` 模块版本跟着错位。已改为透传 `accept`/`user-agent` 与查询串，并转发重定向的 `Location`。验证：**48 个模块经代理与直连逐字节一致**（修复前 30/48 不一致），`/app/globals.css` 恢复 `text/css`（220,827 字节）
+- [x] **数据来源下拉「有时有滚动条」（已修，动了 `modules/frontend/components/ui/select.tsx`）** —— 不是样式问题：Radix 用 `item-aligned` 定位时，`position()` 会在滚动按钮挂载后重算一次，残留 1.33px 的 `scrollTop`，于是 `canScrollUp=true`，Radix 就**渲染**出一条 24px 的上滚箭头（`return canScrollUp ? <SelectScrollButtonImpl/> : null`）——它**根本不在 DOM 里，CSS 藏不掉**。改成 `popper` 定位，滚动状态由真实溢出决定。五个窗口尺寸实测 `scrollButtons=[]`、`scrollTop=0`、溢出 0px。验收脚本 `modules/integration/check_replace_deadline.mjs`
+- [x] **该给 Jev 多少候选菜品（已实测，结论与直觉相反）** —— 传的一直是**库里全部菜品**（现 6 道），不是这一盘绑定的那道菜；服务端还返回整份概率分布（`margin`/`abstained`/`ranking`），我们取 argmax 卡 0.6 下限。用 v0.2 数据集 20 张图实测三档：**2 项有菜图 14/14、6 项 13/14、6 项+「以上都不是」10/14**；空盘图反过来（1/6、3/6、**5/6**）。即**选项越多越不准**，而「以上都不是」会误伤真的菜（服务方文档也这么警告），但空盘上必须给。所以改成用**称重**决定：净重不超噪声界才追加「以上都不是」（`vision.identify_dish(plate_has_food=...)`）。脚本 `modules/integration/measure_identify_options.py`
+- [x] **上盘更换期限：不缺货但放太久了要换下上新（新增菜品级参数，动了 `config`/`db`/`schemas`/`analytics`/`refill`/`adapter` + 前端 `domain`/`engine`/`workspace`）** —— 卖得慢的菜可能一直不缺货，但摆在转盘上的时间已经太长。门店设置 → 菜品规则新增「上盘更换期限」（默认 90 分钟，可逐菜覆盖），到期派 `replace` 单，措辞是「换下并上新批次」而不是「完成补菜」，且不再为同一盘重复派撤盘建议。`db.init()` 带补列迁移，老库升级不丢数据；冒烟覆盖迁移、超期派单、低余量不重复派单、刚上盘不派单、菜品级覆盖优先五个用例
+- [ ] **`FRESHNESS_WINDOW_MIN`（30 分钟）与新的 `REPLACE_AFTER_MIN`（90 分钟）语义有重叠** —— 现在按「先撤盘建议、到 90 分钟才升级成换菜」分层，但两条规则的边界是这次新画的，需要后厨确认这个梯队是否合理

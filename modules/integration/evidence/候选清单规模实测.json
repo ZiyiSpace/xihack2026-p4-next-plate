@@ -1,0 +1,1602 @@
+[
+  {
+    "config": "short",
+    "sample_id": "B001",
+    "prompt_key": "bun_base",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.999312,
+    "margin": 0.998624,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.999312
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.000688
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.38
+  },
+  {
+    "config": "short",
+    "sample_id": "B002",
+    "prompt_key": "bun_blur",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.999583,
+    "margin": 0.999166,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.999583
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.000417
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.99
+  },
+  {
+    "config": "short",
+    "sample_id": "B003",
+    "prompt_key": "bun_six",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.99903,
+    "margin": 0.99806,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.99903
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.00097
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 5.98
+  },
+  {
+    "config": "short",
+    "sample_id": "B004",
+    "prompt_key": "bun_recovery",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.998475,
+    "margin": 0.99695,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.998475
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.001525
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 4.33
+  },
+  {
+    "config": "short",
+    "sample_id": "M001",
+    "prompt_key": "beef_base",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.997488,
+    "margin": 0.994977,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.997488
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.002511
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.85
+  },
+  {
+    "config": "short",
+    "sample_id": "M002",
+    "prompt_key": "beef_low",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.876634,
+    "margin": 0.753268,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.876634
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.123366
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.54
+  },
+  {
+    "config": "short",
+    "sample_id": "M003",
+    "prompt_key": "beef_occlusion",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.90599,
+    "margin": 0.81198,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.90599
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.09401
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 5.62
+  },
+  {
+    "config": "short",
+    "sample_id": "M004",
+    "prompt_key": "beef_refill",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.99539,
+    "margin": 0.99078,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.99539
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.00461
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 4.22
+  },
+  {
+    "config": "short",
+    "sample_id": "B005",
+    "prompt_key": "bun_left_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.999131,
+    "margin": 0.998262,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.999131
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.000869
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 5.11
+  },
+  {
+    "config": "short",
+    "sample_id": "B006",
+    "prompt_key": "bun_left_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "小馒头",
+    "confidence": 0.991684,
+    "margin": 0.983368,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.991684
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.008316
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 5.67
+  },
+  {
+    "config": "short",
+    "sample_id": "B007",
+    "prompt_key": "bun_right_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.99903,
+    "margin": 0.99806,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.99903
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.00097
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.98
+  },
+  {
+    "config": "short",
+    "sample_id": "B008",
+    "prompt_key": "bun_right_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "小馒头",
+    "confidence": 0.710226,
+    "margin": 0.420453,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.710226
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.289773
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 3.87
+  },
+  {
+    "config": "short",
+    "sample_id": "B009",
+    "prompt_key": "bun_rim_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.999556,
+    "margin": 0.999112,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.999556
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.000444
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.54
+  },
+  {
+    "config": "short",
+    "sample_id": "B010",
+    "prompt_key": "bun_rim_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "小馒头",
+    "confidence": 0.842863,
+    "margin": 0.685726,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.842863
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.157137
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 3.19
+  },
+  {
+    "config": "short",
+    "sample_id": "M005",
+    "prompt_key": "beef_left_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.838151,
+    "margin": 0.676302,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.838151
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.161849
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.18
+  },
+  {
+    "config": "short",
+    "sample_id": "M006",
+    "prompt_key": "beef_left_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "小馒头",
+    "confidence": 0.762601,
+    "margin": 0.525202,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.762601
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.237399
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 3.85
+  },
+  {
+    "config": "short",
+    "sample_id": "M007",
+    "prompt_key": "beef_right_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.823328,
+    "margin": 0.646656,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.823328
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.176672
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.75
+  },
+  {
+    "config": "short",
+    "sample_id": "M008",
+    "prompt_key": "beef_right_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "小馒头",
+    "confidence": 0.731826,
+    "margin": 0.463652,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.731826
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.268174
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 4.05
+  },
+  {
+    "config": "short",
+    "sample_id": "M009",
+    "prompt_key": "beef_rim_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.996876,
+    "margin": 0.993752,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.996876
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.003124
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.58
+  },
+  {
+    "config": "short",
+    "sample_id": "M010",
+    "prompt_key": "beef_rim_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.559771,
+    "margin": 0.119542,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.559771
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.440229
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.19
+  },
+  {
+    "config": "full",
+    "sample_id": "B001",
+    "prompt_key": "bun_base",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.988996,
+    "margin": 0.985373,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.988996
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.003623
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.003512
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.03
+  },
+  {
+    "config": "full",
+    "sample_id": "B002",
+    "prompt_key": "bun_blur",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.988863,
+    "margin": 0.985096,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.988863
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.003767
+      },
+      {
+        "option": "南瓜饼",
+        "probability": 0.002957
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 4.22
+  },
+  {
+    "config": "full",
+    "sample_id": "B003",
+    "prompt_key": "bun_six",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.98713,
+    "margin": 0.98263,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.98713
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.0045
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.003242
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.91
+  },
+  {
+    "config": "full",
+    "sample_id": "B004",
+    "prompt_key": "bun_recovery",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.987818,
+    "margin": 0.98362,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.987818
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.004198
+      },
+      {
+        "option": "南瓜饼",
+        "probability": 0.003095
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 4.17
+  },
+  {
+    "config": "full",
+    "sample_id": "M001",
+    "prompt_key": "beef_base",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.954897,
+    "margin": 0.940734,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.954897
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.014163
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.0091
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.37
+  },
+  {
+    "config": "full",
+    "sample_id": "M002",
+    "prompt_key": "beef_low",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.828346,
+    "margin": 0.769156,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.828346
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.05919
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.045963
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 5.4
+  },
+  {
+    "config": "full",
+    "sample_id": "M003",
+    "prompt_key": "beef_occlusion",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.916865,
+    "margin": 0.893799,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.916865
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.023066
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.022312
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.26
+  },
+  {
+    "config": "full",
+    "sample_id": "M004",
+    "prompt_key": "beef_refill",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.955998,
+    "margin": 0.942716,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.955998
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.013282
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.010339
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 5.68
+  },
+  {
+    "config": "full",
+    "sample_id": "B005",
+    "prompt_key": "bun_left_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.981017,
+    "margin": 0.971982,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.981017
+      },
+      {
+        "option": "南瓜饼",
+        "probability": 0.009035
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.004202
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 7.13
+  },
+  {
+    "config": "full",
+    "sample_id": "B006",
+    "prompt_key": "bun_left_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "南瓜饼",
+    "confidence": 0.854536,
+    "margin": 0.803815,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "南瓜饼",
+        "probability": 0.854536
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.050721
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.042711
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 4.38
+  },
+  {
+    "config": "full",
+    "sample_id": "B007",
+    "prompt_key": "bun_right_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.989991,
+    "margin": 0.986715,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.989991
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.003276
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.00227
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 4.17
+  },
+  {
+    "config": "full",
+    "sample_id": "B008",
+    "prompt_key": "bun_right_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.215456,
+    "margin": 0.003237,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.215456
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.212219
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.162953
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.58
+  },
+  {
+    "config": "full",
+    "sample_id": "B009",
+    "prompt_key": "bun_rim_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.99581,
+    "margin": 0.993545,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.99581
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.002265
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.001104
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.59
+  },
+  {
+    "config": "full",
+    "sample_id": "B010",
+    "prompt_key": "bun_rim_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.407195,
+    "margin": 0.092539,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.407195
+      },
+      {
+        "option": "南瓜饼",
+        "probability": 0.314656
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.134279
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.75
+  },
+  {
+    "config": "full",
+    "sample_id": "M005",
+    "prompt_key": "beef_left_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "豆腐片",
+    "confidence": 0.944989,
+    "margin": 0.920293,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "豆腐片",
+        "probability": 0.944989
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.024696
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.012954
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 2.61
+  },
+  {
+    "config": "full",
+    "sample_id": "M006",
+    "prompt_key": "beef_left_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "豆腐片",
+    "confidence": 0.990352,
+    "margin": 0.985819,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "豆腐片",
+        "probability": 0.990352
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.004533
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.002563
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 2.42
+  },
+  {
+    "config": "full",
+    "sample_id": "M007",
+    "prompt_key": "beef_right_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.778477,
+    "margin": 0.689932,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.778477
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.088545
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.061154
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.22
+  },
+  {
+    "config": "full",
+    "sample_id": "M008",
+    "prompt_key": "beef_right_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "鱼丸",
+    "confidence": 0.628971,
+    "margin": 0.512225,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "鱼丸",
+        "probability": 0.628971
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.116746
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.102127
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 3.22
+  },
+  {
+    "config": "full",
+    "sample_id": "M009",
+    "prompt_key": "beef_rim_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.96592,
+    "margin": 0.956941,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.96592
+      },
+      {
+        "option": "小馒头",
+        "probability": 0.008979
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.008472
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.86
+  },
+  {
+    "config": "full",
+    "sample_id": "M010",
+    "prompt_key": "beef_rim_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.264914,
+    "margin": 0.015076,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.264914
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.249838
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.205913
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.08
+  },
+  {
+    "config": "none",
+    "sample_id": "B001",
+    "prompt_key": "bun_base",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.984044,
+    "margin": 0.979268,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.984044
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.004776
+      },
+      {
+        "option": "南瓜饼",
+        "probability": 0.003633
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 4.08
+  },
+  {
+    "config": "none",
+    "sample_id": "B002",
+    "prompt_key": "bun_blur",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.983801,
+    "margin": 0.979281,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.983801
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.00452
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.003689
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.08
+  },
+  {
+    "config": "none",
+    "sample_id": "B003",
+    "prompt_key": "bun_six",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.981629,
+    "margin": 0.97467,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.981629
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.006959
+      },
+      {
+        "option": "南瓜饼",
+        "probability": 0.003653
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.27
+  },
+  {
+    "config": "none",
+    "sample_id": "B004",
+    "prompt_key": "bun_recovery",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.978801,
+    "margin": 0.970497,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.978801
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.008304
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.003558
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.89
+  },
+  {
+    "config": "none",
+    "sample_id": "M001",
+    "prompt_key": "beef_base",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.974202,
+    "margin": 0.963422,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.974202
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.01078
+      },
+      {
+        "option": "以上都不是",
+        "probability": 0.005092
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.06
+  },
+  {
+    "config": "none",
+    "sample_id": "M002",
+    "prompt_key": "beef_low",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "拒答",
+    "confidence": 0.61868,
+    "margin": 0.441425,
+    "abstained": true,
+    "ranking": [
+      {
+        "option": "以上都不是",
+        "probability": 0.61868
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.177255
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.119003
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 2.94
+  },
+  {
+    "config": "none",
+    "sample_id": "M003",
+    "prompt_key": "beef_occlusion",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "拒答",
+    "confidence": 0.862368,
+    "margin": 0.795869,
+    "abstained": true,
+    "ranking": [
+      {
+        "option": "以上都不是",
+        "probability": 0.862368
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.066499
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.03477
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 4.02
+  },
+  {
+    "config": "none",
+    "sample_id": "M004",
+    "prompt_key": "beef_refill",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.94416,
+    "margin": 0.92089,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.94416
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.02327
+      },
+      {
+        "option": "以上都不是",
+        "probability": 0.012751
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 4.18
+  },
+  {
+    "config": "none",
+    "sample_id": "B005",
+    "prompt_key": "bun_left_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.975079,
+    "margin": 0.9629,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.975079
+      },
+      {
+        "option": "南瓜饼",
+        "probability": 0.012179
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.004959
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.59
+  },
+  {
+    "config": "none",
+    "sample_id": "B006",
+    "prompt_key": "bun_left_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.573372,
+    "margin": 0.426405,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "南瓜饼",
+        "probability": 0.573372
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.146967
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.123894
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.22
+  },
+  {
+    "config": "none",
+    "sample_id": "B007",
+    "prompt_key": "bun_right_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.975782,
+    "margin": 0.962808,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.975782
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.012974
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.002987
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 5.37
+  },
+  {
+    "config": "none",
+    "sample_id": "B008",
+    "prompt_key": "bun_right_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.921339,
+    "margin": 0.880541,
+    "abstained": true,
+    "ranking": [
+      {
+        "option": "以上都不是",
+        "probability": 0.921339
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.040798
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.014661
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.41
+  },
+  {
+    "config": "none",
+    "sample_id": "B009",
+    "prompt_key": "bun_rim_food",
+    "truth": "小馒头",
+    "empty": false,
+    "answer": "小馒头",
+    "confidence": 0.99316,
+    "margin": 0.99082,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "小馒头",
+        "probability": 0.99316
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.00234
+      },
+      {
+        "option": "腌鸡肉",
+        "probability": 0.002313
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.4
+  },
+  {
+    "config": "none",
+    "sample_id": "B010",
+    "prompt_key": "bun_rim_empty",
+    "truth": "小馒头",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.710734,
+    "margin": 0.606324,
+    "abstained": true,
+    "ranking": [
+      {
+        "option": "以上都不是",
+        "probability": 0.710734
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.10441
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.050687
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.6
+  },
+  {
+    "config": "none",
+    "sample_id": "M005",
+    "prompt_key": "beef_left_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "豆腐片",
+    "confidence": 0.94266,
+    "margin": 0.90938,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "豆腐片",
+        "probability": 0.94266
+      },
+      {
+        "option": "以上都不是",
+        "probability": 0.03328
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.011061
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 4.05
+  },
+  {
+    "config": "none",
+    "sample_id": "M006",
+    "prompt_key": "beef_left_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "豆腐片",
+    "confidence": 0.987847,
+    "margin": 0.98254,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "豆腐片",
+        "probability": 0.987847
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.005307
+      },
+      {
+        "option": "以上都不是",
+        "probability": 0.002642
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 3.64
+  },
+  {
+    "config": "none",
+    "sample_id": "M007",
+    "prompt_key": "beef_right_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "拒答",
+    "confidence": 0.445117,
+    "margin": 0.103834,
+    "abstained": true,
+    "ranking": [
+      {
+        "option": "以上都不是",
+        "probability": 0.445117
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.341283
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.077956
+      }
+    ],
+    "error": null,
+    "ok": false,
+    "seconds": 3.99
+  },
+  {
+    "config": "none",
+    "sample_id": "M008",
+    "prompt_key": "beef_right_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.311019,
+    "margin": 0.032224,
+    "abstained": true,
+    "ranking": [
+      {
+        "option": "以上都不是",
+        "probability": 0.311019
+      },
+      {
+        "option": "鱼丸",
+        "probability": 0.278795
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.234769
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 3.44
+  },
+  {
+    "config": "none",
+    "sample_id": "M009",
+    "prompt_key": "beef_rim_food",
+    "truth": "腌牛肉",
+    "empty": false,
+    "answer": "腌牛肉",
+    "confidence": 0.97521,
+    "margin": 0.96523,
+    "abstained": false,
+    "ranking": [
+      {
+        "option": "腌牛肉",
+        "probability": 0.97521
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.00998
+      },
+      {
+        "option": "以上都不是",
+        "probability": 0.005479
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 6.81
+  },
+  {
+    "config": "none",
+    "sample_id": "M010",
+    "prompt_key": "beef_rim_empty",
+    "truth": "腌牛肉",
+    "empty": true,
+    "answer": "拒答",
+    "confidence": 0.766088,
+    "margin": 0.597801,
+    "abstained": true,
+    "ranking": [
+      {
+        "option": "以上都不是",
+        "probability": 0.766088
+      },
+      {
+        "option": "豆腐片",
+        "probability": 0.168287
+      },
+      {
+        "option": "腌牛肉",
+        "probability": 0.023682
+      }
+    ],
+    "error": null,
+    "ok": true,
+    "seconds": 2.73
+  }
+]
