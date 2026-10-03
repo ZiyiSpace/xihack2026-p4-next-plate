@@ -43,8 +43,19 @@ class JevClient:
             return self._client
 
     def _post(self, path: str, *, json_body=None, files=None, data=None,
-              retries: int = 3) -> dict:
-        """带指数退避的重试；401/422/413 不重试（配置错误重试无意义）。"""
+              retries: int = 3, missing_endpoint: bool = False) -> dict:
+        """带指数退避的重试；**只重试可能自己好的错误**。
+
+        可重试：transport 异常、5xx（503 = model loading）、408/425/429，
+        以及 404（**仅当**该端点应当存在时 —— AutoDL 代理在上游容器重启期间也回 404）。
+
+        不重试：其余 4xx（401/403/404/413/422 …）。这些是确定性错误，重试只是白等。
+        `missing_endpoint=True` 用于「服务器上可能没有这个端点」的调用（例如视觉服务器
+        换版本时移除了某个接口），这类 404 立即失败，不再空等三次。
+
+        注意：不能靠 `raise_for_status()` 来「不重试」—— 它抛的 `HTTPStatusError`
+        是 `httpx.HTTPError` 的子类，会被下面的 `except` 抓住照样重试。必须显式跳出循环。
+        """
         if self.offline:
             raise JevUnavailable("离线模式（JEV_API_KEY 为空），不调用模型")
         last_err: Exception = JevUnavailable("未重试")
@@ -55,17 +66,19 @@ class JevClient:
                         r = self._conn().post(path, files=files, data=data)
                     else:
                         r = self._conn().post(path, json=json_body)
-                if r.status_code in (401, 422, 413):
-                    r.raise_for_status()
-                if r.status_code >= 500:
-                    # 503 = model loading，等一拍再试
-                    last_err = JevUnavailable(f"HTTP {r.status_code}: {r.text[:200]}")
-                else:
-                    r.raise_for_status()
-                    return r.json()
-            except (httpx.HTTPError, JevUnavailable) as e:
+            except httpx.HTTPError as e:
                 last_err = e
-            time.sleep(1.5 * (2**attempt))
+            else:
+                if r.status_code == 200:
+                    return r.json()
+                retryable = (r.status_code >= 500
+                             or r.status_code in (408, 425, 429)
+                             or (r.status_code == 404 and not missing_endpoint))
+                if not retryable:
+                    raise JevUnavailable(f"HTTP {r.status_code}: {r.text[:200]}") from None
+                last_err = JevUnavailable(f"HTTP {r.status_code}: {r.text[:200]}")
+            if attempt + 1 < retries:
+                time.sleep(1.5 * (2 ** attempt))
         raise JevUnavailable(f"Jev 服务重试耗尽: {last_err}")
 
     def health(self) -> Optional[dict]:
@@ -111,7 +124,8 @@ class JevClient:
         if empty_b64:
             files.append(("empty", ("empty.png", base64.b64decode(empty_b64), "image/png")))
             data["modality"] = "image"
-        return self._post("/v1/portion", files=files, data=data)
+        # 视觉服务器当前不提供 /v1/portion，404 直接失败，不要重试三次空等 25 秒
+        return self._post("/v1/portion", files=files, data=data, missing_endpoint=True)
 
     # ---- 路线 A：量 ----
 
@@ -122,7 +136,8 @@ class JevClient:
             ("before", ("before.png", base64.b64decode(before_b64), "image/png")),
             ("after", ("after.png", base64.b64decode(after_b64), "image/png")),
         ]
-        return self._post("/v1/measure", files=files)
+        # 同上：该端点当前不存在；且本方法在仓库里没有任何调用者（死代码）
+        return self._post("/v1/measure", files=files, missing_endpoint=True)
 
     def register_menu(self, name: str, items: list[str]) -> Optional[dict]:
         return self._post("/v1/menu", json_body={"name": name, "items": items})
