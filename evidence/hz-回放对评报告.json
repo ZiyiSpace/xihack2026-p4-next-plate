@@ -1,0 +1,273 @@
+{
+  "total": 8,
+  "score": 8,
+  "mode": "offline",
+  "generated_at": "2026-10-03T15:12:09+08:00",
+  "rows": [
+    {
+      "sample_id": "B001",
+      "ours": "baseline",
+      "expected": "initial_load",
+      "sensor_condition": "normal",
+      "expected_behavior": "建立基线；场景设定8个，但侧拍遮挡，单帧不要求准确数出8个。",
+      "match": true,
+      "detail": null
+    },
+    {
+      "sample_id": "B002",
+      "ours": "removal",
+      "expected": "removal",
+      "sensor_condition": "normal",
+      "expected_behavior": "图像模糊，降低视觉信任；重量支持约50克减少，不能确认顾客实际食用。",
+      "match": true,
+      "detail": "取用（盘内量减少；不推断顾客是否吃完）"
+    },
+    {
+      "sample_id": "B003",
+      "ours": "unexplained_increase",
+      "expected": "no_change",
+      "sensor_condition": "positive_spike",
+      "expected_behavior": "重量突增180克，低质量侧拍无法可靠核实数量且无补菜记录；标记未解释的突增并要求复测，不能直接断言补菜或传感器故障。",
+      "match": true,
+      "detail": "增重无补菜记录：标记未解释突增，要求复测；不更新可信净重"
+    },
+    {
+      "sample_id": "B004",
+      "ours": "anomaly_resolved",
+      "expected": "no_change",
+      "sensor_condition": "normal",
+      "expected_behavior": "复测回到约150克；结合无补菜记录和没有明确大量减少的视觉证据，支持上一条读数异常，不能把本次下降182克直接记为取用。",
+      "match": true,
+      "detail": "读数回落至可信值附近，确认此前为传感器尖峰"
+    },
+    {
+      "sample_id": "M001",
+      "ours": "baseline",
+      "expected": "initial_load",
+      "sensor_condition": "normal",
+      "expected_behavior": "建立腌牛肉基线，斜拍、低画质与肉片重叠，不要求精确计数或从单图估克数。",
+      "match": true,
+      "detail": null
+    },
+    {
+      "sample_id": "M002",
+      "ours": "removal",
+      "expected": "removal_and_spread",
+      "sensor_condition": "normal",
+      "expected_behavior": "重量减少88克；摊平后面积仍相似，不能据面积推断重量未变。",
+      "match": true,
+      "detail": "取用（盘内量减少；不推断顾客是否吃完）"
+    },
+    {
+      "sample_id": "M003",
+      "ours": "no_change",
+      "expected": "no_change",
+      "sensor_condition": "normal",
+      "expected_behavior": "遮挡降低视觉可判定性；3克差在本场景噪声范围内，不判定取用，也不能只看见手就判定夹取。",
+      "match": true,
+      "detail": null
+    },
+    {
+      "sample_id": "M004",
+      "ours": "refill_confirmed",
+      "expected": "refill",
+      "sensor_condition": "normal",
+      "expected_behavior": "重量增加123克，结合已记录120克补菜，支持正常补菜；低质量图像只作辅助，不要求验证精确增加克数。",
+      "match": true,
+      "detail": "增重与补菜记录匹配"
+    }
+  ],
+  "snapshots": [
+    {
+      "plate_id": "P001",
+      "serving_id": "P001_s01",
+      "dish_id": "D01",
+      "dish_name": "小馒头",
+      "status": "open",
+      "trusted_net_g": 149.0,
+      "baseline_g": 201.0,
+      "remaining_ratio": 0.741,
+      "remaining_count": 6,
+      "consumed_g": 50.0,
+      "refilled_g": 0.0,
+      "last_station": "A",
+      "last_observed_at": "2026-10-03T17:03:00+08:00",
+      "opened_at": "2026-10-03T17:00:00+08:00",
+      "velocity_g_per_min": 16.67,
+      "eta_empty_min": 8.9,
+      "stagnation_min": 2.0,
+      "age_min": 3.0,
+      "waste_risk": "none",
+      "anomaly": null,
+      "simulated": true
+    },
+    {
+      "plate_id": "P002",
+      "serving_id": "P002_s01",
+      "dish_id": "D05",
+      "dish_name": "腌牛肉",
+      "status": "open",
+      "trusted_net_g": 332.0,
+      "baseline_g": 300.0,
+      "remaining_ratio": 1.107,
+      "remaining_count": null,
+      "consumed_g": 88.0,
+      "refilled_g": 123.0,
+      "last_station": "A",
+      "last_observed_at": "2026-10-03T17:03:30+08:00",
+      "opened_at": "2026-10-03T17:00:30+08:00",
+      "velocity_g_per_min": 29.33,
+      "eta_empty_min": 11.3,
+      "stagnation_min": 2.0,
+      "age_min": 3.0,
+      "waste_risk": "none",
+      "anomaly": null,
+      "simulated": true
+    }
+  ],
+  "dish_summary": [
+    {
+      "dish_id": "D05",
+      "name": "腌牛肉",
+      "open_plates": 1,
+      "remaining_g": 332.0,
+      "consumed_g": 88.0,
+      "refilled_g": 123.0,
+      "remaining_count": null,
+      "countable": false,
+      "stagnated_plates": 0,
+      "pending_refill_g": 0.0,
+      "dispatch_suspended": false,
+      "simulated": true,
+      "velocity_g_per_min": 88.0,
+      "eta_empty_min": 3.8
+    },
+    {
+      "dish_id": "D01",
+      "name": "小馒头",
+      "open_plates": 1,
+      "remaining_g": 149.0,
+      "consumed_g": 50.0,
+      "refilled_g": 0.0,
+      "remaining_count": 6,
+      "countable": true,
+      "stagnated_plates": 0,
+      "pending_refill_g": 100.0,
+      "dispatch_suspended": false,
+      "simulated": true,
+      "velocity_g_per_min": 50.0,
+      "eta_empty_min": 3.0
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "493e913fabc3",
+      "action": "refill",
+      "dish_id": "D05",
+      "serving_id": "P002_s01",
+      "plate_id": "P002",
+      "quantity_g": 88.0,
+      "quantity_count": null,
+      "unit": "g",
+      "priority": "high",
+      "need_by": "2026-10-03T17:04:30+08:00",
+      "status": "done",
+      "reason": "余量71%，速度88.0g/min，预计2.4分钟耗尽",
+      "evidence": [
+        "M001",
+        "M002"
+      ],
+      "simulated": true,
+      "created_at": "2026-10-03T17:01:30+08:00",
+      "updated_at": "2026-10-03T15:12:09+08:00",
+      "closed_at": "2026-10-03T15:12:09+08:00",
+      "close_note": "补菜记录 120.0g 闭环",
+      "dish_name": "腌牛肉"
+    },
+    {
+      "task_id": "af673f14354e",
+      "action": "refill",
+      "dish_id": "D01",
+      "serving_id": "P001_s01",
+      "plate_id": "P001",
+      "quantity_g": 50.0,
+      "quantity_count": 2,
+      "unit": "个",
+      "priority": "high",
+      "need_by": "2026-10-03T17:04:00+08:00",
+      "status": "pending",
+      "reason": "余量75%，速度50.0g/min，预计3.0分钟耗尽；折合2个",
+      "evidence": [
+        "B001",
+        "B002"
+      ],
+      "simulated": true,
+      "created_at": "2026-10-03T17:01:00+08:00",
+      "updated_at": "2026-10-03T17:01:00+08:00",
+      "closed_at": null,
+      "close_note": null,
+      "dish_name": "小馒头"
+    }
+  ],
+  "waste": {
+    "entries": [],
+    "totals_g": {},
+    "note": "报损=撤盘时剩余净重×处置原因；可复用不计入报废"
+  },
+  "summary": {
+    "total_consumed_g": 138.0,
+    "total_remaining_g": 481.0,
+    "open_plates": 2,
+    "covers": 0,
+    "per_cover_consumed_g": null,
+    "simulated_finance": {
+      "food_cost_yuan": 0.69,
+      "simulated": true,
+      "note": "成本为模拟口径（菜品 cost_per_10g 配置 × 取用量），不代表真实财务"
+    },
+    "dish_ranking": [
+      {
+        "dish_id": "D05",
+        "name": "腌牛肉",
+        "consumed_g": 88.0,
+        "per_100_covers_g": null
+      },
+      {
+        "dish_id": "D01",
+        "name": "小馒头",
+        "consumed_g": 50.0,
+        "per_100_covers_g": null
+      }
+    ],
+    "station_preference": [
+      {
+        "dish_id": "D01",
+        "stations": [
+          {
+            "station": "B",
+            "times": 1,
+            "taken_g": 50.0
+          }
+        ]
+      },
+      {
+        "dish_id": "D05",
+        "stations": [
+          {
+            "station": "B",
+            "times": 1,
+            "taken_g": 88.0
+          }
+        ]
+      }
+    ],
+    "hourly": [
+      {
+        "hour": "2026-10-03 17",
+        "taken_g": 138.0,
+        "times": 2
+      }
+    ],
+    "generated_at": "2026-10-03T15:12:09+08:00"
+  }
+}
