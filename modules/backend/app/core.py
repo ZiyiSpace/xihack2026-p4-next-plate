@@ -14,7 +14,7 @@ import uuid
 from datetime import datetime, timedelta
 from typing import Any, Optional
 
-from . import analytics, config, db, refill, vision
+from . import analytics, config, db, images, refill, vision
 from .interpreter import ServingState, interpret, same_pass
 from .jev import JevClient
 from .schemas import (CoversIn, DishConfigIn, OperationIn, StationEventIn,
@@ -209,12 +209,10 @@ class HotpotService:
                                             before=ts.isoformat())
                       if o["op_type"] == "refill"]
 
+        # 采集端已给出图片引用时不再重复落盘（同一张图只存一份）
         image_ref = ev.image_ref
-        if image_bytes is not None:
-            os.makedirs(config.IMAGE_DIR, exist_ok=True)
-            image_ref = os.path.join(config.IMAGE_DIR, f"{event_id}.png")
-            with open(image_ref, "wb") as f:
-                f.write(image_bytes)
+        if image_bytes is not None and not image_ref:
+            image_ref = images.store(f"{event_id}.png", image_bytes)
 
         classification, detail = (interpret(st, net, ts, ev.station_id, refill_ops, event_id)
                                   if net is not None else ("no_weight", {"note": "本次无称重，仅记录"}))
@@ -402,6 +400,15 @@ class HotpotService:
         return int(rows[0]["n"] or 0) if rows else 0
 
     # ------------------------------------------------ 健康与配置
+
+    def reset(self) -> None:
+        """清空业务数据并重建内存状态，回到「刚开机」；菜品配置保留。
+
+        演示前复位与数据回放共用这一个动作，避免两处各写一遍
+        `db.reset_all()` + 重建状态而漏掉其中一步。
+        """
+        db.reset_all()
+        self.__init__()
 
     def upsert_dish_config(self, d: DishConfigIn) -> dict:
         db.upsert_dish({**d.model_dump(), "countable": int(d.countable)})
