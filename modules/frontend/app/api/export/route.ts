@@ -1,0 +1,4 @@
+import { readState } from "@/lib/store";
+import { sourceSchema,failure } from "@/lib/http";
+import { summarize } from "@/lib/engine";
+export async function GET(req:Request){try{const source=sourceSchema.parse(new URL(req.url).searchParams.get("source")||"demo");const s=await readState(source);const v=summarize(s,source!=="demo"?new Date().toISOString():s.clock);const escape=(x:unknown)=>`"${String(x).replaceAll('"','""')}"`;const rows=[["数据来源","日期","菜品","补充次数","补充分量","计量单位","取用重量g","报损重量g","报损成本元"],...v.dishes.map(d=>[source==="demo"?"模拟":source==="test"?"联调虚拟数据":"真实",v.clock,d.name,d.refillCount,d.refillQuantity,d.unit,d.takeG,d.wasteG,d.wasteCost.toFixed(2)])];const csv="\uFEFF"+rows.map(r=>r.map(escape).join(",")).join("\r\n");return new Response(csv,{headers:{"Content-Type":"text/csv;charset=utf-8","Content-Disposition":`attachment; filename="koala-${source}-report.csv"`,"Cache-Control":"no-store"}});}catch(e){return failure(e,503)}}

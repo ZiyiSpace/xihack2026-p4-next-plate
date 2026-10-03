@@ -9,8 +9,12 @@
 | hz | modules/backend | 感知与补菜后端：事件解释状态机、三份接口契约、规则补菜、经营分析、数据集回放（对评 8/8、五场景 9/9） | 可运行 | evidence/hz-回放对评报告.json；modules/backend/scripts/scenario_tests.py | 2026-10-03 |
 | （示例行，用完删）某某 | modules/dataset | 做了 XX 菜品的 AI 生成图片与质量标注 X 张 | 半成品 | evidence/某某/… | 10-03 |
 
+| liiiyiiixiii（群昵称待确认） | modules/frontend；docs；evidence/liiiyiiixiii | 厨房/管理工作台：余量、补菜到口倒计时、任务操作、报损、经营分析、模型配置，独立原型含 API 与 D1 | 原型可运行；团队后端待联调 | evidence/liiiyiiixiii/验证记录.md（25/25、类型检查、构建通过）；界面截图 | 2026-10-03 |
+
 ## 问题与待办
 
 - [ ] 待办：队友 GitHub 推送权限（无权限的群里 @hz 加 collaborator）
 - [ ] 待办：真实采集数据联调
 - [ ] 待办：补菜规则阈值核对
+
+- [ ] 前端原型与 modules/backend 接口、任务状态和业务规则尚待统一；当前两套服务未集成。
