@@ -93,9 +93,15 @@ class JevClient:
     # ---- 路线 B：语义 ----
 
     def identify(self, image_b64: str, options: list[str], menu_name: Optional[str] = None,
-                 repeat: int = 1) -> Optional[dict]:
-        """菜品识别。返回 {dish, confidence, ...}；confidence < 阈值由调用方判无效。"""
+                 repeat: int = 1, include_none: bool = False) -> Optional[dict]:
+        """菜品识别。返回 {dish, confidence, margin, abstained, ranking}；置信度阈值由调用方判。
+
+        `include_none` 追加一个「以上都不是」选项。服务方文档提醒它「容易误伤真的菜」，
+        本队实测确认过（见 `vision.identify_dish`），只在称重判定为空盘时才开。
+        """
         data = {"modality": "image", "repeat": str(repeat)}
+        if include_none:
+            data["include_none"] = "true"
         if menu_name:
             data["menu"] = menu_name
         else:

@@ -285,7 +285,11 @@ def _identify(sample_id: str) -> dict:
     image_b64 = _read_b64(s["image_ref"])
     if not image_b64:
         raise HTTPException(404, "这条样例的图片不在存储里了，请重新上传")
-    recognized = vision.identify_dish(image_b64)
+    # 称重说盘上没东西时，让模型可以选「以上都不是」；没称重就按有菜处理，
+    # 免得误伤真的菜（实测：有菜时开这个选项准度会掉）。
+    weight = s.get("net_weight_g")
+    has_food = weight is None or float(weight) > config.NOISE_BOUND_G
+    recognized = vision.identify_dish(image_b64, plate_has_food=has_food)
     updated: dict = {}
 
     def change(samples: list[dict]) -> None:

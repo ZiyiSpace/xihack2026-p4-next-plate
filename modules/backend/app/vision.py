@@ -14,6 +14,9 @@ from typing import Optional
 from . import config, db
 from .jev import JevClient, JevUnavailable
 
+# 服务方 /v1/identify 在 include_none=True 时追加的选项文本（对齐《使用说明》）
+ABSTAIN_OPTION = "以上都不是"
+
 
 def _client() -> JevClient:
     return _SHARED[0]
@@ -31,28 +34,42 @@ def menu_names() -> list[str]:
     return [d["name"] for d in db.get_dishes()]
 
 
-def identify_dish(image_b64: str) -> Optional[dict]:
+def identify_dish(image_b64: str, plate_has_food: bool = True) -> Optional[dict]:
     """纯识别：图片 -> 菜品，不预设绑定。
 
     和 `check_binding` 的区别是「我不知道这是什么菜」vs「验证是不是我以为的那道菜」。
     用于人工上传样例时的首次识别。离线/失败返回 `{"skipped": True}`，调用方据此回退。
+
+    候选清单是**库里的全部菜品**，不是某一盘绑定的那道菜 —— 模型的任务是在整份菜单里
+    做选择，不是给预设答案盖章。
+
+    `plate_has_food=False`（称重判定盘上没东西）时给清单追加「以上都不是」。
+    本队 v0.2 数据集实测（`modules/integration/measure_identify_options.py`）：
+    空盘不给这个选项，模型会用 0.71–0.99 的置信度编一个菜名出来（6 张空盘只对 1 张），
+    给了之后 6 张对 5 张。但有菜时开它会误伤真菜（14 张里 14 对 -> 10 对），
+    所以只在称重说空盘时才开。
     """
     menu = {d["name"]: d["dish_id"] for d in db.get_dishes()}
     if not menu:
         return None
     try:
-        r = _client().identify(image_b64, list(menu))
+        r = _client().identify(image_b64, list(menu), include_none=not plate_has_food)
     except JevUnavailable as e:
         return {"skipped": True, "note": str(e)[:120]}
     if not r:
         return {"skipped": True}
     name = r.get("dish")
     conf = float(r.get("confidence") or 0)
+    # 服务端把「以上都不是」当成一个候选返回，也可能自己标 abstained，两种都算弃权
+    abstained = bool(r.get("abstained")) or name == ABSTAIN_OPTION
     return {
-        "dish_id": menu.get(name),
+        "dish_id": None if abstained else menu.get(name),
         "recognized": name,
         "confidence": round(conf, 3),
-        "below_floor": conf < config.IDENTIFY_CONFIDENCE_FLOOR,
+        "margin": r.get("margin"),
+        "abstained": abstained,
+        "ranking": (r.get("ranking") or [])[:3],
+        "below_floor": abstained or conf < config.IDENTIFY_CONFIDENCE_FLOOR,
         "source": "model",
     }
 
