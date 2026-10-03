@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>旋转小火锅 · 感知与补菜后端</title>
+<style>
+  :root { --bg:#f5f6f8; --card:#fff; --ink:#1c2330; --sub:#6b7486; --line:#e6e9ef;
+          --blue:#2b6cb0; --green:#2f855a; --red:#c53030; --amber:#b7791f; --badge:#eef2f7; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+         background:var(--bg); color:var(--ink); padding:20px; }
+  header { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px; }
+  h1 { font-size:19px; margin-right:auto; }
+  h1 small { color:var(--sub); font-weight:normal; font-size:12px; margin-left:8px; }
+  button { border:1px solid var(--line); background:var(--card); color:var(--ink);
+           padding:7px 14px; border-radius:8px; cursor:pointer; font-size:13px; }
+  button.primary { background:var(--blue); border-color:var(--blue); color:#fff; }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:16px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .kpi .v { font-size:22px; font-weight:700; }
+  .kpi .l { font-size:12px; color:var(--sub); margin-top:2px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+          padding:14px; margin-bottom:16px; overflow-x:auto; }
+  .card h2 { font-size:14px; margin-bottom:10px; color:var(--sub); font-weight:600; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { color:var(--sub); font-weight:600; font-size:12px; }
+  .tag { display:inline-block; padding:1px 8px; border-radius:20px; font-size:11px;
+         background:var(--badge); color:var(--sub); }
+  .tag.ok { background:#e6f4ea; color:var(--green); }
+  .tag.warn { background:#fdf3e0; color:var(--amber); }
+  .tag.bad { background:#fde8e8; color:var(--red); }
+  .tag.info { background:#e8f0fb; color:var(--blue); }
+  .muted { color:var(--sub); }
+  .log { font-family:ui-monospace,Menlo,monospace; font-size:12px; max-height:180px;
+         overflow-y:auto; background:#fafbfc; border-radius:8px; padding:10px; line-height:1.7; }
+  .bar { height:6px; border-radius:4px; background:var(--line); width:110px; display:inline-block;
+         vertical-align:middle; margin-right:6px; }
+  .bar i { display:block; height:100%; border-radius:4px; background:var(--green); }
+  .row-actions button { padding:3px 8px; font-size:12px; margin-right:4px; }
+  #toast { position:fixed; bottom:18px; right:18px; background:#1c2330; color:#fff;
+           padding:10px 16px; border-radius:8px; font-size:13px; opacity:0; transition:.3s; }
+  #toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<header>
+  <h1>旋转小火锅 · 感知与补菜 <small id="mode"></small></h1>
+  <button onclick="replay('offline')">▶ 回放数据集（离线规则）</button>
+  <button class="primary" onclick="replay('online')">▶ 回放数据集（在线模型）</button>
+  <button onclick="refresh(true)">刷新</button>
+</header>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="card">
+  <h2>盘子状态（状态快照）</h2>
+  <table id="plates"><thead><tr>
+    <th>盘</th><th>菜品</th><th>可信净重</th><th>余量</th><th>已取用</th><th>速度 g/min</th>
+    <th>预计耗尽</th><th>滞留 min</th><th>报废风险</th><th>异常</th><th>来源</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<div class="card">
+  <h2>菜品汇总（同类多盘不重复计数）</h2>
+  <table id="dishes"><thead><tr>
+    <th>菜品</th><th>在转盘数</th><th>剩余 g</th><th>剩余件</th><th>已取用 g</th>
+    <th>在途补菜 g</th><th>速度</th><th>预计耗尽</th><th>滞留盘数</th><th>派单</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<div class="card">
+  <h2>补菜任务（待处理 / 制作中 / 已完成）</h2>
+  <table id="tasks"><thead><tr>
+    <th>任务</th><th>动作</th><th>菜品</th><th>建议量</th><th>优先级</th><th>完成期限</th>
+    <th>状态</th><th>依据</th><th>操作</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<div class="card">
+  <h2>经营与客群分析</h2>
+  <div id="biz"></div>
+</div>
+
+<div class="card">
+  <h2>回放日志</h2>
+  <div class="log" id="replaylog">（点击上方"回放数据集"开始：按时间线灌入 8 条称重观测 + 3 条后厨记录）</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500); }
+const fmt = (v, unit='') => (v===null||v===undefined) ? '—' : v + unit;
+const riskTag = r => r==='high' ? '<span class="tag bad">高</span>'
+                  : r==='watch' ? '<span class="tag warn">关注</span>'
+                  : '<span class="tag ok">无</span>';
+const prioTag = p => `<span class="tag ${p==='high'?'bad':p==='medium'?'warn':'info'}">${esc(p)}</span>`;
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
+  return r.json();
+}
+
+async function refresh(showToast) {
+  try {
+    const [health, plates, dishes, tasks, summary] = await Promise.all([
+      api('/api/health'), api('/api/plates'), api('/api/dishes'),
+      api('/api/tasks'), api('/api/analytics/summary'),
+    ]);
+    $('#mode').textContent = health.mode === 'online_with_model' ? '在线模型模式' : '离线规则模式';
+    $('#mode').style.color = health.mode === 'online_with_model' ? '#2f855a' : '#b7791f';
+
+    $('#kpis').innerHTML = [
+      ['在转盘数', summary.open_plates],
+      ['总取用 g', fmt(summary.total_consumed_g)],
+      ['总剩余 g', fmt(summary.total_remaining_g)],
+      ['用餐人数（模拟）', summary.covers || '—'],
+      ['每客取用 g', fmt(summary.per_cover_consumed_g)],
+      ['食材成本（模拟）', summary.simulated_finance.food_cost_yuan != null
+        ? '¥'+summary.simulated_finance.food_cost_yuan : '—'],
+    ].map(([l,v])=>`<div class="kpi"><div class="v">${esc(v)}</div><div class="l">${l}</div></div>`).join('');
+
+    $('#plates tbody').innerHTML = (plates||[]).map(p=>{
+      const ratio = p.remaining_ratio;
+      const pct = ratio!=null ? Math.min(100, Math.round(ratio*100)) : 0;
+      return `<tr>
+        <td><b>${esc(p.plate_id)}</b><div class="muted" style="font-size:11px">${esc(p.serving_id)}</div></td>
+        <td>${esc(p.dish_name)}${p.simulated?' <span class="tag">模拟</span>':''}</td>
+        <td>${fmt(p.trusted_net_g)} / ${fmt(p.baseline_g)} g</td>
+        <td><span class="bar"><i style="width:${pct}%;background:${pct<30?'#c53030':pct<60?'#b7791f':'#2f855a'}"></i></span>${ratio!=null?pct+'%':'—'}</td>
+        <td>${fmt(p.consumed_g)} g</td>
+        <td>${fmt(p.velocity_g_per_min)}</td>
+        <td>${p.eta_empty_min!=null?esc(p.eta_empty_min)+' min':'—'}</td>
+        <td>${fmt(p.stagnation_min)}</td>
+        <td>${riskTag(p.waste_risk)}</td>
+        <td>${p.anomaly?'<span class="tag bad">未解释突增 '+esc(p.anomaly.spike_g)+'g</span>':''}</td>
+        <td class="muted">${esc(p.last_station||'')} ${p.last_observed_at?esc(p.last_observed_at.slice(11,16)):''}</td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="11" class="muted">暂无数据：请先回放或接入采集端</td></tr>';
+
+    $('#dishes tbody').innerHTML = (dishes||[]).map(d=>`
+      <tr>
+        <td><b>${esc(d.name)}</b>${d.dispatch_suspended?' <span class="tag bad">派单暂停</span>':''}</td>
+        <td>${d.open_plates}</td>
+        <td>${fmt(d.remaining_g)}</td>
+        <td>${d.countable?fmt(d.remaining_count):'—'}</td>
+        <td>${fmt(d.consumed_g)}</td>
+        <td>${fmt(d.pending_refill_g)}</td>
+        <td>${fmt(d.velocity_g_per_min)}</td>
+        <td>${d.eta_empty_min!=null?esc(d.eta_empty_min)+' min':'—'}</td>
+        <td>${d.stagnated_plates||0}</td>
+        <td>${d.dispatch_suspended?'<button onclick="resume(\''+esc(d.dish_id)+'\')">恢复派单</button>':'<span class="tag ok">正常</span>'}</td>
+      </tr>`).join('') || '<tr><td colspan="10" class="muted">—</td></tr>';
+
+    $('#tasks tbody').innerHTML = (tasks||[]).map(t=>{
+      const q = t.quantity_count!=null ? `${t.quantity_count} ${esc(t.unit)}`
+             : t.quantity_g!=null ? `${t.quantity_g} g` : '—';
+      const canAct = ['pending','making','postponed'].includes(t.status);
+      return `<tr>
+        <td class="muted" style="font-size:11px">${esc(t.task_id)}</td>
+        <td>${t.action==='refill'?'<span class="tag info">补菜</span>':t.action==='pull'?'<span class="tag bad">撤盘</span>':'<span class="tag warn">巡检</span>'}</td>
+        <td>${esc(t.dish_name||t.dish_id)}${t.plate_id?'<div class="muted" style="font-size:11px">盘 '+esc(t.plate_id)+'</div>':''}</td>
+        <td>${q}</td><td>${prioTag(t.priority)}</td>
+        <td class="muted">${t.need_by?esc(t.need_by.slice(11,16)):'—'}</td>
+        <td>${esc(t.status)}</td>
+        <td style="max-width:360px;white-space:normal;font-size:12px" class="muted">${esc(t.reason||'')}</td>
+        <td class="row-actions">${canAct?`
+          <button onclick="task('${esc(t.task_id)}',{status:'making'})">制作</button>
+          <button onclick="task('${esc(t.task_id)}',{status:'done'})">完成</button>
+          <button onclick="task('${esc(t.task_id)}',{status:'cancelled',note:'人工取消'})">取消</button>`:''}</td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="9" class="muted">暂无任务</td></tr>';
+
+    const s = summary||{};
+    const rank = (s.dish_ranking||[]).map((r,i)=>`
+      <tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${fmt(r.consumed_g)} g</td>
+      <td>${r.per_100_covers_g!=null?esc(r.per_100_covers_g)+' g':'—'}</td></tr>`).join('');
+    const st = (s.station_preference||[]).map(x=>`
+      <tr><td>${esc(x.dish_id)}</td><td>${x.stations.map(v=>`${esc(v.station)}：${fmt(v.taken_g)}g/${v.times}次`).join('， ')}</td></tr>`).join('');
+    const hour = (s.hourly||[]).map(h=>`<tr><td>${esc(h.hour)}</td><td>${fmt(h.taken_g)} g / ${h.times} 次</td></tr>`).join('');
+    $('#biz').innerHTML = `
+      <table><thead><tr><th colspan="4">菜品取用排名（按人头收费：以取用量表达，不代表收入）</th></tr></thead>
+      <tbody>${rank||'<tr><td class="muted">—</td></tr>'}</tbody></table>
+      <table style="margin-top:10px"><thead><tr><th colspan="2">站点取用偏好（哪段位置被取最多）</th></tr></thead>
+      <tbody>${st||'<tr><td class="muted">—</td></tr>'}</tbody></table>
+      <table style="margin-top:10px"><thead><tr><th colspan="2">时段趋势</th></tr></thead>
+      <tbody>${hour||'<tr><td class="muted">—</td></tr>'}</tbody></table>
+      ${s.simulated_finance&&s.simulated_finance.simulated?'<p class="muted" style="margin-top:8px;font-size:12px">⚠ '+esc(s.simulated_finance.note)+'</p>':''}`;
+    if (showToast) toast('已刷新');
+  } catch (e) { toast('刷新失败：'+e.message); }
+}
+
+async function replay(mode) {
+  try {
+    const r = await api('/api/replay?mode='+mode, {method:'POST'});
+    if (r.error) { toast(r.error); return; }
+    toast('回放已启动（'+mode+'）');
+    pollReplay();
+  } catch (e) { toast('回放失败：'+e.message); }
+}
+
+let replayTimer = null;
+function pollReplay() {
+  clearInterval(replayTimer);
+  replayTimer = setInterval(async () => {
+    try {
+      const s = await api('/api/replay/status');
+      $('#replaylog').innerHTML = (s.log||[]).map(esc).join('<br>');
+      if (!s.running) {
+        clearInterval(replayTimer);
+        if (s.error) toast('回放出错：'+s.error);
+        else if (s.report) toast(`回放完成：事件分类 ${s.report.score}/${s.report.total} 与场景设定一致`);
+        refresh();
+      }
+    } catch (e) { clearInterval(replayTimer); }
+  }, 800);
+}
+
+async function task(id, upd) {
+  try { await api('/api/tasks/'+id, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(upd)}); toast('已更新'); refresh(); }
+  catch (e) { toast('失败：'+e.message); }
+}
+async function resume(dish) {
+  try { await api('/api/dishes/'+dish+'/resume-dispatch', {method:'POST'}); toast('已恢复派单'); refresh(); }
+  catch (e) { toast('失败：'+e.message); }
+}
+
+refresh();
+setInterval(()=>refresh(), 5000);
+</script>
+</body>
+</html>

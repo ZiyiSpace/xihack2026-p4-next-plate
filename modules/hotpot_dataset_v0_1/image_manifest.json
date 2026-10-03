@@ -1,0 +1,42 @@
+[
+  {
+    "sample_id": "B001",
+    "prompt_key": "bun_base",
+    "sha256": "0e5fba44645361ffc8ac6f899dd33d69df8e75afd73288c068cab5676f356c5c"
+  },
+  {
+    "sample_id": "B002",
+    "prompt_key": "bun_blur",
+    "sha256": "1bdd373fc83061be9e55b0416884a271e29a78111de8be6e84e5e3abe1539df2"
+  },
+  {
+    "sample_id": "B003",
+    "prompt_key": "bun_six",
+    "sha256": "dfabab37d5ae34869c25afe77df66fb4c6cf4e8522b4d36cbcfe057f87be42fa"
+  },
+  {
+    "sample_id": "B004",
+    "prompt_key": "bun_recovery",
+    "sha256": "2766d578a34724e322c4b8c2d9fea9b6c2a9df8409bf40c8f4bc4c3a65953e67"
+  },
+  {
+    "sample_id": "M001",
+    "prompt_key": "beef_base",
+    "sha256": "1108de88191e66ddbcd023cbae1566cb30501a04af4db2c6aa31049973561ab5"
+  },
+  {
+    "sample_id": "M002",
+    "prompt_key": "beef_low",
+    "sha256": "60dd59223a4fae7d1bef0c59041588aac0debb1da2db10878d8802166285f300"
+  },
+  {
+    "sample_id": "M003",
+    "prompt_key": "beef_occlusion",
+    "sha256": "4fb8e7330b20860ad22d8b7613c76fae3d1d47ba96b616ec2a96c3233d1cbd7b"
+  },
+  {
+    "sample_id": "M004",
+    "prompt_key": "beef_refill",
+    "sha256": "5dfc4d103fffa79f9ca79e6afc250598f7068755885de7560b27ba3bd087392f"
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "dish_id": "D01",
+    "name": "小馒头",
+    "anticipated_difficulty": "较易",
+    "challenge": "独立轮廓、数量变化",
+    "status": "本批已生成"
+  },
+  {
+    "dish_id": "D02",
+    "name": "南瓜饼",
+    "anticipated_difficulty": "较易至中等",
+    "challenge": "堆叠、局部遮挡",
+    "status": "计划扩展"
+  },
+  {
+    "dish_id": "D03",
+    "name": "鱼丸",
+    "anticipated_difficulty": "中等",
+    "challenge": "形状重复、相互遮挡",
+    "status": "计划扩展"
+  },
+  {
+    "dish_id": "D04",
+    "name": "豆腐片",
+    "anticipated_difficulty": "中等",
+    "challenge": "浅色反光、破碎、重叠",
+    "status": "计划扩展"
+  },
+  {
+    "dish_id": "D05",
+    "name": "腌牛肉",
+    "anticipated_difficulty": "较难",
+    "challenge": "堆叠厚度、摊平、酱汁反光",
+    "status": "本批已生成"
+  },
+  {
+    "dish_id": "D06",
+    "name": "腌鸡肉",
+    "anticipated_difficulty": "较难",
+    "challenge": "腌料导致外观相似、形状不规则",
+    "status": "计划扩展"
+  }
+]

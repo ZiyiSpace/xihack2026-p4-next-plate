@@ -1,0 +1,23 @@
+{
+  "dataset_version": "0.1",
+  "type": "synthetic_multimodal_temporal_demo",
+  "timezone": "Asia/Shanghai",
+  "mass_unit": "g",
+  "stations_in_order": [
+    "A",
+    "B",
+    "C"
+  ],
+  "seconds_between_stations": 60,
+  "lap_seconds": 180,
+  "synthetic_tare_g": 180,
+  "normal_reading_error_bound_g": 2,
+  "normal_pairwise_noise_bound_g": 4,
+  "synthetic_bun_unit_mass_g": 25,
+  "split": "demo_only",
+  "image_plate_id_source": "external_binding_not_image_marker",
+  "replenish_decision_scope": "not_labeled_due_to_missing_demand_and_kitchen_context",
+  "camera_design": "low_oblique_side_view_approximately_20_degrees_above_horizontal_not_calibrated",
+  "baseline_image_condition": "low_effective_resolution_compression_motion_blur_clutter",
+  "image_qa_scope": "qualitative_visual_check_no_geometric_or_mass_calibration"
+}
