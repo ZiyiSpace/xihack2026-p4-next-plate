@@ -46,8 +46,7 @@ class ReplayRunner:
         if not os.path.isdir(config.DATASET_DIR):
             return {"error": f"数据集目录不存在: {config.DATASET_DIR}"}
         if reset:
-            db.reset_all()
-            self.service.__init__()  # 重建内存状态（含菜品种子）
+            self.service.reset()
         self.status = {"running": True, "mode": mode, "progress": 0, "total": 0,
                        "log": [], "report": None, "error": None}
         self._thread = threading.Thread(target=self._run, args=(mode,), daemon=True)

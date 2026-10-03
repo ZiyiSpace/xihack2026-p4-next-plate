@@ -17,7 +17,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, Response
 
-from . import config, db, refill
+from . import config, db, images, refill, samples
 from .core import HotpotService
 from .schemas import (DishConfigIn, OperationIn, StationEventIn,
                       TaskUpdateIn)
@@ -50,6 +50,46 @@ def _to_unit(g: Optional[float], d: dict) -> Optional[float]:
         return None
     m = _unit_mass(d)
     return round(g / m, 1) if (d.get("countable") and m) else round(g, 1)
+
+
+def _image_url(ref: Optional[str]) -> Optional[str]:
+    """事件里的图片引用 -> 浏览器可直接取的 URL。
+
+    采集端走图片存储时存的已经是 `/api/images/<name>`，原样返回；历史数据可能
+    是宿主绝对路径或数据集相对路径，按存储 key 回落；取不到时由存储返回 404。
+    """
+    if not ref:
+        return None
+    if ref.startswith("/api/images/"):
+        return ref
+    return images.url_for(images.key_of(ref))
+
+
+def _captures(dishes_cfg: dict, limit: int = 12) -> list[dict]:
+    """工作台「最近抓拍」：带图的站点事件，最新在前。
+
+    判读文字与视觉校验直接取自事件的 interpretation，不做二次加工，
+    保证卡片和后端记账看到的是同一条证据。
+    """
+    out = []
+    for r in db.get_recent_captures(limit):
+        interp = r.get("interpretation") or {}
+        dish_id = _dish_of_serving(r.get("serving_id"))
+        out.append({
+            "eventId": r["event_id"], "at": r["observed_at"],
+            "plateId": r["plate_id"], "stationId": r["station_id"],
+            "dishId": dish_id,
+            "dishName": (dishes_cfg.get(dish_id) or {}).get("name"),
+            "claimedDishId": r.get("dish_id_claim"),
+            "netWeightG": r.get("net_weight_g"),
+            "quality": r.get("quality"),
+            "imageUrl": _image_url(r.get("image_ref")),
+            "classification": interp.get("classification"),
+            "note": interp.get("note"),
+            "bindingCheck": interp.get("binding_check"),
+            "simulated": bool(r.get("simulated")),
+        })
+    return out
 
 
 def build_view(service: HotpotService, source: str = "live") -> dict:
@@ -211,6 +251,8 @@ def build_view(service: HotpotService, source: str = "live") -> dict:
         "metrics": metrics, "hourly": hourly,
         "integrations": {"deepseekConfigured": False, "ingestConfigured": True,
                          "model": None},
+        "captures": _captures(dishes_cfg),
+        "samples": samples.summary(),
         "plates": [{"id": p["plate_id"], "dishId": p["dish_id"],
                     "quantity": p.get("remaining_count") if p.get("remaining_count") is not None else p["trusted_net_g"],
                     "weightG": p["trusted_net_g"], "seenAt": p.get("last_observed_at"),

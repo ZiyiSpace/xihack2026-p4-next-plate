@@ -185,6 +185,20 @@ def get_events(plate_id: Optional[str] = None, limit: int = 500) -> list[dict]:
     return rows
 
 
+def get_recent_captures(limit: int = 12) -> list[dict]:
+    """最近带图的站点事件，最新在前。
+
+    `get_events` 按时间升序取前 N 条，拿不到「最新的几张图」——工作台的抓拍卡片
+    要的是后者，这类取数口子属于本层，不该由调用方各写一条 SQL。
+    """
+    rows = query(
+        "SELECT * FROM station_events WHERE image_ref IS NOT NULL AND image_ref <> '' "
+        "ORDER BY observed_at DESC LIMIT ?", (limit,))
+    for r in rows:
+        r["interpretation"] = json.loads(r["interpretation"]) if r["interpretation"] else None
+    return rows
+
+
 def insert_op(o: dict) -> None:
     execute(
         """INSERT OR IGNORE INTO operations (op_id,timestamp,plate_id,op_type,dish_id,

@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from . import adapter, config, db
+from . import adapter, config, db, images, samples
 from .core import HotpotService
 from .replay import ReplayRunner
 from .schemas import (CoversIn, DishConfigIn, OperationIn, StationEventIn,
@@ -28,6 +28,19 @@ service = HotpotService()
 replay_runner = ReplayRunner(service)
 adapter.attach(service)
 app.include_router(adapter.router)
+app.include_router(images.router)
+samples.attach(service)
+app.include_router(samples.router)
+
+
+@app.exception_handler(images.ImageStoreError)
+def image_store_error(request: Request, exc: images.ImageStoreError):
+    """图片存储拒写是客户端问题，不能退回 500。
+
+    同名不同内容 => 409（引用已发出，覆盖会让它指向另一张图）；名字非法 => 400。
+    """
+    status = 409 if isinstance(exc, images.ImageConflictError) else 400
+    return JSONResponse(status_code=status, content={"error": str(exc)})
 
 _STATIC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
 
@@ -196,6 +209,17 @@ def start_replay(mode: str = "offline", reset: bool = True):
 @app.get("/api/replay/status")
 def replay_status():
     return replay_runner.status
+
+
+@app.post("/api/maintenance/reset")
+def maintenance_reset():
+    """清空业务数据回到「刚开机」，菜品配置保留。
+
+    与 /api/replay 的 reset 是同一个动作，但不顺带跑一遍进程内回放，
+    这样外部采集端可以只复位、不触发后端自己的数据回放。
+    """
+    service.reset()
+    return {"reset": True}
 
 
 # ------------------------------------------------ 工作台页面反代

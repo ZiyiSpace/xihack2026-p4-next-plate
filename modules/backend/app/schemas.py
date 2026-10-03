@@ -18,7 +18,10 @@ from pydantic import BaseModel, Field
 class StationEventIn(BaseModel):
     """采集端上报的一次有效经过事件（连续视频帧应由采集端或后端合并后上报）。"""
 
-    event_id: Optional[str] = Field(None, description="采集端唯一 id；不传则后端生成并用于去重")
+    event_id: Optional[str] = Field(
+        None, pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$",
+        description="采集端唯一 id；不传则后端生成并用于去重。"
+                    "该值同时是抓拍图片的存储名，含其他字符会被拒（422）")
     plate_id: str = Field(..., description="物理盘号（外部绑定，不依赖图中标记）")
     station_id: str = Field(..., description="观察站点 A/B/C...")
     observed_at: datetime = Field(..., description="采集时间（带时区）")
@@ -167,7 +170,9 @@ class InterpretationResult(BaseModel):
     classification: str = Field(
         ...,
         description="baseline|no_change|removal|refill_confirmed|unexplained_increase|"
-        "anomaly_resolved|late_refill|merged_pass|mismatch",
+        "anomaly_resolved|late_refill|merged_pass|out_of_order|no_weight"
+        "（前七个由 interpreter 产出，merged_pass/out_of_order/no_weight 由 core 的"
+        "合帧、乱序隔离、无称重分支产出）",
     )
     delta_g: Optional[float] = None
     detail: Optional[str] = None

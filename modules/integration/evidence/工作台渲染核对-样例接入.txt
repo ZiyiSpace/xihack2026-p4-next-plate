@@ -1,0 +1,27 @@
+{
+  "check": "samples",
+  "title": "管理端 · 门店设置 · 样例数据接入",
+  "url": "http://127.0.0.1:8000/admin",
+  "browser": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  "hasPanel": true,
+  "heading": "样例数据接入",
+  "pick": "选择图片",
+  "hasFileInput": true,
+  "runButton": "运行",
+  "hint": "2/2 条已填净重",
+  "empty": null,
+  "rows": 2,
+  "thumbs": [
+    {
+      "src": "/api/images/B001.png",
+      "w": 1536
+    },
+    {
+      "src": "/api/images/B002.png",
+      "w": 1536
+    }
+  ],
+  "loading": false
+}
+
+核对通过：管理端 · 门店设置 · 样例数据接入 渲染出来了

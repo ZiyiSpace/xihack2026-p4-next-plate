@@ -1,0 +1,4 @@
+{"sample_id": "T001", "plate_id": "P001", "dish_id": "D01", "timestamp": "2026-10-03T18:00:00+08:00", "station_id": "A", "lap_index": 1, "image_path": "images/T001.png", "tare_g": 180, "gross_weight_g": 380, "net_weight_g": 200}
+{"sample_id": "T002", "plate_id": "P001", "dish_id": "D01", "timestamp": "2026-10-03T18:01:00+08:00", "station_id": "B", "lap_index": 1, "image_path": "images/T002.png", "tare_g": 180, "gross_weight_g": 330, "net_weight_g": 150}
+{"sample_id": "T003", "plate_id": "P002", "dish_id": "D05", "timestamp": "2026-10-03T18:00:30+08:00", "station_id": "A", "lap_index": 1, "image_path": "images/T003.png", "tare_g": 180, "gross_weight_g": 480, "net_weight_g": 300}
+{"sample_id": "T004", "plate_id": "P002", "dish_id": "D05", "timestamp": "2026-10-03T18:01:30+08:00", "station_id": "B", "lap_index": 1, "image_path": "images/T004.png", "tare_g": 180, "gross_weight_g": 390, "net_weight_g": 210}

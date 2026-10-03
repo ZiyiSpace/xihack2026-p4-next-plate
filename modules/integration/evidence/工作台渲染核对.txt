@@ -1,0 +1,23 @@
+{
+  "check": "capture",
+  "title": "工作台抓拍卡片",
+  "url": "http://127.0.0.1:8000/admin",
+  "browser": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  "hasCard": true,
+  "heading": "采集抓拍",
+  "dish": "小馒头",
+  "verdict": "取用\n151 克\n模拟数据",
+  "binding": "本次未做视觉校验（未上传图片或菜品未绑定）。",
+  "note": "取用（盘内量减少；不推断顾客是否吃完）",
+  "shot": {
+    "present": true,
+    "src": "/api/images/B002.png",
+    "complete": true,
+    "naturalWidth": 1536,
+    "naturalHeight": 1024
+  },
+  "strip": 2,
+  "loading": false
+}
+
+核对通过：工作台抓拍卡片 渲染出来了
