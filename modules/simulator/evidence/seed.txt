@@ -1,0 +1,9 @@
+[采集端] 后端 http://127.0.0.1:8000 图片存储共 11 张；本批 8 张中新增 0 张、复用 8 张
+  B001.png     -> /api/images/B001.png
+  B002.png     -> /api/images/B002.png
+  B003.png     -> /api/images/B003.png
+  B004.png     -> /api/images/B004.png
+  M001.png     -> /api/images/M001.png
+  M002.png     -> /api/images/M002.png
+  M003.png     -> /api/images/M003.png
+  M004.png     -> /api/images/M004.png
