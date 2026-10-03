@@ -1,0 +1,17 @@
+import assert from "node:assert/strict";
+const origin="http://127.0.0.1:5173";
+const key=process.env.KOALA_TEST_INGEST_KEY;if(!key)throw new Error("Set KOALA_TEST_INGEST_KEY for local tests");
+const state=async()=>{const r=await fetch(`${origin}/api/state?source=live`);assert.equal(r.status,200);return r.json();};
+const ingest=async(events,token=key)=>{const r=await fetch(`${origin}/api/ingest`,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${token}`},body:JSON.stringify({events})});return {status:r.status,body:await r.json()};};
+const action=async(a)=>{const r=await fetch(`${origin}/api/actions`,{method:"POST",headers:{"Content-Type":"application/json",Origin:origin},body:JSON.stringify({...a,source:"live",actionId:crypto.randomUUID()})});assert.equal(r.status,200,JSON.stringify(await r.json()));};
+const now=Date.now();const stamp=(offset)=>new Date(now+offset).toISOString();
+const e={eventId:crypto.randomUUID(),timestamp:stamp(-180000),plateId:"test-live-plate",dishId:"beef",kind:"observe",netWeightG:180,confidence:.99};
+assert.equal((await ingest([e],"invalid")).status,401);
+assert.equal((await ingest([e])).status,200);const first=await state();assert.equal(first.plates.length,1);
+assert.equal((await ingest([e])).body.results[0].status,"duplicate");assert.equal((await state()).dishes[0].stock,180);
+await action({action:"dish",id:"beef",batch:100,target:500,leadMinutes:5,safetyMinutes:3,costPerKg:48,confirmed:true});await action({action:"settings",autoEnabled:true,closeTime:"23:59",staleMinutes:5});
+const take={...e,eventId:crypto.randomUUID(),timestamp:stamp(-1000),netWeightG:80};assert.equal((await ingest([take])).status,200);const taken=await state();assert.equal(taken.dishes[0].takeG,100);assert.equal(taken.tasks.length,1);const task=taken.tasks[0];
+const bad={...e,eventId:crypto.randomUUID(),timestamp:stamp(-500),netWeightG:60};assert.equal((await ingest([bad,{...bad,eventId:crypto.randomUUID(),dishId:"unknown"}])).status,400);assert.equal((await state()).dishes[0].stock,80,"failed batch must not commit first event");
+const refill={...e,eventId:crypto.randomUUID(),timestamp:new Date().toISOString(),plateId:"test-live-refill",kind:"add",netWeightG:task.quantity};assert.equal((await ingest([refill])).status,200);await action({action:"task",id:task.id,status:"completed"});assert.equal((await state()).tasks[0].status,"completed");
+const remove={...refill,eventId:crypto.randomUUID(),timestamp:new Date(Date.now()+2).toISOString(),kind:"remove",netWeightG:120,disposition:"discard",reason:"Test discard"};assert.equal((await ingest([remove])).status,200);const final=await state();assert.equal(final.metrics.wastedG,120);assert.equal(final.plates.length,1);assert.ok(final.ledger.some(l=>l.kind==="take"&&l.weightG===task.quantity-120));
+console.log("PASS: ingest authentication, accepted reads, duplicates, live dispatch, atomic batch rollback, verified task completion, measured withdrawal and separate take/waste.");

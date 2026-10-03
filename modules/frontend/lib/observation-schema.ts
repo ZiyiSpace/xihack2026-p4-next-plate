@@ -1,0 +1,2 @@
+import { z } from "zod";
+export const observationSchema=z.object({eventId:z.string().min(1).max(120),timestamp:z.string().datetime({offset:true}),plateId:z.string().min(1).max(100),dishId:z.string().min(1).max(60),kind:z.enum(["observe","add","remove"]),netWeightG:z.number().finite().min(0).max(2500),count:z.number().int().min(0).max(100).optional(),confidence:z.number().min(0).max(1),refillArrivalAt:z.string().datetime({offset:true}).optional(),disposition:z.enum(["discard","other_loss","retain"]).optional(),reason:z.string().max(200).optional()}).strict();

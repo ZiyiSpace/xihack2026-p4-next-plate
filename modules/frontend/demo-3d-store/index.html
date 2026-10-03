@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>下一盘 · 旋转小火锅智能补菜演示</title>
+<style>
+:root{--bg:#0d1117;--panel:rgba(22,27,34,.88);--line:#2d333b;--ink:#e6edf3;--sub:#8b949e;
+--gold:#f0c674;--green:#7ee2a8;--red:#ff7b72;--amber:#e3b341;--blue:#79c0ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);
+font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+#scene{position:fixed;inset:0;z-index:0;cursor:grab}
+#scene:active{cursor:grabbing}
+header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:10px;
+padding:10px 16px;background:linear-gradient(180deg,rgba(13,17,23,.92),rgba(13,17,23,0));pointer-events:none}
+header>*{pointer-events:auto}
+h1{font-size:17px;font-weight:700;letter-spacing:.5px}
+h1 small{color:var(--sub);font-weight:400;font-size:11px;margin-left:8px}
+.badge{font-size:11px;padding:2px 9px;border-radius:20px;border:1px solid var(--line);
+background:var(--panel);color:var(--sub)}
+.badge.demo{color:var(--amber);border-color:#4d3f14}
+.badge.live{color:var(--green);border-color:#1f4d33}
+.badge.warn{color:var(--red);border-color:#5c2323;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.45}}
+button{border:1px solid var(--line);background:var(--panel);color:var(--ink);
+padding:6px 13px;border-radius:8px;cursor:pointer;font-size:12.5px}
+button:hover{border-color:#484f58}
+button.primary{background:#1f4d33;border-color:#2ea36b;color:#c9f7dd}
+button:disabled{opacity:.4;cursor:not-allowed}
+.spacer{flex:1;pointer-events:none}
+#alert{position:fixed;top:52px;left:50%;transform:translateX(-50%);z-index:20;display:none;
+max-width:620px;padding:9px 18px;border-radius:10px;font-size:13px;
+background:rgba(92,35,35,.94);border:1px solid #a34;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+#alert.ok{background:rgba(31,77,51,.94);border-color:#2ea36b}
+/* 右侧面板 */
+#side{position:fixed;top:56px;right:14px;bottom:120px;width:318px;z-index:10;display:flex;
+flex-direction:column;gap:10px;overflow:hidden}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 13px;
+backdrop-filter:blur(6px)}
+.card h3{font-size:11.5px;color:var(--sub);font-weight:600;letter-spacing:1px;margin-bottom:8px}
+#kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.kpi .v{font-size:19px;font-weight:700;color:var(--gold)}
+.kpi .v.red{color:var(--red)}.kpi .v.green{color:var(--green)}
+.kpi .l{font-size:10.5px;color:var(--sub);margin-top:1px}
+#dishes{overflow-y:auto;flex:1;min-height:120px}
+.drow{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed #21262d;font-size:12px}
+.drow:last-child{border:none}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.dname{width:56px;flex:none}
+.bar{flex:1;height:7px;border-radius:4px;background:#21262d;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px;transition:width .6s}
+.dnum{width:70px;text-align:right;color:var(--sub);flex:none;font-variant-numeric:tabular-nums}
+.dstat{font-size:10px;padding:1px 6px;border-radius:10px;flex:none}
+.dstat.ok{color:var(--green);background:rgba(126,226,168,.12)}
+.dstat.warn{color:var(--amber);background:rgba(227,179,65,.12)}
+.dstat.bad{color:var(--red);background:rgba(255,123,114,.12)}
+#tasks{max-height:190px;overflow-y:auto}
+.tcard{border:1px solid var(--line);border-radius:9px;padding:7px 9px;margin-bottom:7px;font-size:12px;
+background:rgba(13,17,23,.5)}
+.tcard .t1{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.tchip{font-size:10.5px;padding:1px 8px;border-radius:10px}
+.tchip.refill{color:var(--blue);background:rgba(121,192,255,.12)}
+.tchip.pull{color:var(--red);background:rgba(255,123,114,.12)}
+.tchip.check{color:var(--amber);background:rgba(227,179,65,.12)}
+.prio.h{color:var(--red)}.prio.m{color:var(--amber)}.prio.l{color:var(--sub)}
+.treason{color:var(--sub);font-size:11px;line-height:1.5}
+.tstatus{margin-left:auto;font-size:10.5px;color:var(--sub)}
+.tstatus.done{color:var(--green)}
+/* 底部事件流 */
+#ticker{position:fixed;left:14px;right:346px;bottom:12px;z-index:10;height:96px;overflow:hidden;
+display:flex;flex-direction:column-reverse;gap:5px;pointer-events:none}
+.ev{display:flex;align-items:center;gap:8px;font-size:12px;background:var(--panel);
+border:1px solid var(--line);border-radius:8px;padding:5px 11px;width:fit-content;max-width:100%;
+animation:slidein .3s ease}
+@keyframes slidein{from{transform:translateY(14px);opacity:0}}
+.ev .t{color:var(--sub);font-size:10.5px;font-variant-numeric:tabular-nums}
+.etype{font-size:10.5px;padding:1px 7px;border-radius:10px;flex:none}
+.etype.take{color:var(--green);background:rgba(126,226,168,.12)}
+.etype.refill{color:var(--blue);background:rgba(121,192,255,.12)}
+.etype.anomaly{color:var(--red);background:rgba(255,123,114,.15)}
+.etype.task{color:var(--amber);background:rgba(227,179,65,.12)}
+.etype.info{color:var(--sub);background:rgba(139,148,158,.12)}
+/* 3D 浮动标签 */
+#labels{position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.flabel{position:absolute;font-size:12px;font-weight:700;padding:2px 8px;border-radius:14px;
+transform:translate(-50%,-100%);white-space:nowrap;transition:opacity .4s;
+text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.flabel.take{color:var(--green);background:rgba(20,40,30,.75)}
+.flabel.refill{color:var(--blue);background:rgba(15,30,50,.75)}
+.flabel.anomaly{color:var(--red);background:rgba(50,20,20,.8)}
+#cdnhint{position:fixed;inset:auto 0 130px 0;z-index:30;text-align:center;font-size:12.5px;
+color:var(--amber);display:none;padding:8px}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+<div id="scene"></div>
+<div id="labels"></div>
+<div id="cdnhint">⚠ 3D 组件（three.js）加载失败，需联网一次；数据面板仍在运行。刷新重试或直接看右侧数据。</div>
+
+<header>
+  <h1>下一盘 · 旋转小火锅 <small>多站点感知与智能补菜</small></h1>
+  <span class="badge demo" id="modeBadge">演示模式 · 模拟店铺</span>
+  <span class="badge" id="timeBadge">营业 0:00</span>
+  <span class="badge" id="suspBadge" style="display:none">⚠ 派单暂停</span>
+  <div class="spacer"></div>
+  <button id="btnPause">暂停</button>
+  <button id="btnReset">重置演示</button>
+  <button class="primary" id="btnBackend">接入真实后端</button>
+</header>
+<div id="alert"></div>
+
+<aside id="side">
+  <div class="card"><h3>经营总览</h3><div id="kpis"></div></div>
+  <div class="card"><h3>菜品余量与热度</h3><div id="dishes"></div></div>
+  <div class="card"><h3>补菜任务</h3><div id="tasks"></div></div>
+</aside>
+<div id="ticker"></div>
+
+<script>
+'use strict';
+/* ================= 基础数据 ================= */
+const DISHES = {
+  D01:{name:'小馒头', color:0xeed9a4, countable:true,  unitG:25, base:200},
+  D02:{name:'南瓜饼', color:0xff9f43, countable:false, unitG:null, base:260},
+  D03:{name:'鱼丸',   color:0xe8eef2, countable:false, unitG:null, base:240},
+  D04:{name:'豆腐片', color:0xf2e6a0, countable:false, unitG:null, base:220},
+  D05:{name:'腌牛肉', color:0xa8412e, countable:false, unitG:null, base:300},
+  D06:{name:'腌鸡肉', color:0xe8a0a8, countable:false, unitG:null, base:280},
+};
+const STATIONS = ['A','B','C'];
+const $ = s => document.querySelector(s);
+const fmtG = v => Math.round(v) + 'g';
+const clock = () => new Date().toTimeString().slice(3,8);
+
+/* ================= 业务状态 ================= */
+const S = {
+  mode:'demo', paused:false, t:0,
+  plates:[], tasks:[], consumed:{}, waste:0, covers:0,
+  suspended:new Set(), eventsSeen:0,
+};
+
+function makePlate(id, dishId, angle){
+  return { id, dishId, angle, remaining:1, baseline:DISHES[dishId].base,
+    lastTake:0, anomaly:false, pulled:false, refillTask:null, group:null, food:null };
+}
+function initDemoState(){
+  S.plates=[]; S.tasks=[]; S.consumed={}; S.waste=0; S.covers=0; S.t=0;
+  S.suspended=new Set(); $('#suspBadge').style.display='none';
+  const layout=[['P01','D01'],['P02','D02'],['P03','D03'],['P04','D04'],
+                ['P05','D05'],['P06','D06'],['P07','D01'],['P08','D02']];
+  layout.forEach(([id,d],i)=>S.plates.push(makePlate(id,d,i/layout.length*Math.PI*2)));
+  S.covers=0;
+}
+const net = p => p.remaining * p.baseline;
+
+/* ================= 3D 场景 ================= */
+let renderer, scene3, camera, belt, platesMap={}, customers=[], steam=[], pulses=[], floaters=[];
+const has3D = typeof THREE !== 'undefined';
+const BELT_R = 10, SEAT_R = 15.5;
+
+function initScene(){
+  if(!has3D){ $('#cdnhint').style.display='block'; return; }
+  const wrap = $('#scene');
+  renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(innerWidth, innerHeight);
+  wrap.appendChild(renderer.domElement);
+  scene3 = new THREE.Scene();
+  scene3.background = new THREE.Color(0x0d1117);
+  scene3.fog = new THREE.Fog(0x0d1117, 30, 75);
+  camera = new THREE.PerspectiveCamera(46, innerWidth/innerHeight, .1, 200);
+
+  scene3.add(new THREE.AmbientLight(0x8899bb, .5));
+  const warm = new THREE.PointLight(0xffb36b, 1.3, 40); warm.position.set(0,7,0); scene3.add(warm);
+  const cool = new THREE.DirectionalLight(0x7aa0ff, .45); cool.position.set(12,18,-8); scene3.add(cool);
+
+  // 地板
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(26,64),
+    new THREE.MeshStandardMaterial({color:0x161b22, roughness:.95}));
+  floor.rotation.x = -Math.PI/2; scene3.add(floor);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(BELT_R+1.6, BELT_R+1.75, 96),
+    new THREE.MeshBasicMaterial({color:0x30363d, side:THREE.DoubleSide}));
+  ring.rotation.x = -Math.PI/2; ring.position.y=.02; scene3.add(ring);
+
+  // 传送带（旋转组）
+  belt = new THREE.Group(); scene3.add(belt);
+  const track = new THREE.Mesh(new THREE.TorusGeometry(BELT_R, .55, 12, 96),
+    new THREE.MeshStandardMaterial({color:0x2b3038, roughness:.6, metalness:.4}));
+  track.rotation.x = Math.PI/2; track.position.y=.5; belt.add(track);
+  for(let i=0;i<48;i++){ // 链节
+    const a=i/48*Math.PI*2, m=new THREE.Mesh(new THREE.BoxGeometry(.7,.14,.5),
+      new THREE.MeshStandardMaterial({color:0x3a424d, metalness:.6, roughness:.4}));
+    m.position.set(Math.cos(a)*BELT_R,.5,Math.sin(a)*BELT_R); m.rotation.y=-a; belt.add(m);
+  }
+
+  // 中央火锅
+  const pot = new THREE.Group();
+  pot.add(new THREE.Mesh(new THREE.CylinderGeometry(3.4,3.7,2.2,32),
+    new THREE.MeshStandardMaterial({color:0x8c2f26, roughness:.5})));
+  const broth = new THREE.Mesh(new THREE.CylinderGeometry(3.15,3.15,.25,32),
+    new THREE.MeshStandardMaterial({color:0xe8912d, roughness:.3, emissive:0x552f08}));
+  broth.position.y=1.1; pot.add(broth);
+  for(let i=0;i<7;i++){ // 锅里漂浮块
+    const b=new THREE.Mesh(new THREE.BoxGeometry(.5,.2,.5),
+      new THREE.MeshStandardMaterial({color:[0xeed9a4,0xa8412e,0xf2e6a0][i%3]}));
+    const a=i/7*Math.PI*2; b.position.set(Math.cos(a)*1.8,1.25,Math.sin(a)*1.8); pot.add(b);
+  }
+  pot.position.y=1.1; scene3.add(pot);
+  // 蒸汽
+  const steamTex=(()=>{const c=document.createElement('canvas');c.width=c.height=64;
+    const g=c.getContext('2d'),gr=g.createRadialGradient(32,32,4,32,32,30);
+    gr.addColorStop(0,'rgba(255,255,255,.55)');gr.addColorStop(1,'rgba(255,255,255,0)');
+    g.fillStyle=gr;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);})();
+  for(let i=0;i<14;i++){
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:steamTex,transparent:true,opacity:.5,depthWrite:false}));
+    sp.position.set((Math.random()-.5)*4,2.5+Math.random()*3,(Math.random()-.5)*4);
+    sp.scale.setScalar(1.4+Math.random()*1.6);
+    sp.userData={speed:.25+Math.random()*.35,phase:Math.random()*10};
+    steam.push(sp); scene3.add(sp);
+  }
+
+  // 观测站点（摄像头塔）
+  STATIONS.forEach((st,i)=>{
+    const a = i/3*Math.PI*2 + Math.PI/6;
+    const g=new THREE.Group();
+    const pole=new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,2.6),
+      new THREE.MeshStandardMaterial({color:0x4d5661})); pole.position.y=1.3; g.add(pole);
+    const cam=new THREE.Mesh(new THREE.BoxGeometry(.85,.5,.5),
+      new THREE.MeshStandardMaterial({color:0x1f6feb,roughness:.35}));
+    cam.position.y=2.7; cam.lookAt(0,1,0); g.add(cam);
+    const lamp=new THREE.Mesh(new THREE.SphereGeometry(.13),
+      new THREE.MeshStandardMaterial({color:0x58a6ff,emissive:0x1f4d80}));
+    lamp.position.y=3.1; g.add(lamp);
+    g.position.set(Math.cos(a)*(BELT_R+3.2),0,Math.sin(a)*(BELT_R+3.2));
+    g.userData={lamp, st}; scene3.add(g);
+  });
+
+  // 顾客座椅
+  const palette=[0xe78fb3,0x9ad3ff,0xa5d6a7,0xffd54f,0xce93d8,0xffab91,0x80deea,0xf48fb1];
+  for(let i=0;i<12;i++){
+    const a=i/12*Math.PI*2+Math.PI/12;
+    const g=new THREE.Group();
+    const stool=new THREE.Mesh(new THREE.CylinderGeometry(.75,.85,.7,16),
+      new THREE.MeshStandardMaterial({color:0x39414d})); stool.position.y=.35; g.add(stool);
+    const body=new THREE.Mesh(new THREE.CylinderGeometry(.5,.62,1.15,12),
+      new THREE.MeshStandardMaterial({color:palette[i%8],roughness:.8}));
+    body.position.y=1.45; g.add(body);
+    const head=new THREE.Mesh(new THREE.SphereGeometry(.42,16,12),
+      new THREE.MeshStandardMaterial({color:0xf0c8a0,roughness:.9}));
+    head.position.y=2.35; g.add(head);
+    g.position.set(Math.cos(a)*SEAT_R,0,Math.sin(a)*SEAT_R);
+    g.lookAt(0,0,0);
+    g.userData={a, body, head, phase:Math.random()*10, reach:0};
+    customers.push(g); scene3.add(g);
+  }
+
+  // 后厨角
+  const kitchen=new THREE.Group();
+  const counter=new THREE.Mesh(new THREE.BoxGeometry(7,.9,2.4),
+    new THREE.MeshStandardMaterial({color:0x3d3428,roughness:.7}));
+  kitchen.add(counter);
+  const sign=new THREE.Mesh(new THREE.BoxGeometry(2.6,.7,.18),
+    new THREE.MeshStandardMaterial({color:0xb3591f,emissive:0x5a2306}));
+  sign.position.set(0,2.2,-.6); kitchen.add(sign);
+  const kpole=new THREE.Mesh(new THREE.CylinderGeometry(.1,.1,2.2),
+    new THREE.MeshStandardMaterial({color:0x4d5661})); kpole.position.set(0,1.1,-.6); kitchen.add(kpole);
+  kitchen.position.set(-BELT_R-7.5,.45,-9);
+  kitchen.rotation.y=.5; scene3.add(kitchen);
+
+  rebuildPlates();
+  bindOrbit();
+  addEventListener('resize',()=>{
+    camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+  });
+}
+
+function plateMesh(p){
+  const g=new THREE.Group();
+  const disc=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.15,.14,24),
+    new THREE.MeshStandardMaterial({color:0xf5f5f0,roughness:.35}));
+  g.add(disc);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(1.02,.05,8,24),
+    new THREE.MeshStandardMaterial({color:DISHES[p.dishId].color}));
+  rim.rotation.x=Math.PI/2; rim.position.y=.08; g.add(rim);
+  const food=new THREE.Mesh(new THREE.SphereGeometry(.95,18,14),
+    new THREE.MeshStandardMaterial({color:DISHES[p.dishId].color,roughness:.55,
+      transparent:true,opacity:.96}));
+  food.scale.set(1,.55,1); food.position.y=.32; g.add(food);
+  p.food=food; p.group=g;
+  return g;
+}
+function placePlate(p){
+  const m=platesMap[p.id]||plateMesh(p);
+  if(!p.group) p.group=m;
+  m.position.set(Math.cos(p.angle)*BELT_R,.62,Math.sin(p.angle)*BELT_R);
+  belt.add(m); platesMap[p.id]=m;
+}
+function rebuildPlates(){
+  if(!has3D) return;
+  while(belt.children.length>49) belt.remove(belt.children[49]);
+  platesMap={};
+  S.plates.forEach(placePlate);
+}
+function removePlate(p){
+  if(platesMap[p.id]){ belt.remove(platesMap[p.id]); delete platesMap[p.id]; }
+}
+
+/* 自制轨道控制 */
+function bindOrbit(){
+  let theta=.9, phi=1.12, dist=30, dragging=false, lx=0, ly=0, idle=0;
+  const el=renderer.domElement;
+  el.addEventListener('pointerdown',e=>{dragging=true;lx=e.clientX;ly=e.clientY;idle=0});
+  addEventListener('pointerup',()=>dragging=false);
+  addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    theta-=(e.clientX-lx)*.005; phi=Math.min(1.45,Math.max(.5,phi-(e.clientY-ly)*.004));
+    lx=e.clientX;ly=e.clientY;
+  });
+  el.addEventListener('wheel',e=>{dist=Math.min(48,Math.max(14,dist+e.deltaY*.02));idle=0},{passive:true});
+  camera.userData.orbit={get pos(){
+    idle+=1/60; const t=theta+(idle>4? .0018:0);
+    return {t,phi,dist};
+  }};
+  const upd=()=>{
+    const o=camera.userData.orbit.pos;
+    camera.position.set(Math.sin(o.phi)*Math.cos(o.t)*o.dist, Math.cos(o.phi)*o.dist,
+      Math.sin(o.phi)*Math.sin(o.t)*o.dist);
+    camera.lookAt(0,.8,0);
+  };
+  camera.userData.orbitUpdate=upd; upd();
+}
+
+/* 特效 */
+function pulseStation(st){
+  if(!has3D)return;
+  const a=STATIONS.indexOf(st)/3*Math.PI*2+Math.PI/6;
+  const m=new THREE.Mesh(new THREE.TorusGeometry(.6,.06,8,32),
+    new THREE.MeshBasicMaterial({color:0x58a6ff,transparent:true,opacity:.9}));
+  m.rotation.x=Math.PI/2; m.position.set(Math.cos(a)*(BELT_R+3.2),.1,Math.sin(a)*(BELT_R+3.2));
+  m.userData={t:0}; pulses.push(m); scene3.add(m);
+}
+function flashPlate(p,color,ms=2200){
+  if(!p||!p.food)return;
+  p.food.material.emissive=new THREE.Color(color);
+  p.flashUntil=performance.now()+ms;
+}
+function floatLabel(text,plateId,cls){
+  const el=document.createElement('div');
+  el.className='flabel '+cls; el.textContent=text;
+  $('#labels').appendChild(el);
+  floaters.push({el,plateId,life:performance.now()+3000});
+}
+
+/* 渲染循环 */
+let lastFrame=performance.now();
+function animate(){
+  requestAnimationFrame(animate);
+  const now=performance.now(), dt=(now-lastFrame)/1000; lastFrame=now;
+  if(camera.userData.orbitUpdate) camera.userData.orbitUpdate();
+  if(!S.paused){
+    belt.rotation.y -= dt*.12;
+    steam.forEach(sp=>{
+      sp.position.y+=sp.userData.speed*dt;
+      sp.material.opacity=.5*Math.max(0,1-(sp.position.y-2.5)/3.5);
+      if(sp.position.y>6){sp.position.y=2.2;
+        sp.position.x=(Math.random()-.5)*4;sp.position.z=(Math.random()-.5)*4;}
+    });
+    customers.forEach(c=>{
+      c.userData.phase+=dt;
+      const bob=Math.sin(c.userData.phase*2.2)*.04;
+      c.userData.body.position.y=1.45+bob; c.userData.head.position.y=2.35+bob*1.2;
+      if(c.userData.reach>0){c.userData.reach-=dt;
+        const k=Math.sin(Math.min(1,c.userData.reach/.6)*Math.PI)* .28;
+        c.rotation.x=k;} else c.rotation.x*=.9;
+    });
+    // 盘中食物比例
+    S.plates.forEach(p=>{
+      if(p.food){
+        const k=Math.max(p.anomaly? p.displayR||.6 : p.remaining, .06);
+        p.food.scale.set(.4+k*.62, Math.max(.06,k)*.55, .4+k*.62);
+        p.food.material.opacity=p.pulled? Math.max(0,p.food.material.opacity-dt*.8):.96;
+        if(p.flashUntil&&now>p.flashUntil){p.food.material.emissive=new THREE.Color(0);p.flashUntil=0;}
+      }
+      if(p.pulled&&p.group){p.group.position.y-=dt*1.2;
+        if(p.group.position.y<-2)removePlate(p);}
+    });
+    for(let i=pulses.length-1;i>=0;i--){const m=pulses[i];m.userData.t+=dt;
+      m.scale.setScalar(1+m.userData.t*6);m.material.opacity=.9*(1-m.userData.t/1.1);
+      if(m.userData.t>1.1){scene3.remove(m);pulses.splice(i,1);}}
+  }
+  // 浮动标签投影
+  for(let i=floaters.length-1;i>=0;i--){const f=floaters[i];
+    if(now>f.life){f.el.remove();floaters.splice(i,1);continue;}
+    const mesh=platesMap[f.plateId];
+    if(mesh&&has3D){
+      const v=new THREE.Vector3(); mesh.getWorldPosition(v); v.y+=1.6; v.project(camera);
+      f.el.style.left=(v.x*.5+.5)*innerWidth+'px';
+      f.el.style.top=(-v.y*.5+.5)*innerHeight+'px';
+      f.el.style.opacity=Math.min(1,(f.life-now)/800);
+    }
+  }
+  if(has3D)renderer.render(scene3,camera);
+}
+
+/* ================= UI 渲染 ================= */
+function evLog(type,text){
+  const d=document.createElement('div');d.className='ev';
+  d.innerHTML=`<span class="t">${clock()}</span><span class="etype ${type}">${
+    {take:'取用',refill:'补菜',anomaly:'异常',task:'任务',info:'信息'}[type]||type}</span><span>${text}</span>`;
+  const tk=$('#ticker'); tk.prepend(d);
+  while(tk.children.length>6)tk.lastChild.remove();
+}
+function alertMsg(text,ok){
+  const a=$('#alert');a.textContent=text;a.className=ok?'ok':'';a.style.display='block';
+  clearTimeout(a._t); a._t=setTimeout(()=>a.style.display='none', ok?3800:6500);
+}
+function renderUI(){
+  const totalConsumed=Object.values(S.consumed).reduce((a,b)=>a+b,0);
+  const active=S.tasks.filter(t=>['pending','making'].includes(t.status)).length;
+  $('#kpis').innerHTML=[
+    ['总取用',fmtG(totalConsumed),''],['报损记录',fmtG(S.waste),'red'],
+    ['活跃任务',active,'green'],['用餐人数',S.covers+' 人',''],
+    ['每客取用',S.covers?Math.round(totalConsumed/S.covers)+'g':'—',''],
+  ].map(([l,v,c])=>`<div class="kpi"><div class="v ${c}">${v}</div><div class="l">${l}</div></div>`).join('');
+
+  const rows=Object.keys(DISHES).map(did=>{
+    const plates=S.plates.filter(p=>p.dishId===did&&!p.pulled);
+    const rem=plates.length? plates.reduce((a,p)=>a+p.remaining,0)/plates.length : null;
+    const cons=S.consumed[did]||0;
+    const susp=S.suspended.has(did);
+    let st='<span class="dstat ok">正常</span>', barColor='#2ea36b';
+    if(susp){st='<span class="dstat bad">派单暂停</span>';barColor='#ff7b72';}
+    else if(rem!==null&&rem<.3){st='<span class="dstat warn">需补菜</span>';barColor='#e3b341';}
+    else if(rem!==null&&rem<.55){st='<span class="dstat warn">偏低</span>';barColor='#e3b341';}
+    return `<div class="drow"><span class="dot" style="background:#${DISHES[did].color.toString(16).padStart(6,'0')}"></span>
+      <span class="dname">${DISHES[did].name}</span>
+      <span class="bar"><i style="width:${rem===null?0:Math.round(rem*100)}%;background:${barColor}"></i></span>
+      <span class="dnum">${rem===null?'已撤':fmtG(rem*DISHES[did].base*(plates.length||1))}</span>${st}</div>`;
+  }).join('');
+  $('#dishes').innerHTML=rows;
+
+  const ts=[...S.tasks].reverse().slice(0,8);
+  $('#tasks').innerHTML=ts.length?ts.map(t=>`<div class="tcard"><div class="t1">
+    <span class="tchip ${t.action}">${{refill:'补菜',pull:'撤盘',check:'巡检'}[t.action]}</span>
+    <b>${t.dishName}</b><span class="prio ${t.priority==='high'?'h':t.priority==='medium'?'m':'l'}">
+    ${{high:'高',medium:'中',low:'低'}[t.priority]||''}</span>
+    <span class="tstatus ${t.status==='done'?'done':''}">${{pending:'待处理',making:'制作中',done:'已完成',cancelled:'已取消'}[t.status]||t.status}</span></div>
+    <div class="treason">${t.reason}</div></div>`).join(''):'<div style="color:var(--sub);font-size:12px">暂无任务</div>';
+
+  const m=Math.floor(S.t/60), s=Math.floor(S.t%60);
+  $('#timeBadge').textContent=(S.mode==='demo'?'营业 ':'回放 ')+m+':'+String(s).padStart(2,'0');
+}
+
+/* ================= 演示引擎 ================= */
+let nextId=100;
+function addTask(action,plate,reason,priority='medium'){
+  const t={id:'T'+(nextId++),action,dishId:plate.dishId,dishName:DISHES[plate.dishId].name,
+    qty:Math.round(plate.baseline*(1-plate.remaining)),priority,reason,status:'pending'};
+  S.tasks.push(t); plate.refillTask=t;
+  evLog('task',`生成${{refill:'补菜',pull:'撤盘',check:'巡检'}[action]}任务：${t.dishName} ${t.qty?'+'+t.qty+'g':''}（${{high:'高',medium:'中',low:'低'}[priority]}优先级）`);
+  return t;
+}
+function customerTake(){
+  const cand=S.plates.filter(p=>!p.pulled&&!p.anomaly&&p.dishId!=='D04'&&p.remaining>.18);
+  if(!cand.length)return;
+  const p=cand[Math.floor(Math.random()*cand.length)];
+  const frac=.08+Math.random()*.14, took=frac*p.baseline;
+  p.remaining=Math.max(.08,p.remaining-frac); p.lastTake=S.t;
+  S.consumed[p.dishId]=(S.consumed[p.dishId]||0)+took;
+  const cust=customers[Math.floor(Math.random()*customers.length)];
+  if(cust)cust.userData.reach=.6;
+  const st=STATIONS[Math.floor(Math.random()*3)];
+  pulseStation(st); flashPlate(p,0x2ea36b,700);
+  floatLabel('−'+Math.round(took)+'g',p.id,'take');
+  evLog('take',`${p.id} ${DISHES[p.dishId].name} 取用 −${Math.round(took)}g（${st}站观测 · 余量${Math.round(p.remaining*100)}%）`);
+}
+function schedule(fn,ms){const id=setTimeout(()=>{if(!S.paused)fn();else schedule(fn,1000);},ms);return id;}
+const timers=[];
+function T(fn,ms){timers.push(schedule(fn,ms));}
+
+function demoTick(){
+  if(S.paused)return;
+  S.t++;
+  // 顾客入座
+  if(S.covers<12 && S.t%9===0){S.covers++;
+    if(S.covers===1)evLog('info','门店开始营业 · 模拟数据（演示用）');}
+  // 随机取用
+  if(S.covers>0 && Math.random()<.55)customerTake();
+  // 低余量 → 补菜任务 → 完成
+  S.plates.forEach(p=>{
+    if(p.pulled||p.anomaly||p.refillTask)return;
+    if(p.remaining<.3){
+      p.refillTask=true; // 占位防重复
+      T(()=>{ if(p.pulled||p.anomaly)return;
+        const t=addTask('refill',p,`余量${Math.round(p.remaining*100)}%，取用速度偏高，预计即将耗尽`,
+          p.remaining<.15?'high':'medium');
+        T(()=>{t.status='making';renderUI();},2600);
+        T(()=>{ if(p.pulled)return;
+          p.remaining=1;p.lastTake=S.t;t.status='done';p.refillTask=null;
+          flashPlate(p,0x79c0ff,1600);floatLabel('+'+t.qty+'g 补菜',p.id,'refill');
+          pulseStation(STATIONS[t.id.charCodeAt(1)%3]);
+          evLog('refill',`${p.id} ${t.dishName} 补菜 +${t.qty}g 完成，任务闭环`);
+          renderUI();
+        },7000);
+      },1200);
+    }
+  });
+  // 滞留 → 撤盘（豆腐片被冷落）
+  S.plates.filter(p=>p.dishId==='D04'&&!p.pulled).forEach(p=>{
+    const stag=S.t-p.lastTake;
+    if(Math.floor(stag)===45)evLog('info',`${p.id} 豆腐片 已 ${Math.floor(stag)} 秒无取用 · 滞留观察中`);
+    if(Math.floor(stag)===60&&!p.pullTask){p.pullTask=true;
+      const t=addTask('pull',p,`滞留 ${Math.floor(stag)} 秒且余量 ${Math.round(p.remaining*100)}%：报废风险，建议撤盘`,'medium');
+      T(()=>{t.status='done';p.pulled=true;
+        S.waste+=net(p);flashPlate(p,0xff7b72,2000);
+        evLog('anomaly',`${p.id} 豆腐片 撤盘 · 剩余 ${fmtG(net(p))} 计入报损台账（处置：丢弃）`);
+        T(()=>{ // 换新盘
+          const np=makePlate('P'+(nextId++),'D04',p.angle);S.plates.push(np);
+          np.lastTake=S.t; placePlate(np);
+          evLog('refill',`新装盘上线：豆腐片（${fmtG(np.baseline)}）· 已重新绑定`);
+          renderUI();
+        },9000);
+        renderUI();
+      },4500);
+    }
+  });
+  renderUI();
+}
+/* 剧本：传感器尖峰 */
+function scriptedSpike(){
+  T(()=>{
+    const p=S.plates.find(x=>x.id==='P05'&&!x.pulled); if(!p)return;
+    p.anomaly=true; p.displayR=p.remaining;
+    flashPlate(p,0xff4444,24000); floatLabel('读数 +180g？！',p.id,'anomaly');
+    pulseStation('B');
+    evLog('anomaly',`P05 腌牛肉 称重突增 +180g，无补菜记录 → 标记未解释突增，可信净重不更新`);
+    S.suspended.add('D05'); $('#suspBadge').style.display='';
+    alertMsg('⚠ P05 腌牛肉出现未解释突增（+180g，无补菜记录）——可信净重保持旧值，已暂停该菜品自动派单，等待复秤。');
+    T(()=>{
+      if(p.pulled)return;
+      p.anomaly=false; delete p.displayR; S.suspended.delete('D05');
+      $('#suspBadge').style.display='none';
+      evLog('info','P05 复秤回落至可信值附近 → 确认传感器尖峰，期间下降未记为取用，恢复自动派单');
+      alertMsg('✓ 复秤确认：此前为传感器尖峰，异常期间数据未被污染，腌牛肉恢复自动派单',true);
+      renderUI();
+    },24000);
+  },68000);
+}
+
+/* ================= 后端接入 ================= */
+async function connectBackend(){
+  const H='http://127.0.0.1:8765';
+  const btn=$('#btnBackend'); btn.disabled=true; btn.textContent='连接中…';
+  try{
+    const h=await(await fetch(H+'/api/health')).json();
+    if(h.status!=='ok')throw 0;
+    await fetch(H+'/api/replay?mode=offline',{method:'POST'});
+    S.mode='backend'; S.plates=[]; S.tasks=[]; S.consumed={}; S.suspended=new Set();
+    $('#modeBadge').className='badge live'; $('#modeBadge').textContent='真实后端 · 数据集回放';
+    $('#suspBadge').style.display='none';
+    rebuildPlates(); evLog('info','已接入本机后端（离线规则模式），开始回放合成数据集');
+    alertMsg('✓ 已接入真实后端：8 条称重观测 + 3 条后厨记录按时间线回放，含一次传感器尖峰与一次补菜闭环',true);
+    let lastEvent=0;
+    const poll=async()=>{
+      try{
+        const plates=await(await fetch(H+'/api/plates')).json();
+        const tasks=await(await fetch(H+'/api/tasks')).json();
+        const sum=await(await fetch(H+'/api/analytics/summary')).json();
+        // 同步盘子
+        plates.forEach((sp,i)=>{
+          let p=S.plates.find(x=>x.id===sp.plate_id);
+          if(!p){p=makePlate(sp.plate_id,sp.dish_id, i/Math.max(plates.length,1)*Math.PI*2);
+            p.baseline=sp.baseline_g||DISHES[sp.dish_id].base;S.plates.push(p);placePlate(p);}
+          const r=sp.remaining_ratio!=null?Math.min(sp.remaining_ratio,1):p.remaining;
+          if(r<p.remaining-.02)floatLabel('−'+Math.round((p.remaining-r)*p.baseline)+'g',p.id,'take');
+          if(r>p.remaining+.02)floatLabel('补菜',p.id,'refill');
+          p.remaining=r;
+          if(sp.anomaly&&!p.anomaly){p.anomaly=true;p.displayR=r;flashPlate(p,0xff4444,30000);
+            floatLabel('读数异常',p.id,'anomaly');}
+          if(!sp.anomaly&&p.anomaly){p.anomaly=false;delete p.displayR;}
+        });
+        S.tasks=tasks.map(t=>({id:t.task_id,action:t.action,dishId:t.dish_id,
+          dishName:t.dish_name||t.dish_id,qty:t.quantity_g||0,
+          priority:t.priority,status:t.status,reason:t.reason||''}));
+        S.covers=sum.covers||0; S.waste=0;
+        const wm=await(await fetch(H+'/api/analytics/waste')).json();
+        S.waste=Object.values(wm.totals_g||{}).reduce((a,b)=>a+b,0);
+        S.consumed={}; sum.dish_ranking.forEach(d=>{const did=Object.keys(DISHES).find(k=>DISHES[k].name===d.name); if(did)S.consumed[did]=d.consumed_g;});
+        // 事件流
+        const evs=await(await fetch(H+'/api/events?limit=40')).json();
+        if(evs.length>S.eventsSeen){const fresh=evs.slice(S.eventsSeen);S.eventsSeen=evs.length;
+          fresh.reverse().forEach(e=>{
+            const it=e.interpretation||{},c=it.classification;
+            const map={removal:['take','取用 '+((it.taken_g?'−'+Math.round(it.taken_g)+'g':''))],
+              refill_confirmed:['refill','补菜确认 +'+Math.round(it.delta_g)+'g'],
+              late_refill:['refill','补菜事后确认'],
+              unexplained_increase:['anomaly','未解释突增 +'+Math.round(it.delta_g)+'g，等待复秤'],
+              anomaly_resolved:['info','复秤确认传感器尖峰，恢复'],
+              baseline:['info','建立基线 '+Math.round(it.net_g)+'g'],
+              no_change:['info','无变化（噪声界内）'],
+              merged_pass:['info','重复帧合并'],out_of_order:['info','迟到事件隔离']};
+            const m=map[c]||['info',c];
+            evLog(m[0],`${e.plate_id} ${m[1]}（${e.station_id}站）`);
+            pulseStation(e.station_id);
+          });}
+        S.t++; renderUI();
+      }catch(e){/* 后端断了就等下一轮 */}
+    };
+    setInterval(()=>{if(!S.paused&&S.mode==='backend')poll();},2000);
+    poll();
+  }catch(e){
+    alertMsg('连接失败：请先启动后端（backend/ 目录 uvicorn app.main:app --port 8765）');
+    $('#modeBadge').className='badge demo'; $('#modeBadge').textContent='演示模式 · 模拟店铺';
+  }
+  btn.disabled=false; btn.textContent='接入真实后端';
+}
+
+/* ================= 启动 ================= */
+function start(){
+  initDemoState(); rebuildPlates(); renderUI();
+  scriptedSpike();
+}
+initScene(); animate(); start();
+setInterval(()=>{if(S.mode==='demo')demoTick();},1000);
+$('#btnPause').onclick=e=>{S.paused=!S.paused;e.target.textContent=S.paused?'继续':'暂停';};
+$('#btnReset').onclick=()=>{timers.forEach(clearTimeout);timers.length=0;
+  start();evLog('info','演示已重置');};
+$('#btnBackend').onclick=connectBackend;
+</script>
+</body>
+</html>
