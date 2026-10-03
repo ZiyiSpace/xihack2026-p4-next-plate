@@ -46,6 +46,12 @@ class BackendClient:
     def analytics_summary(self) -> dict:
         return self._request("GET", "/api/analytics/summary")
 
+    def list_dish_configs(self) -> list:
+        return self._request("GET", "/api/dishes/config")
+
+    def upsert_dish(self, dish_id: str, body: dict) -> dict:
+        return self._json("PUT", f"/api/dishes/{dish_id}", body)
+
     def reset(self) -> dict:
         return self._request("POST", "/api/maintenance/reset")
 

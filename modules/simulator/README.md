@@ -12,6 +12,31 @@ python capture.py check    # 回读后端，确认数据真的进去了
 
 只依赖 Python 3.10+ 标准库，不需要装任何包，也不需要本仓库的虚拟环境。
 
+## 换成你自己的图片和称重数据
+
+复制 [`dataset_template/`](dataset_template/README.md) 整个目录，把图丢进它的 `images/`，
+改 `observations.jsonl`，然后：
+
+```bash
+python capture.py run --dataset 你的目录 --speed 6
+```
+
+不用改代码，也不用动 `modules/hotpot_dataset_v0_1`（那是数据集负责人的目录）。
+
+只有 `observations.jsonl` 是必填的，一行一次过站：
+
+```json
+{"sample_id":"my-001","plate_id":"P001","station_id":"A","timestamp":"2026-10-03T18:00:00+08:00","net_weight_g":200,"image_path":"images/my-001.png"}
+```
+
+`operation_log.jsonl`（员工上盘/补菜记录）和 `dish_catalog.json`（新菜品目录）都是可选的：
+前者缺了会按每盘首次观测自动补一条上盘记录，后者只管后端还不认识的菜。
+字段逐个解释见 [`dataset_template/README.md`](dataset_template/README.md)。
+
+模板里那几张 `T00*.png` 是**灰色占位图，跟菜没关系**，只为让模板开箱能跑。
+用它们跑的时候视觉校验会返回「低于置信下限，不作判定」——这不是 bug，
+是模型对着一张灰方块诚实地不猜。换成真照片就好了。
+
 ## run 的参数
 
 | 参数 | 默认 | 说明 |

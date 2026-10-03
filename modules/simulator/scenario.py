@@ -66,15 +66,22 @@ class Stream:
 # ---------------------------------------------------------------- 数据集
 
 def load_station_stream(dataset_dir: str) -> Stream:
-    """读 observations.jsonl + operation_log.jsonl，合成一条站点采集流。
+    """读 observations.jsonl（+ 可选的 operation_log.jsonl），合成一条站点采集流。
+
+    只要你能提供「一张图 + 一个净重读数 + 一个时间戳」，就能造出自己的数据集：
+    `operation_log.jsonl` 是可选的，缺了会自动按每盘首次观测补上盘记录
+    （后端要求盘先有开放绑定才收站点事件）。
 
     answer_key.jsonl 刻意不读：它是评分集，不能作为采集端输入。
     """
     obs = _read_jsonl(os.path.join(dataset_dir, "observations.jsonl"))
-    ops = _read_jsonl(os.path.join(dataset_dir, "operation_log.jsonl"))
+    ops_path = os.path.join(dataset_dir, "operation_log.jsonl")
+    ops = _read_jsonl(ops_path) if os.path.exists(ops_path) else []
     # 盘-菜绑定由外部提供（数据集 README：图中没有可解码的盘号标记），
     # 上盘/补菜记录本身不带 dish_id，按观测里的绑定补上。
     plate_dish = {o["plate_id"]: o.get("dish_id") for o in obs}
+    if not ops:
+        ops = _synthesize_initial_load(obs)
 
     steps: list[Step] = []
     for rec in obs:
@@ -101,6 +108,7 @@ def load_station_stream(dataset_dir: str) -> Stream:
         ))
     for rec in ops:
         plate_id = rec.get("plate_id")
+        synthesized = rec.get("source") == "capture_synthesized"
         steps.append(Step(
             at=_parse(rec["timestamp"]), kind="operation",
             payload={
@@ -111,7 +119,7 @@ def load_station_stream(dataset_dir: str) -> Stream:
                 "dish_id": plate_dish.get(plate_id),
                 "recorded_net_g": rec.get("recorded_net_g"),
                 "recorded_added_g": rec.get("recorded_added_g"),
-                "source": "capture",
+                "source": rec.get("source") or "capture",
                 "simulated": True,
             },
             label=f"操作 {rec['event_type']} 盘 {plate_id} 绑定 {plate_dish.get(plate_id)}",
@@ -121,6 +129,42 @@ def load_station_stream(dataset_dir: str) -> Stream:
     if not steps:
         raise FileNotFoundError(f"{dataset_dir} 下没有可用的观测或操作记录")
     return Stream("dataset", steps)
+
+
+def load_catalog(dataset_dir: str) -> list[dict]:
+    """数据集自带的菜品目录；没有这个文件就返回空列表。
+
+    后端只会为它认识的菜品记账，带新菜品的数据集需要先把目录推过去。
+    """
+    path = os.path.join(dataset_dir, "dish_catalog.json")
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _synthesize_initial_load(obs: list[dict]) -> list[dict]:
+    """没有操作记录时，按每盘首次观测补一条上盘记录。
+
+    后端要求「盘先有开放绑定」才收站点事件，缺了这条，一个只带图片和称重的
+    数据集会被逐条拒收（`盘 P001 无开放绑定`）。上盘量取首次观测的净重，
+    时间放在首次观测前 15 秒。
+    """
+    first: dict[str, dict] = {}
+    for o in obs:
+        first.setdefault(o["plate_id"], o)
+    out = []
+    for plate_id, o in first.items():
+        at = _parse(o["timestamp"]) - timedelta(seconds=15)
+        out.append({
+            "event_id": f"AUTO-{plate_id}",
+            "timestamp": at.isoformat(timespec="seconds"),
+            "plate_id": plate_id,
+            "event_type": "initial_load",
+            "recorded_net_g": o.get("net_weight_g"),
+            "source": "capture_synthesized",
+        })
+    return out
 
 
 def image_files(stream: Stream) -> dict[str, str]:
@@ -172,7 +216,7 @@ def load_crowd_stream(profile_path: str) -> Stream:
     weights = [float(profile["party_size_weights"][k]) for k in profile["party_size_weights"]]
 
     steps: list[Step] = []
-    for hour, count in sorted(profile["arrivals_per_hour"].items(), key=lambda kv: int(kv[0])):
+    for hour, count in profile["arrivals_per_hour"].items():
         base = datetime.fromisoformat(f"{day}T{int(hour):02d}:00:00{offset}")
         for i in range(int(count)):
             # 每小时 count 桌，在小时内均匀落点并加一点抖动

@@ -1,58 +1,54 @@
 {
-  "generated_at": "2026-10-03T17:43:02+08:00",
-  "dataset": "D:\\develop\\xihack-pr\\modules\\hotpot_dataset_v0_1",
-  "crowd": "D:\\develop\\xihack-pr\\modules\\simulator\\data\\crowd_evening.json",
+  "generated_at": "2026-10-03T17:59:01+08:00",
+  "dataset": "dataset_template",
+  "crowd": null,
   "speed": 6.0,
   "with_images": true,
   "backend": "http://127.0.0.1:8000",
-  "started_at": "2026-10-03T17:43:02+08:00",
-  "elapsed_s": 39.4,
+  "started_at": "2026-10-03T17:59:01+08:00",
+  "elapsed_s": 17.9,
   "sent": {
-    "station": 8,
-    "operation": 3,
-    "covers": 118
+    "station": 4,
+    "operation": 2,
+    "covers": 0
   },
   "failed": [],
   "classifications": {
     "baseline": 2,
-    "removal": 2,
-    "unexplained_increase": 1,
-    "no_change": 1,
-    "anomaly_resolved": 1,
-    "refill_confirmed": 1
+    "removal": 2
   },
   "refill_tasks_created": 2,
-  "images_in_store": 11,
+  "images_in_store": 15,
   "readback": {
-    "captures": 8,
-    "guests": 377,
-    "taken_g": 138.0,
+    "captures": 4,
+    "guests": 0,
+    "taken_g": 140.0,
     "dishes": [
       {
         "id": "D05",
         "name": "腌牛肉",
-        "takeG": 88.0,
-        "weightG": 332.0,
+        "takeG": 90.0,
+        "weightG": 210.0,
         "status": "urgent"
       },
       {
         "id": "D01",
         "name": "小馒头",
         "takeG": 50.0,
-        "weightG": 149.0,
+        "weightG": 150.0,
         "status": "urgent"
       }
     ],
     "tasks": [
       {
-        "id": "027d59b465db",
+        "id": "09ec8bd3c3bb",
         "dishId": "D05",
-        "quantity": 88.0,
-        "status": "completed",
-        "reason": "余量71%，速度88.0g/min，预计2.4分钟耗尽"
+        "quantity": 90.0,
+        "status": "pending",
+        "reason": "余量70%，速度90.0g/min，预计2.3分钟耗尽"
       },
       {
-        "id": "ceedbe3ffd72",
+        "id": "0d7a219ad8e4",
         "dishId": "D01",
         "quantity": 2,
         "status": "pending",

@@ -109,6 +109,30 @@ def _seed_images(client: BackendClient, stream: scenario.Stream) -> dict[str, st
     return refs
 
 
+def _ensure_dishes(client: BackendClient, dataset_dir: str) -> list[str]:
+    """把数据集里后端还不认识的菜品补进去，返回补了哪些。
+
+    只补不覆盖：已存在的菜品配置是后端按现场调过的（比如小馒头 25 克/件、易计数），
+    拿数据集目录去覆盖会把这类规则冲掉。
+    """
+    catalog = scenario.load_catalog(dataset_dir)
+    if not catalog:
+        return []
+    known = {d["dish_id"] for d in client.list_dish_configs()}
+    added = []
+    for d in catalog:
+        dish_id = d.get("dish_id")
+        if not dish_id or dish_id in known:
+            continue
+        client.upsert_dish(dish_id, {
+            "dish_id": dish_id,
+            "name": d.get("name") or dish_id,
+            "note": d.get("challenge") or d.get("status"),
+        })
+        added.append(dish_id)
+    return added
+
+
 # ---------------------------------------------------------------- run
 
 
@@ -122,6 +146,10 @@ def cmd_run(args: argparse.Namespace) -> int:
         client.reset()
         print("[采集端] 已复位后端业务数据（菜品配置保留）")
 
+    added = _ensure_dishes(client, args.dataset)
+    if added:
+        print(f"[采集端] 数据集里有 {len(added)} 个后端还不认识的菜品，已补进去：{'、'.join(added)}")
+
     stream = scenario.load_station_stream(args.dataset)
     refs = _seed_images(client, stream)
     print(f"[采集端] {len(refs)} 张图已放进存储 {args.backend}/api/images")
@@ -133,7 +161,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         delta = datetime.now().astimezone().replace(microsecond=0) - stream.start
         streams = [scenario.shift(s, delta) for s in streams]
         stream = streams[0]
-        print(f"[采集端] 时间轴整体平移到现在（+{delta}），"
+        print(f"[采集端] 时间轴整体平移到现在（{_delta_text(delta)}），"
               f"否则后端会按真实当前时间把每一盘都算成滞留")
     duration = stream.span_s / args.speed
     timeline = _merge([(off, s) for st in streams for off, s in st.offsets(duration)])
@@ -285,6 +313,14 @@ def _sleep_until(started: float, offset: float) -> None:
     remaining = offset - (time.monotonic() - started)
     if remaining > 0:
         time.sleep(remaining)
+
+
+def _delta_text(delta) -> str:
+    """把时间平移量说成人话（`timedelta` 的默认表示会把 -3 分钟印成 `-1 day, 23:57`）。"""
+    total = int(delta.total_seconds())
+    sign = "+" if total >= 0 else "-"
+    total = abs(total)
+    return f"{sign}{total // 3600}:{total % 3600 // 60:02d}:{total % 60:02d}"
 
 
 def _line(offset: float, text: str) -> None:
