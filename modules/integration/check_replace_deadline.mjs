@@ -93,7 +93,11 @@ const KITCHEN_PROBE = `(() => {
     quantity:r.querySelector('.task-quantity')?.textContent?.trim()||null,
     button:r.querySelector('.task-row-actions button')?.textContent?.trim()||null,
   }));
-  return JSON.stringify({open:rows.length>0, rowCount:rows.length, cards});
+  // 非补菜任务的 quantity 是 null，曾经把「已结束任务」表格里的 qty() 送进
+  // toLocaleString 直接崩掉整页 —— 这里显式盯住，别再退回那个状态。
+  return JSON.stringify({open:rows.length>0, rowCount:rows.length, cards,
+    crashed:/This page couldn|toLocaleString|vite-error-overlay/.test(document.body.innerText)
+            || !!document.querySelector('vite-error-overlay')});
 })()`;
 
 async function main() {
@@ -213,6 +217,8 @@ async function main() {
       : await shot("验收-后厨换菜单.png", { x: 260, y: 0, width: 1180, height: 620 });
     report.push({ check: "后厨补菜", seen: kitchen, screenshot: shot3 });
     const replaceCard = (kitchen.cards || []).find((c) => c.badge === "更换菜品");
+    // 非补菜任务的 quantity 是 null，历史上一进「已结束任务」的 qty() 就把整页崩掉
+    if (kitchen.crashed) failures.push("后厨页面报了运行时错误（曾因 qty(null) 崩页）");
     if (!replaceCard) failures.push(
       `后厨没有换菜单；现有卡片 ${JSON.stringify((kitchen.cards || []).map(c => c.badge))}`);
     else {

@@ -288,7 +288,7 @@ def _identify(sample_id: str) -> dict:
     # 称重说盘上没东西时，让模型可以选「以上都不是」；没称重就按有菜处理，
     # 免得误伤真的菜（实测：有菜时开这个选项准度会掉）。
     weight = s.get("net_weight_g")
-    has_food = weight is None or float(weight) > config.NOISE_BOUND_G
+    has_food = weight is None or float(weight) > config.EMPTY_PLATE_NET_G
     recognized = vision.identify_dish(image_b64, plate_has_food=has_food)
     updated: dict = {}
 

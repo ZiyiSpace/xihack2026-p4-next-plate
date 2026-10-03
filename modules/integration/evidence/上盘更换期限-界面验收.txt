@@ -91,7 +91,7 @@
       ],
       "replaceColumn": 4,
       "replaceCells": [
-        "90 分钟",
+        "20 分钟",
         "90 分钟"
       ],
       "rowCount": 2
@@ -153,7 +153,8 @@
           "quantity": "3件该菜品补充总量",
           "button": "开始制作"
         }
-      ]
+      ],
+      "crashed": false
     },
     "screenshot": "D:\\develop\\xihack-pr\\modules\\integration\\evidence\\验收-后厨换菜单.png"
   }
