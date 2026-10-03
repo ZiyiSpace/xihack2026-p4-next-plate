@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from . import adapter, config, db, images
+from . import adapter, config, db, images, samples
 from .core import HotpotService
 from .replay import ReplayRunner
 from .schemas import (CoversIn, DishConfigIn, OperationIn, StationEventIn,
@@ -29,6 +29,8 @@ replay_runner = ReplayRunner(service)
 adapter.attach(service)
 app.include_router(adapter.router)
 app.include_router(images.router)
+samples.attach(service)
+app.include_router(samples.router)
 
 
 @app.exception_handler(images.ImageStoreError)

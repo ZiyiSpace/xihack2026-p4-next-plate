@@ -31,6 +31,32 @@ def menu_names() -> list[str]:
     return [d["name"] for d in db.get_dishes()]
 
 
+def identify_dish(image_b64: str) -> Optional[dict]:
+    """纯识别：图片 -> 菜品，不预设绑定。
+
+    和 `check_binding` 的区别是「我不知道这是什么菜」vs「验证是不是我以为的那道菜」。
+    用于人工上传样例时的首次识别。离线/失败返回 `{"skipped": True}`，调用方据此回退。
+    """
+    menu = {d["name"]: d["dish_id"] for d in db.get_dishes()}
+    if not menu:
+        return None
+    try:
+        r = _client().identify(image_b64, list(menu))
+    except JevUnavailable as e:
+        return {"skipped": True, "note": str(e)[:120]}
+    if not r:
+        return {"skipped": True}
+    name = r.get("dish")
+    conf = float(r.get("confidence") or 0)
+    return {
+        "dish_id": menu.get(name),
+        "recognized": name,
+        "confidence": round(conf, 3),
+        "below_floor": conf < config.IDENTIFY_CONFIDENCE_FLOOR,
+        "source": "model",
+    }
+
+
 def check_binding(image_b64: str, expected_dish_id: str) -> Optional[dict]:
     """菜品绑定校验：识别结果 vs 绑定表。离线/失败返回 None。"""
     names = menu_names()

@@ -19,7 +19,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, Response
 
-from . import config, db, images, refill
+from . import config, db, images, refill, samples
 from .core import HotpotService
 from .schemas import (DishConfigIn, OperationIn, StationEventIn,
                       TaskUpdateIn)
@@ -257,6 +257,7 @@ def build_view(service: HotpotService, source: str = "live") -> dict:
         "integrations": {"deepseekConfigured": False, "ingestConfigured": True,
                          "model": None},
         "captures": _captures(dishes_cfg),
+        "samples": samples.summary(),
         "plates": [{"id": p["plate_id"], "dishId": p["dish_id"],
                     "quantity": p.get("remaining_count") if p.get("remaining_count") is not None else p["trusted_net_g"],
                     "weightG": p["trusted_net_g"], "seenAt": p.get("last_observed_at"),
