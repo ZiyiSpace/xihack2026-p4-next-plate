@@ -1,0 +1,42 @@
+==============================================================================
+后端 ↔ Jev 端到端回放演练
+==============================================================================
+模式     : online
+后端     : http://127.0.0.1:54839
+视觉服务器: （用 config.py 默认值）
+密钥     : 已设置 jev_Haem…
+
+后端就绪，用时 2.3s
+
+回放耗时 : 37.3s
+对评     : 8/8
+
+── 回放日志 ──
+  菜单已注册到视觉服务器
+  op    E001 initial_load 绑定 P001→D01
+  event B001 @A net=201g => baseline
+  op    E002 initial_load 绑定 P002→D05
+  event M001 @A net=300g => baseline
+  event B002 @B net=151g => removal
+  event M002 @B net=212g => removal
+  event B003 @C net=331g => unexplained_increase
+  event M003 @C net=209g => no_change
+  op    E003 refill
+  event B004 @A net=149g => anomaly_resolved
+  event M004 @A net=332g => refill_confirmed
+  回放完成：事件分类 8/8 与场景设定一致；报告已写入 D:\develop\xihack-pr\modules\backend\data\replay_report.json
+
+── 与视觉服务器有关的行 ──
+  菜单已注册到视觉服务器
+
+── 视觉绑定校验（认菜）实际结果 ──
+  B001       ✓  认出「小馒头」  期望「小馒头」  conf=0.989
+  M001       ✓  认出「腌牛肉」  期望「腌牛肉」  conf=0.955
+  B002       ✓  认出「小馒头」  期望「小馒头」  conf=0.989
+  M002       ✓  认出「腌牛肉」  期望「腌牛肉」  conf=0.828
+  B003       ✓  认出「小馒头」  期望「小馒头」  conf=0.987
+  M003       ✓  认出「腌牛肉」  期望「腌牛肉」  conf=0.917
+  B004       ✓  认出「小馒头」  期望「小馒头」  conf=0.988
+  M004       ✓  认出「腌牛肉」  期望「腌牛肉」  conf=0.956
+
+✓ 对评满分 8/8

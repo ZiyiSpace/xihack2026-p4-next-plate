@@ -9,7 +9,7 @@ import base64
 import os
 from typing import Optional
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -33,8 +33,8 @@ _STATIC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 
 
 @app.get("/")
-def index():
-    return _proxy_frontend("")
+def index(request: Request):
+    return _proxy_frontend("", request)
 
 
 @app.get("/api/health")
@@ -206,21 +206,38 @@ FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "http://127.0.0.1:5173")
 _frontend_http = None
 
 
-def _proxy_frontend(path: str):
+def _proxy_frontend(path: str, request: Request):
+    """把工作台页面原样转发给浏览器，保留查询串与影响协商的请求头。
+
+    两处不能省，少了任何一个页面都会「HTML 出来了但完全没有样式」：
+
+    - **`Accept`**：Vite 按它决定返回哪种形态。浏览器取样式表时发
+      `Accept: text/css,...`，直连会拿到 `text/css`；若用 httpx 默认的 `*/*`
+      去问，Vite 会把 `.css` 当成 JS 模块返回 `text/javascript`，
+      浏览器 MIME 检查拒绝套用，样式全丢。
+    - **查询串**：Vite 用 `?v=<hash>` 标记模块版本，丢掉它会让模块图里的
+      依赖版本错位。
+    """
     global _frontend_http
     import httpx
     if _frontend_http is None:
         _frontend_http = httpx.Client(base_url=FRONTEND_ORIGIN, timeout=30,
                                       follow_redirects=False)
+    forwarded = {name: value for name in ("accept", "user-agent")
+                 if (value := request.headers.get(name))}
+    url = f"/{path}"
+    if request.url.query:
+        url = f"{url}?{request.url.query}"
     try:
-        r = _frontend_http.get(f"/{path}")
+        r = _frontend_http.get(url, headers=forwarded)
     except httpx.HTTPError as e:
         return JSONResponse(status_code=502, content={
             "error": f"工作台页面服务不可达（{FRONTEND_ORIGIN}）：{e.__class__.__name__}。"
                      f"启动方式：modules/frontend 下执行 npm run dev"})
     headers = {"cache-control": r.headers.get("cache-control", "no-store")}
-    if "content-type" in r.headers:
-        headers["content-type"] = r.headers["content-type"]
+    for name in ("content-type", "location"):
+        if name in r.headers:
+            headers[name] = r.headers[name]
     return Response(content=r.content, status_code=r.status_code, headers=headers)
 
 
@@ -232,7 +249,7 @@ def hz_dashboard():
 
 @app.api_route("/{path:path}", methods=["GET"],
                include_in_schema=False)
-def frontend_catch_all(path: str):
+def frontend_catch_all(request: Request, path: str):
     if path.startswith("api/") or path == "docs" or path == "openapi.json":
         raise HTTPException(404, f"未知接口 /{path}")
-    return _proxy_frontend(path)
+    return _proxy_frontend(path, request)

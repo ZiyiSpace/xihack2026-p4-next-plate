@@ -1,0 +1,46 @@
+==============================================================================
+后端 ↔ Jev 服务器 契约自检
+==============================================================================
+服务器   : https://u1201184-80c0-dda3c400.westb.seetacloud.com:8443
+密钥     : jev_Haem…（已隐藏）
+自检照片 : D:\develop\xihack-pr\modules\hotpot_dataset_v0_1\images\B001.png
+后端并发 : 2   认菜置信度下限: 0.6
+
+── 1. 后端用到的端点 vs 服务器实际提供 ──
+端点                 服务器      后端调用点
+------------------------------------------------------------------------------
+/v1/ask            有        jev.py:112, jev.py:113
+/v1/identify       有        jev.py:104
+/v1/measure        缺失       jev.py:140
+/v1/menu           有        jev.py:143
+/v1/portion        缺失       jev.py:128
+
+── 2. 用后端真实的 JevClient 实际调用 ──
+  [OK ] GET /health          必需                  1297 ms  {"status": "ok", "loaded": true, "quantization": "8bit", "backbone": "model.language_model", "vram_used_gib": 13.24, "v…
+  [OK ] POST /v1/menu        必需                    56 ms  {"status": "ok", "name": "集成自检（可删）", "count": 6, "items": ["小馒头", "南瓜饼", "鱼丸", "豆腐片", "腌牛肉", "腌鸡肉"]}
+  [OK ] POST /v1/identify    必需                  4912 ms  {"dish": "小馒头", "prediction": "小馒头", "confidence": 0.988996, "margin": 0.985373, "abstained": false, "ranking": [{"opti…
+  [OK ] POST /v1/ask         必需                   301 ms  {"answer": "在", "prediction": "在", "prediction_index": 0, "confidence": 0.670177, "probabilities": {"在": 0.670177, "不在"…
+  [FAIL] POST /v1/portion     后端在用                8370 ms  JevUnavailable: HTTP 404: {"detail":"Not Found"}
+  [FAIL] POST /v1/measure     后端定义未调用            10132 ms  JevUnavailable: HTTP 404: {"detail":"Not Found"}
+
+── 3. 认菜结果 ──
+  识别为 : 小馒头  置信度 0.988996
+  领先   : 0.985373    abstained=False
+    小馒头        0.9890
+    腌鸡肉        0.0036
+    豆腐片        0.0035
+    南瓜饼        0.0023
+    鱼丸         0.0011
+  判定   : 可用
+
+── 4. 结论 ──
+  服务器在线: ok  loaded=True  显存 13.24/23.64 GiB
+  ⚠ 后端在用但服务器已移除的端点: /v1/measure, /v1/portion
+    /v1/measure
+      jev.JevClient.measure()          jev.py:132
+        <- vision.measure_reduction()            vision.py:84
+    /v1/portion
+      jev.JevClient.portion()          jev.py:115
+        <- vision.portion_estimate()            vision.py:59
+             <- replay.py:135
+  必需端点全部可用；上面列出的缺口只影响标注的那几处调用。
